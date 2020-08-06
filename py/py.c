@@ -6,36 +6,45 @@
 
 #define TIMING
 
-int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
-int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc);
-void tabStats(unsigned char * characArr);
-int cmpfunc (const void * a, const void * b) ;
-
 unsigned long max_bound;
 unsigned long chunk_size;
 
-const int buffer_size = 100000;
 const int numChunks = 1000;
+
+const int subBufferSize = 1000000;
+const int subBuffers = 100;
+int subBufRange;
+
+unsigned long totalWrites;
+
+void writePreimage(ulong preimage, ulong * imageChunk, int * chunkCount, char * characFunc, omp_lock_t subRangeLocks[subBuffers]);
+void writeBuffer( ulong * imageChunk, int  chunkCount, int subBuffer, char * characFunc, omp_lock_t subRangeLocks[subBuffers]);
+void tabStats(unsigned char * characArr);
+int cmpfunc (const void * a, const void * b);
+
+
+
+
+
 
 
 int main(int argc, char *argv[]){
-
-    #ifdef TIMING
-    double startTime = omp_get_wtime();
-    #endif
     
-    if(argc < 1){
-        printf("./[max_bound]");
-        exit(0);
-    }
+
+   // #ifdef TIMING
+    double startTime = omp_get_wtime();
+  //  #endif
+    
+   
 
     max_bound = atol(argv[1]);
     chunk_size = max_bound/numChunks;
 
-    if(max_bound % 10 != 0 ){
-        printf("max_bound must be divisable by 10");
-        exit(0);
-    }
+    assert(argc > 1);
+    assert(max_bound % 10 == 0 );
+    assert(max_bound % subBuffers == 0);
+
+    subBufRange = max_bound / subBuffers;
 
     //byte array that accumates parent information
     //characFunc[i] holds the number of parents for (i + 1) * 2
@@ -55,14 +64,21 @@ int main(int argc, char *argv[]){
     unsigned long * compSquares =  malloc(sizeof(unsigned long) * (compositeBound));
     unsigned long compSquareCounter = 0;
 
+    omp_lock_t subRangeLocks[subBuffers];
+    
+    for(int i = 0; i < subBuffers; i++){
+        omp_init_lock(&(subRangeLocks[i]));
+    }
+
     #pragma omp parallel
     {
         //sigma holds the sum-of-divisors returned by antons sum_of_divisors_odd
         unsigned long * sigma =  malloc ((chunk_size /2)*sizeof(unsigned long));
 
         //this buffer holds preimages before they are written to disk in a batch
-        unsigned long * imageChunk = malloc (sizeof(unsigned long)* buffer_size);
-        int chunkCount; //counter for the imageChunk buffer
+        //We are also splitting the preimages into subbuffers that cover a sorted portion of the charac function 
+        unsigned long * imageChunk = malloc (sizeof(unsigned long)* subBufferSize * subBuffers);
+        int chunkCount[subBuffers]; //counter for each subbuffer 
        
         //splits the problem into chunks for threading
         #pragma omp for schedule(auto) 
@@ -72,7 +88,10 @@ int main(int argc, char *argv[]){
             double threadStart = omp_get_wtime();
             #endif
 
-            chunkCount = 0;
+            //zero out each subbuffer counter
+            for(int i = 0; i < subBuffers; i++){
+                chunkCount[i] = 0;
+            }
 
             unsigned long m = (i * chunk_size );//the number currently being processed by algo
 
@@ -83,21 +102,21 @@ int main(int argc, char *argv[]){
               
                 //sigma(m) = sigma[j] ? 
                 m = (i * chunk_size + 1) + (j << 1); //cannot remember where tf this offset comes from
-                
+
                 //catches evens values of sigma[j] and runs them through recurrance
                 if(!(sigma[j] & 1)){ 
 
                     unsigned long t = 3 * sigma[j] - (m << 1);
 
                     while (t <= max_bound){
-                        chunkCount = writePreimage(t, imageChunk, chunkCount, characFunc);
+                        writePreimage(t, imageChunk, chunkCount, characFunc, subRangeLocks);
                         t = (t << 1) + sigma[j];
                     }
                 }
 
                 //catches primes are records them appropriatly 
                 if(sigma[j] == m+1){
-                    chunkCount = writePreimage(m+1, imageChunk, chunkCount, characFunc);
+                    writePreimage(m+1, imageChunk, chunkCount, characFunc, subRangeLocks);
                 }
 
                 //catches odd composite values of m which are pushed to
@@ -112,8 +131,10 @@ int main(int argc, char *argv[]){
             }
 
             //finish up any leftover info
-           if(chunkCount > 0) chunkCount = writeBuffer(imageChunk, chunkCount, characFunc);
-              
+            for(int i = 0; i < subBuffers; i++){
+                if(chunkCount[i] > 0) writeBuffer(imageChunk, chunkCount[i], i, characFunc, subRangeLocks);
+                chunkCount[i] = 0;
+            }
         }
 
         free(sigma);
@@ -124,72 +145,94 @@ int main(int argc, char *argv[]){
             unsigned long s_mSq = wheelDivSum(compSquares[i]*compSquares[i]);
 
             if(s_mSq <= max_bound) {
-                chunkCount = writePreimage(s_mSq, imageChunk, chunkCount, characFunc);
+                writePreimage(s_mSq, imageChunk, chunkCount, characFunc, subRangeLocks);
             }
         }
-        if(chunkCount > 0) chunkCount = writeBuffer(imageChunk, chunkCount, characFunc);
+
+        //finish up any leftover info
+        for(int i = 0; i < subBuffers; i++){
+            if(chunkCount[i] > 0) writeBuffer(imageChunk, chunkCount[i], i, characFunc, subRangeLocks);
+            chunkCount[i] = 0;
+        }
     }
     
     tabStats(characFunc);
     closeByteArray(characFunc, max_bound/2);
 
-    #ifdef TIMING
-    printf("\n\nFinished in %f seconds\n", omp_get_wtime()-startTime);
-    #endif
-}
-
-//writes a preimage to the chunks buffer
-//if the buffer is full it is written to the charac function
-int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc){
-
-    imageChunk[chunkCount] = preimage;
-    chunkCount++;
-    
-    if(chunkCount == buffer_size){
-        chunkCount = writeBuffer(imageChunk, chunkCount, characFunc);
+     for(int i = 0; i < subBuffers; i++){
+        omp_destroy_lock(&subRangeLocks[i]);
     }
 
-    return chunkCount;
+
+   //#ifdef TIMING
+    printf("\n\nFinished in %f seconds at %lu images per millisecond\n", omp_get_wtime()-startTime, (unsigned long)(totalWrites/ 10*(omp_get_wtime()-startTime)));
+   // #endif
+}
+ 
+//writes a preimage to the chunks buffer
+//if the buffer is full it is written to the charac function
+void writePreimage(ulong preimage, ulong * imageChunk, int * chunkCount, char * characFunc, omp_lock_t subRangeLocks[subBuffers]){    
+    
+    for(int i = 0; i < subBuffers; i++){
+        if(chunkCount[i] == subBufferSize){
+                writeBuffer(imageChunk, chunkCount[i], i, characFunc, subRangeLocks);
+                chunkCount[i] = 0;
+        }
+        if(preimage <= subBufRange * (i + 1) && preimage > subBufRange * i){
+           // printf("wrote: %lu to subbuffer: %d\n", preimage, i);
+            // assert(preimage > 0);
+            // assert(chunkCount[i] < subBufferSize);
+            // assert((i * subBufferSize) + chunkCount[i] < subBufferSize * subBuffers);
+            // assert((i * subBufferSize) + chunkCount[i] >= 0);
+            imageChunk[(i * subBufferSize) + chunkCount[i]] = preimage;
+           
+            chunkCount[i]++;
+            break;
+        } 
+    }
 }
 
 //This function writes a buffer of preimages to the characFile
-int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
+void writeBuffer( ulong * imageChunk, int chunkCount, int subBuffer, char * characFunc, omp_lock_t subRangeLocks[subBuffers]){
 
     #ifdef TIMING
     double chunkTime  = omp_get_wtime();
+    double waitTime;
     #endif
+    
+    qsort(&imageChunk[subBuffer * subBufferSize], chunkCount, sizeof(*imageChunk), cmpfunc);
 
-    qsort(imageChunk, chunkCount, sizeof(*imageChunk), cmpfunc);
+    omp_set_lock(&subRangeLocks[subBuffer]);
 
-    #pragma omp critical (charac)
-    {
-        for(int i = 0; i < chunkCount; i++){
-            //assert(imageChunk[i] <= max_bound);
-            //assert (imageChunk[i] > 0);
-            //assert(imageChunk[i] % 2 == 0);
-            //printf("imagechunk [%d] = %lu\n", i, imageChunk[i]);
-            characFunc[(imageChunk[i]/2)-1]++;
-        }
+    #ifdef TIMING
+        waitTime  = omp_get_wtime();
+    #endif
+    for(int i = 0; i < chunkCount; i++){
+        // printf("subBuf: %d chunkCount: %lu imagechunk [%d] = %lu\n", subBuffer,chunkCount,i, imageChunk[(subBuffer * subBufRange) + i]);
+        // assert(imageChunk[(subBuffer * subBufferSize) + i] <= max_bound);
+        // assert (imageChunk[(subBuffer * subBufferSize) + i] > 0);
+        // assert(imageChunk[(subBuffer * subBufferSize) + i] % 2 == 0);
+        
+        characFunc[(imageChunk[(subBuffer * subBufferSize) + i]/2)-1]++;
     }
+
+    omp_unset_lock(&subRangeLocks[subBuffer]);
     
     #ifdef TIMING
-    printf("%d preimages written in %f seconds\n", chunkCount,omp_get_wtime() - chunkTime );
+    printf("preimages:%-10d  rate(pre's/second):%-10d    wait-time:%f\n", chunkCount, (int)( chunkCount/(10 *( omp_get_wtime() - chunkTime))), omp_get_wtime() - waitTime  );
     #endif
-
-    chunkCount = 0;
-    return chunkCount;
-
 }
 
 //This functions processes the characArray and tabulates statisics about k-parent numbers
 //characArr must be max_bound/2 in size
 void tabStats(unsigned char * characArr){
-
+    totalWrites = 0;
     unsigned long accPreimages[256] = {0};
     
     accPreimages[0]++; //accounts for 5 which is the only odd untouchable
     for(ulong i = 0;  i < max_bound/2; i++){
         accPreimages[characArr[i]]++;
+        totalWrites += characArr[i];
     }
 
     printf("\nBound = %lu\n", max_bound);

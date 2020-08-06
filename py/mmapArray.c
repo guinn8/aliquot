@@ -69,7 +69,7 @@ unsigned char * openByteArray(char * fileName, size_t arraySize){
 	    exit(EXIT_FAILURE);
     }
 
-    map = mmap(NULL, fileSize ,  PROT_READ | PROT_WRITE , MAP_SHARED, fd, 0);
+    map = mmap(NULL, fileSize ,  PROT_READ | PROT_WRITE , MAP_SHARED , fd, 0);
     close(fd);
 
     if (map == MAP_FAILED) {

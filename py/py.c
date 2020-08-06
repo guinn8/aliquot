@@ -1,4 +1,4 @@
-#include "mmapArray.h"
+//#include "mmapArray.h"
 #include "properSumDiv.h"
 #include "sieve.h"
 #include <omp.h>
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
 
     //byte array that accumates parent information
     //characFunc[i] holds the number of parents for (i + 1) * 2
-    unsigned char * characFunc = createByteArray("charac", max_bound/2);
+    unsigned char * characFunc = malloc(max_bound/2);//createByteArray("charac", max_bound/2);
 
     //These buffers are nessicary for the prime seive
     //Most of this is pulled straight from Anton's implementation
@@ -131,7 +131,7 @@ int main(int argc, char *argv[]){
     }
     
     tabStats(characFunc);
-    closeByteArray(characFunc, max_bound/2);
+    //closeByteArray(characFunc, max_bound/2);
 
     #ifdef TIMING
     printf("\n\nFinished in %f seconds\n", omp_get_wtime()-startTime);

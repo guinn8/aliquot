@@ -1,12 +1,12 @@
 NAME=py
 CC=gcc
 #orignially compiled with icc
-CFLAGS= -fopenmp -g 
+CFLAGS= -fopenmp -std=c99 
 SYMBS=
 INCS=
 LIBS=
 LINKS=-lm
-all: py.c sieve.c mmapArray.c properSumDiv.c
+all: py.c sieve.c properSumDiv.c
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o $(NAME) $^ $(LIBS) $(LINKS)
 lib:
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c init.c -o init.o

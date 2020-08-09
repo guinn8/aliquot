@@ -4,7 +4,7 @@
 #include <omp.h>
 #include <assert.h> 
 
-#define TIMING
+//#define TIMING
 
 int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
 int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc);
@@ -15,14 +15,14 @@ unsigned long max_bound;
 unsigned long chunk_size;
 
 const int buffer_size = 100000;
-const int numChunks = 1000;
+const int numChunks = 10000;
 
 
 int main(int argc, char *argv[]){
 
-    #ifdef TIMING
+//    #ifdef TIMING
     double startTime = omp_get_wtime();
-    #endif
+//    #endif
     
     if(argc < 1){
         printf("./[max_bound]");
@@ -133,9 +133,9 @@ int main(int argc, char *argv[]){
     tabStats(characFunc);
     //closeByteArray(characFunc, max_bound/2);
 
-    #ifdef TIMING
+//    #ifdef TIMING
     printf("\n\nFinished in %f seconds\n", omp_get_wtime()-startTime);
-    #endif
+//    #endif
 }
 
 //writes a preimage to the chunks buffer
@@ -159,7 +159,7 @@ int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
     double chunkTime  = omp_get_wtime();
     #endif
 
-    qsort(imageChunk, chunkCount, sizeof(*imageChunk), cmpfunc);
+  //  qsort(imageChunk, chunkCount, sizeof(*imageChunk), cmpfunc);
 
     #pragma omp critical (charac)
     {
@@ -168,8 +168,9 @@ int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
             //assert (imageChunk[i] > 0);
             //assert(imageChunk[i] % 2 == 0);
             //printf("imagechunk [%d] = %lu\n", i, imageChunk[i]);
+//	    #pragma omp atomic
             characFunc[(imageChunk[i]/2)-1]++;
-        }
+       }
     }
     
     #ifdef TIMING

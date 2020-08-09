@@ -1,0 +1,2 @@
+/var/spool/slurmd/job6574855/slurm_script: line 9: 312453 Killed                  ./py 1000000000000
+slurmstepd: error: Detected 4 oom-kill event(s) in step 6574855.batch cgroup.

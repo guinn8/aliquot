@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
             sum_of_divisors_odd(chunk_size, m, sigma, primes);//Antons again, very fast sum of divisors
 
             //runs through the thread specific chunk
-            for(int j = 0; j < chunk_size / 2; j++){
+            for(unsigned long j = 0; j < chunk_size / 2; j++){
               
                 //sigma(m) = sigma[j] ? 
                 m = (i * chunk_size + 1) + (j << 1); //cannot remember where tf this offset comes from

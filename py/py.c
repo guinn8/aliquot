@@ -7,9 +7,9 @@
 //#define TIMING
 
 int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
-int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc);
+void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc);
 void tabStats(unsigned char * characArr);
-int cmpfunc (const void * a, const void * b) ;
+//int cmpfunc (const void * a, const void * b) ;
 
 unsigned long max_bound;
 unsigned long chunk_size;
@@ -112,7 +112,10 @@ int main(int argc, char *argv[]){
             }
 
             //finish up any leftover info
-           if(chunkCount > 0) chunkCount = writeBuffer(imageChunk, chunkCount, characFunc);
+           if(chunkCount > 0) {
+               writeBuffer(imageChunk, chunkCount, characFunc);
+               chunkCount = 0;
+           }
               
         }
 
@@ -120,14 +123,17 @@ int main(int argc, char *argv[]){
 
         //Im not sure this nowait is safe but it seems to work
         #pragma omp for nowait
-        for(int i = 0; i < compSquareCounter; i++){
+        for(unsigned long i = 0; i < compSquareCounter; i++){
             unsigned long s_mSq = wheelDivSum(compSquares[i]*compSquares[i]);
 
             if(s_mSq <= max_bound) {
                 chunkCount = writePreimage(s_mSq, imageChunk, chunkCount, characFunc);
             }
         }
-        if(chunkCount > 0) chunkCount = writeBuffer(imageChunk, chunkCount, characFunc);
+        if(chunkCount > 0){
+            writeBuffer(imageChunk, chunkCount, characFunc);
+            chunkCount = 0;
+        } 
     }
     
     tabStats(characFunc);
@@ -146,14 +152,15 @@ int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * cha
     chunkCount++;
     
     if(chunkCount == buffer_size){
-        chunkCount = writeBuffer(imageChunk, chunkCount, characFunc);
+        writeBuffer(imageChunk, chunkCount, characFunc);
+        chunkCount = 0;
     }
 
     return chunkCount;
 }
 
 //This function writes a buffer of preimages to the characFile
-int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
+void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
 
     #ifdef TIMING
     double chunkTime  = omp_get_wtime();
@@ -177,8 +184,6 @@ int writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
     printf("%d preimages written in %f seconds\n", chunkCount,omp_get_wtime() - chunkTime );
     #endif
 
-    chunkCount = 0;
-    return chunkCount;
 
 }
 
@@ -199,6 +204,6 @@ void tabStats(unsigned char * characArr){
     }
 }
 
-int cmpfunc (const void * a, const void * b) {
-   return ( *(int*)a - *(int*)b );
-}
+// int cmpfunc (const void * a, const void * b) {
+//    return ( *(int*)a - *(int*)b );
+// }

@@ -5,7 +5,7 @@ CFLAGS= -fopenmp -g
 SYMBS=
 INCS=
 LIBS=
-LINKS=-lm
+LINKS=-lm -lflint -lmpfr -lgmp -lpthread
 all: py.c sieve.c mmapArray.c properSumDiv.c
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o $(NAME) $^ $(LIBS) $(LINKS)
 lib:

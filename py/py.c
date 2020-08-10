@@ -3,9 +3,11 @@
 #include "sieve.h"
 #include <omp.h>
 #include <assert.h> 
+#include <flint/arith.h>
 
-#define TIMING
+//#define TIMING
 
+unsigned long s(unsigned long n);
 int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
 void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc);
 void tabStats(unsigned char * characArr);
@@ -17,12 +19,13 @@ unsigned long chunk_size;
 const int buffer_size = 100000;
 const int numChunks = 1000;
 
-
+//Look into all bit shifts and replace 1 with 1L
 int main(int argc, char *argv[]){
+    
 
-    #ifdef TIMING
+    //#ifdef TIMING
     double startTime = omp_get_wtime();
-    #endif
+    //#endif
     
     if(argc < 1){
         printf("./[max_bound]");
@@ -124,6 +127,7 @@ int main(int argc, char *argv[]){
         //Im not sure this nowait is safe but it seems to work
         #pragma omp for nowait
         for(unsigned long i = 0; i < compSquareCounter; i++){
+           // unsigned long s_mSq = s(compSquares[i]*compSquares[i]);
             unsigned long s_mSq = wheelDivSum(compSquares[i]*compSquares[i]);
 
             if(s_mSq <= max_bound) {
@@ -139,9 +143,9 @@ int main(int argc, char *argv[]){
     tabStats(characFunc);
     //closeByteArray(characFunc, max_bound/2);
 
-    #ifdef TIMING
+    //#ifdef TIMING
     printf("\n\nFinished in %f seconds\n", omp_get_wtime()-startTime);
-    #endif
+   // #endif
 }
 
 //writes a preimage to the chunks buffer
@@ -203,6 +207,12 @@ void tabStats(unsigned char * characArr){
     }
 }
 
-// int cmpfunc (const void * a, const void * b) {
-//    return ( *(int*)a - *(int*)b );
-// }
+unsigned long s(unsigned long n){
+    fmpz_t res, num;
+    fmpz_init(res);
+    fmpz_init_set_ui(num,n);
+
+    arith_divisor_sigma(res, num, 1);
+    ulong result  = fmpz_get_ui(res);
+    return result -n;
+}

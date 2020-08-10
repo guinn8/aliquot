@@ -2,7 +2,7 @@ NAME=main
 CC=gcc
 #orignially compiled with icc
 CFLAGS= 
-SYMBS= -g
+SYMBS= -std=c99 -g
 INCS=
 LIBS=
 LINKS=-lm

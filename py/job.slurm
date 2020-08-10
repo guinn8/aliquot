@@ -6,5 +6,5 @@
 #SBATCH --partition=bigmem
 #SBATCH --time=024:00:00
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-./py 1000000000000
+./py 100000000000
 

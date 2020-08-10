@@ -1,0 +1,13 @@
+
+Bound = 1000000000000
+
+0 count: 171128671236, density = 0.171129
+1 count: 169657731106, density = 0.169658
+2 count: 93820763132, density = 0.093821
+3 count: 39830959967, density = 0.039831
+4 count: 15125418555, density = 0.015125
+5 count: 5701313544, density = 0.005701
+6 count: 2302720033, density = 0.002303
+7 count: 1040095427, density = 0.001040
+
+Finished in 23223.017796 seconds

@@ -1,3 +1,4 @@
+
 //#include "mmapArray.h"
 #include "properSumDiv.h"
 #include "sieve.h"
@@ -23,12 +24,12 @@ const int numChunks = 10000;
 
 //Look into all bit shifts and replace 1 with 1L
 int main(int argc, char *argv[]){
-    
+
 
 //    #ifdef TIMING
     double startTime = omp_get_wtime();
 //    #endif
-    
+
     if(argc < 1){
         printf("./[max_bound]");
         exit(0);
@@ -49,7 +50,7 @@ int main(int argc, char *argv[]){
     //These buffers are nessicary for the prime seive
     //Most of this is pulled straight from Anton's implementation
     //so I really dont have a good idea how it work
-    const unsigned long max_prime = (unsigned long) sqrt((double) (max_bound << 1));
+    const unsigned long max_prime = (unsigned long) sqrt((double) (2 * max_bound));
 	const unsigned prime_bound = (unsigned long) (1.25506 * (max_prime + 1) / log(max_prime + 1));
 	unsigned int * primes = (unsigned int *) malloc(sizeof(unsigned int) * (prime_bound + 1));
 	prime_sieve(max_prime, primes);
@@ -87,16 +88,16 @@ int main(int argc, char *argv[]){
             for(unsigned long j = 0; j < chunk_size / 2; j++){
               
                 //sigma(m) = sigma[j] ? 
-                m = (i * chunk_size + 1) + (j << 1); //cannot remember where tf this offset comes from
+                m = (i * chunk_size + 1) + (2 * j); //cannot remember where tf this offset comes from
                 
                 //catches evens values of sigma[j] and runs them through recurrance
                 if(!(sigma[j] & 1)){ 
 
-                    unsigned long t = 3 * sigma[j] - (m << 1);
+                    unsigned long t = 3 * sigma[j] - (2 * m);
 
                     while (t <= max_bound){
                         chunkCount = writePreimage(t, imageChunk, chunkCount, characFunc);
-                        t = (t << 1) + sigma[j];
+                        t = (2 * t) + sigma[j];
                     }
                 }
 

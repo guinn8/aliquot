@@ -5,6 +5,7 @@
 #include <assert.h> 
 #include "/home/gavin.guinn/flint-2.6.2/arith.h"
 
+//#include <flint/arith.h>
 //#define FLINT
 //#define TIMING
 
@@ -175,16 +176,13 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
 
   //  qsort(imageChunk, chunkCount, sizeof(*imageChunk), cmpfunc);
 
-    #pragma omp critical (charac)
-    {
-        for(int i = 0; i < chunkCount; i++){
-            //assert(imageChunk[i] <= max_bound);
-            //assert (imageChunk[i] > 0);
-            //assert(imageChunk[i] % 2 == 0);
-            //printf("imagechunk [%d] = %lu\n", i, imageChunk[i]);
-//	    #pragma omp atomic
-            characFunc[(imageChunk[i]/2)-1]++;
-       }
+    for(int i = 0; i < chunkCount; i++){
+        //assert(imageChunk[i] <= max_bound);
+        //assert (imageChunk[i] > 0);
+        //assert(imageChunk[i] % 2 == 0);
+        //printf("imagechunk [%d] = %lu\n", i, imageChunk[i]);
+        #pragma omp atomic
+        characFunc[(imageChunk[i]/2)-1]++;
     }
     
     #ifdef TIMING

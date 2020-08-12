@@ -1,4 +1,3 @@
-
 //#include "mmapArray.h"
 #include "properSumDiv.h"
 #include "sieve.h"
@@ -6,9 +5,11 @@
 #include <assert.h> 
 #include "/home/gavin.guinn/flint-2.6.2/arith.h"
 
-//#include <flint/arith.h>
 #define FLINT
+//#include <flint/arith.h>
+//#define FLINT
 //#define TIMING
+#define ASSERT
 
 unsigned long s(unsigned long n);
 int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
@@ -19,12 +20,11 @@ void tabStats(unsigned char * characArr);
 unsigned long max_bound;
 unsigned long chunk_size;
 
-const int buffer_size = 100000;
-const int numChunks = 10000;
+const int buffer_size = 100;
+const int numChunks = 1;
 
-//Look into all bit shifts and replace 1 with 1L
+//
 int main(int argc, char *argv[]){
-
 
 //    #ifdef TIMING
     double startTime = omp_get_wtime();
@@ -38,14 +38,15 @@ int main(int argc, char *argv[]){
     max_bound = atol(argv[1]);
     chunk_size = max_bound/numChunks;
 
-    if(max_bound % 10 != 0 ){
-        printf("max_bound must be divisable by 10");
+    if(max_bound % numChunks != 0 ){
+        printf("max_bound must be divisable by numChunks");
         exit(0);
     }
 
     //byte array that accumates parent information
     //characFunc[i] holds the number of parents for (i + 1) * 2
-    unsigned char * characFunc = malloc(max_bound/2);//createByteArray("charac", max_bound/2);
+    unsigned char * characFunc = malloc(max_bound/2);//creasteByteArray("charac", max_bound/2);
+  
 
     //These buffers are nessicary for the prime seive
     //Most of this is pulled straight from Anton's implementation
@@ -80,22 +81,39 @@ int main(int argc, char *argv[]){
 
             chunkCount = 0;
 
-            unsigned long m = (i * chunk_size );//the number currently being processed by algo
+            unsigned long  m = (i * chunk_size );//the number currently being processed by algo
 
             sum_of_divisors_odd(chunk_size, m, sigma, primes);//Antons again, very fast sum of divisors
+      
 
             //runs through the thread specific chunk
             for(unsigned long j = 0; j < chunk_size / 2; j++){
               
-                //sigma(m) = sigma[j] ? 
+                //sigma(m) = sigma[j] 
                 m = (i * chunk_size + 1) + (2 * j); //cannot remember where tf this offset comes from
                 
+
+                #ifdef ASSERT
+                assert(s(m)+m == sigma[j]);
+                #endif
+
                 //catches evens values of sigma[j] and runs them through recurrance
                 if(!(sigma[j] & 1)){ 
 
-                    unsigned long t = 3 * sigma[j] - (2 * m);
+                    unsigned long  t = 3 * sigma[j] - (2 * m);
+                   
+                    #ifdef ASSERT
+                    int pow = 2;
+                    #endif
 
                     while (t <= max_bound){
+
+                        #ifdef ASSERT
+                        //printf("s(%lu) = %lu and t = %lu\n", pow*m, s(pow * m), t);
+                        assert(s(pow * m) == t);
+                        pow *= 2;
+                        #endif
+
                         chunkCount = writePreimage(t, imageChunk, chunkCount, characFunc);
                         t = (2 * t) + sigma[j];
                     }
@@ -103,6 +121,11 @@ int main(int argc, char *argv[]){
 
                 //catches primes are records them appropriatly 
                 if(sigma[j] == m+1){
+
+                    #ifdef ASSERT
+                    assert(s(m*m) == sigma[j]);
+                    #endif
+
                     chunkCount = writePreimage(m+1, imageChunk, chunkCount, characFunc);
                 }
 
@@ -128,12 +151,17 @@ int main(int argc, char *argv[]){
 
         //Im not sure this nowait is safe but it seems to work
         #pragma omp for nowait
-        for(unsigned long i = 0; i < compSquareCounter; i++){
-	    #ifdef FLINT
+        for(unsigned long  i = 0; i < compSquareCounter; i++){
+
+	        #ifdef FLINT
             unsigned long s_mSq = s(compSquares[i]*compSquares[i]);
-	    #else
+	        #else
             unsigned long s_mSq = wheelDivSum(compSquares[i]*compSquares[i]);
-	    #endif
+	        #endif
+
+            #ifdef ASSERT
+            assert(compSquares[i] % 2 != 0);
+            #endif
 
             if(s_mSq <= max_bound) {
                 chunkCount = writePreimage(s_mSq, imageChunk, chunkCount, characFunc);
@@ -178,10 +206,15 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
   //  qsort(imageChunk, chunkCount, sizeof(*imageChunk), cmpfunc);
 
     for(int i = 0; i < chunkCount; i++){
-        //assert(imageChunk[i] <= max_bound);
-        //assert (imageChunk[i] > 0);
-        //assert(imageChunk[i] % 2 == 0);
+
+        #ifdef ASSERT
+        assert(imageChunk[i] <= max_bound);
+        assert (imageChunk[i] > 0);
+        assert(imageChunk[i] % 2 == 0);
+        #endif
+
         //printf("imagechunk [%d] = %lu\n", i, imageChunk[i]);
+        if(characFunc[(imageChunk[i]/2)-1] > 20) printf("%lu has %d pre's\n", imageChunk[i], characFunc[(imageChunk[i]/2)-1]);
         #pragma omp atomic
         characFunc[(imageChunk[i]/2)-1]++;
     }
@@ -197,25 +230,32 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
 //characArr must be max_bound/2 in size
 void tabStats(unsigned char * characArr){
 
+    FILE * fp = fopen("counts.csv","a");
+
     unsigned long accPreimages[256] = {0};
-    
-    accPreimages[0]++; //accounts for 5 which is the only odd untouchable
-    for(ulong i = 0;  i < max_bound/2; i++){
+
+    accPreimages[0]++; //accounts for 5 which is the
+    for(unsigned long i = 0;  i < max_bound/2; i++){
+       // if(characArr[i] > 10)printf("%lu has %d preimages\n", (i+1)*2, characArr[i]);
         accPreimages[characArr[i]]++;
     }
 
-    printf("\nBound = %lu\n", max_bound);
-    for(int j = 0;  j < 8; j++){
-       printf("\n%d count: %lu, density = %f", j, accPreimages[j], (float)accPreimages[j]/max_bound);
+    fprintf(fp,"%lu", max_bound);
+    for(int j = 0;  j < 255; j++){
+       fprintf(fp, ",%lu",  accPreimages[j] );
     }
+    fprintf(fp, "\n");
+
+    fclose(fp);
 }
+
 
 unsigned long s(unsigned long n){
     fmpz_t res, num;
     fmpz_init(res);
-    fmpz_init_set_ui(num,n);
+    fmpz_init_set_si(num,n);
 
     arith_divisor_sigma(res, num, 1);
-    ulong result  = fmpz_get_ui(res);
+    ulong result  = fmpz_get_si(res);
     return result -n;
 }

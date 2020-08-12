@@ -7,7 +7,7 @@
 #include "/home/gavin.guinn/flint-2.6.2/arith.h"
 
 //#include <flint/arith.h>
-//#define FLINT
+#define FLINT
 //#define TIMING
 
 unsigned long s(unsigned long n);

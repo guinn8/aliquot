@@ -9,7 +9,7 @@
 //#include <flint/arith.h>
 //#define FLINT
 //#define TIMING
-#define ASSERT
+//#define ASSERT
 
 unsigned long s(unsigned long n);
 int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
@@ -20,10 +20,9 @@ void tabStats(unsigned char * characArr);
 unsigned long max_bound;
 unsigned long chunk_size;
 
-const int buffer_size = 100;
-const int numChunks = 1;
+const int buffer_size = 100000;
+const int numChunks = 256;
 
-//
 int main(int argc, char *argv[]){
 
 //    #ifdef TIMING

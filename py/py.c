@@ -1,51 +1,58 @@
-//#include "mmapArray.h"
 #include "properSumDiv.h"
 #include "sieve.h"
 #include <omp.h>
 #include <assert.h> 
+#include <string.h>
+#include <flint/arith.h>
 //#include "/home/gavin.guinn/flint-2.6.2/arith.h"
 
-#include <flint/arith.h>
-//#define FLINT
-//#define TIMING
-#define ASSERT
+#define FLINT
+#define ASSERT //for any production runs ensure assert is not defined
 
 unsigned long s(unsigned long n);
+unsigned long s_sqInput(unsigned long n);
 int writePreimage(ulong preimage, ulong * imageChunk, int chunkCount, char * characFunc);
 void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc);
 void tabStats(unsigned char * characArr);
-//int cmpfunc (const void * a, const void * b) ;
+int chooseNumChunks(ulong max_bound);
 
 unsigned long max_bound;
 unsigned long chunk_size;
+int buffer_size;
+int numChunks ;
 
-const int buffer_size = 100;
-const int numChunks = 1;
-
-//
 int main(int argc, char *argv[]){
 
-//    #ifdef TIMING
+
     double startTime = omp_get_wtime();
-//    #endif
 
-    if(argc < 1){
-        printf("./[max_bound]");
+    if(argc == 0){
+        printf("What tf are you trying to input\n");
+        printf("./[max_bound] OR ./[max_bound][buffer_size]");
+        exit(0);
+    }else if(argc == 2){
+        max_bound = atol(argv[1]);
+        buffer_size = 10000; 
+    }else if(argc == 3){
+        max_bound = atol(argv[1]);
+        buffer_size = atol(argv[2]);
+    }else{
+        printf("What tf are you trying to input\n");
+        printf("./[max_bound] OR ./[max_bound][buffer_size]");
         exit(0);
     }
 
-    max_bound = atol(argv[1]);
+    assert(max_bound % 2 == 0);
+    assert(buffer_size > 0);
+
+
+    numChunks = chooseNumChunks(max_bound);
     chunk_size = max_bound/numChunks;
-
-    if(max_bound % numChunks != 0 ){
-        printf("max_bound must be divisable by numChunks");
-        exit(0);
-    }
 
     //byte array that accumates parent information
     //characFunc[i] holds the number of parents for (i + 1) * 2
-    unsigned char * characFunc = malloc(max_bound/2);//creasteByteArray("charac", max_bound/2);
-  
+    unsigned char * characFunc = malloc(max_bound/2);
+    memset(characFunc, 0, max_bound/2 );
 
     //These buffers are nessicary for the prime seive
     //Most of this is pulled straight from Anton's implementation
@@ -80,17 +87,15 @@ int main(int argc, char *argv[]){
 
             chunkCount = 0;
 
-            unsigned long  m = (i * chunk_size );//the number currently being processed by algo
+            unsigned long  m = (i * chunk_size);//the number currently being processed by algo
 
             sum_of_divisors_odd(chunk_size, m, sigma, primes);//Antons again, very fast sum of divisors
       
-
             //runs through the thread specific chunk
             for(unsigned long j = 0; j < chunk_size / 2; j++){
               
                 //sigma(m) = sigma[j] 
                 m = (i * chunk_size + 1) + (2 * j); //cannot remember where tf this offset comes from
-                
 
                 #ifdef ASSERT
                 assert(s(m)+m == sigma[j]);
@@ -122,7 +127,8 @@ int main(int argc, char *argv[]){
                 if(sigma[j] == m+1){
 
                     #ifdef ASSERT
-                    assert(s(m*m) == sigma[j]);
+                    if(s_sqInput(m)  != sigma[j]) printf("   m: %lu s(%lu) = %lu != sigma[j] = %lu\n", m,m*m,s_sqInput(m), sigma[j] );
+                    //assert(s(m*m) == sigma[j]);
                     #endif
 
                     chunkCount = writePreimage(m+1, imageChunk, chunkCount, characFunc);
@@ -173,11 +179,7 @@ int main(int argc, char *argv[]){
     }
 
     tabStats(characFunc);
-    //closeByteArray(characFunc, max_bound/2);
-
-    //#ifdef TIMING
     printf("\n\nFinished in %f seconds\n", omp_get_wtime()-startTime);
-   // #endif
 }
 
 //writes a preimage to the chunks buffer
@@ -202,8 +204,6 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
     double chunkTime  = omp_get_wtime();
     #endif
 
-  //  qsort(imageChunk, chunkCount, sizeof(*imageChunk), cmpfunc);
-
     for(int i = 0; i < chunkCount; i++){
 
         #ifdef ASSERT
@@ -212,17 +212,9 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
         assert(imageChunk[i] % 2 == 0);
         #endif
 
-        //printf("imagechunk [%d] = %lu\n", i, imageChunk[i]);
-        if(characFunc[(imageChunk[i]/2)-1] > 20) printf("%lu has %d pre's\n", imageChunk[i], characFunc[(imageChunk[i]/2)-1]);
         #pragma omp atomic
         characFunc[(imageChunk[i]/2)-1]++;
     }
-    
-    #ifdef TIMING
-    printf("%d preimages written in %f seconds\n", chunkCount,omp_get_wtime() - chunkTime );
-    #endif
-
-
 }
 
 //This functions processes the characArray and tabulates statisics about k-parent numbers
@@ -235,7 +227,6 @@ void tabStats(unsigned char * characArr){
 
     accPreimages[0]++; //accounts for 5 which is the
     for(unsigned long i = 0;  i < max_bound/2; i++){
-       // if(characArr[i] > 10)printf("%lu has %d preimages\n", (i+1)*2, characArr[i]);
         accPreimages[characArr[i]]++;
     }
 
@@ -248,13 +239,42 @@ void tabStats(unsigned char * characArr){
     fclose(fp);
 }
 
-
 unsigned long s(unsigned long n){
     fmpz_t res, num;
     fmpz_init(res);
-    fmpz_init_set_si(num,n);
+    fmpz_init_set_ui(num,n);
 
     arith_divisor_sigma(res, num, 1);
-    ulong result  = fmpz_get_si(res);
-    return result -n;
+
+    fmpz_sub(res, res, num);
+    return fmpz_get_ui(res);
+}
+
+unsigned long s_sqInput(unsigned long n){
+    fmpz_t res, num;
+    
+    fmpz_init(res);
+    fmpz_init_set_ui(num,n);
+    fmpz_mul(num, num, num);
+    arith_divisor_sigma(res, num, 1);
+
+    fmpz_sub(res, res, num);
+    return fmpz_get_ui(res);
+}
+
+
+int chooseNumChunks(ulong max_bound){
+    int chunks;
+    int root = sqrt(max_bound);
+    for (int i=1; i <= max_bound; i++){
+        if (max_bound % i==0){
+            
+            if(i >= root && (max_bound / i) % 2 == 0){
+                chunks = i;
+                return chunks;
+            }
+        } 
+    }
+    printf("Could not find a suitable divisor i of maxbound st maxbound/i is even");
+    exit(EXIT_FAILURE);
 }

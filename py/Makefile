@@ -1,7 +1,7 @@
 NAME=py
 CC=gcc
 #orignially compiled with icc
-CFLAGS= -fopenmp -std=c99 
+CFLAGS= -fopenmp -std=c99 -g #-O3
 SYMBS=
 INCS=
 LIBS=

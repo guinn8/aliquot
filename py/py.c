@@ -2,12 +2,12 @@
 #include "sieve.h"
 #include <omp.h>
 #include <assert.h> 
+//#include "/home/gavin.guinn/flint-2.6.2/arith.h"
 #include <string.h>
 #include <flint/arith.h>
-//#include "/home/gavin.guinn/flint-2.6.2/arith.h"
-
+#define TIMING
 #define FLINT
-#define ASSERT //for any production runs ensure assert is not defined
+//#define ASSERT //for any production runs ensure assert is not defined
 
 unsigned long s(unsigned long n);
 unsigned long s_sqInput(unsigned long n);
@@ -219,6 +219,9 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
         #pragma omp atomic
         characFunc[(imageChunk[i]/2)-1]++;
     }
+    #ifdef TIMING
+    printf("%d preimages written in %f seconds\n", chunkCount, omp_get_wtime()-chunkTime);
+    #endif
 }
 
 //This functions processes the characArray and tabulates statisics about k-parent numbers

@@ -21,6 +21,8 @@ unsigned long chunk_size;
 int buffer_size;
 int numChunks ;
 
+unsigned long upperNumPres;
+
 int main(int argc, char *argv[]){
 
 
@@ -41,6 +43,8 @@ int main(int argc, char *argv[]){
         printf("./[max_bound] OR ./[max_bound][buffer_size]");
         exit(0);
     }
+
+    upperNumPres = max_bound * 1.5;
 
     assert(max_bound % 2 == 0);
     assert(buffer_size > 0);

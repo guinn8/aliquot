@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     remove("preimagesParents.csv");
 
    
-    unsigned long current_bound = 10000;
+    unsigned long current_bound = 1000;
     unsigned long last_bound = 0;
 
     FILE * fp = fopen("preimagesParents.csv","a");

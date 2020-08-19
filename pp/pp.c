@@ -1,91 +1,27 @@
-#include "sieve.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <gmp.h>
 #include <assert.h> 
+#include <flint/arith.h>
 
-//void factorial(mpz_t result, unsigned long input);
 unsigned long max_bound;
 int numChunks = 10;
 int chunk_size;
-long factorial(int n);
+int buffer_size;
+#define UPPERPARENTS 16
 
+unsigned long s(unsigned long n);
+unsigned long factorial(unsigned long n); 
+double accumulator( unsigned long start_a, char k,  unsigned long * propSumDiv, long double * acc);
 
-const int initWheel [3] = {2, 3, 5 };
-const int inc [8] = {4, 2, 4, 2, 4, 6, 2, 6};
-
-unsigned long wheelDivSum(unsigned long n){
-
-    if(n == 1 || n == 0) return 0;
-    else if (n < 0){
-        printf("\nValue must be non-neg \n");
-        exit(EXIT_FAILURE);
-    }
-
-    unsigned long savedN = n;
-    unsigned long curr_sum = 1;
-    unsigned long curr_term = 1;
-    unsigned long res = 1;
-  
-    for (int i = 0; i < 3; i++){
-        if(n % initWheel[i] == 0){
-            do{
-                n = n/initWheel[i];
-                curr_term *= initWheel[i];
-                curr_sum += curr_term;
-            }while(n % initWheel[i] == 0);
-
-            res *= curr_sum;
-            curr_sum = curr_term = 1;
-        }
-    }
-
-    unsigned long k = 7;
-    int i = 0;
-    while(k <= n){
-        if(n % k == 0){
-            do{
-                n = n / k;
-                curr_term *= k;
-                curr_sum += curr_term;
-            }while(n % k == 0);
-            res *= curr_sum;
-            curr_sum =  curr_term = 1;
-        } else {
-            k += inc[i];
-            if(i < 7) i++;
-            else i = 0;
-        }
-    }
-    res *= curr_sum;
-    return res - savedN;
-}
-
-double kParentEst( unsigned long start_a, char k,  unsigned long * sigma, long double * acc){
-    unsigned long numer;
-    unsigned long denom;
-    unsigned long a;
-    unsigned long s_a;
-    for(unsigned long i = 0; i < chunk_size; i++){
-       
-        a = i + start_a;
-        s_a = sigma[i] -a;
-      
-       // printf("s(%lu) = %lu\n", a, s_a );
-       // assert(a % 2 == 0);
-       // assert(s_a % 2 == 0);
-
-
-        //numer =exp(-a / s_a);
-        //numer = pow(a, k-1) * exp(-a / s_a);
-        //denom = pow(s_a, k);
-        
-        //acc[k] = numer / a;
-    }
-}
-
+//This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance "Some problems of Erdos on the Sum of Divisors Function"
+//Instead of estimating the natural density of only aliqout orphans this program also estimates the density of k-parent aliquot numbers
+//n is a k-parent aliqout number iff there are k distinct natural numbers m st s(m) = n
+//An aliquot orphan is a 0-parent aliquot number
+//let delta-k be the estimated density of k-parent aliquot numbers and s(n) be the sum-of-proper-divisors function
+//delta-k = 1/log(max_bound) * sum(forall a <= max_bound)( (a^(k-1) * e^(-a/s(a)) / k! * s(a)^k) )
 int main(int argc, char *argv[]){
-    long double acc[140] = {0};
+
+    long double acc[UPPERPARENTS] = {0};
 
     if(argc < 1){
         printf("./[max_bound]");
@@ -94,48 +30,67 @@ int main(int argc, char *argv[]){
 
     max_bound = atol(argv[1]);
     chunk_size = max_bound/numChunks;
-
-    //These buffers are nessicary for the prime seive
-    //Most of this is pulled straight from Anton's implementation
-    //so I really dont have a good idea how it work
-    // const unsigned long max_prime = (unsigned long) sqrt((double) (max_bound << 1));
-	// const unsigned prime_bound = (unsigned long) (1.25506 * (max_prime + 1) / log(max_prime + 1));
-	// unsigned int * primes = (unsigned int *) malloc(sizeof(unsigned int) * (prime_bound + 1));
-	// prime_sieve(max_prime, primes);
-
+    buffer_size = chunk_size /2;
+    
+    //loop through the chunks for multi-threading
     for (int i = 0; i < numChunks; i++){
-        unsigned long m = (chunk_size * i)+1;
-        unsigned long * sigma =  malloc(chunk_size * sizeof(unsigned long));
-        
-        printf("m = %lu\n", m);
-        for(int j = 1; j < chunk_size; j+=2){
-            wheelDivSum(m+j)
-        }
-       // sum_of_divisors(chunk_size , m, sigma, primes);
 
-        kParentEst(m, 0, sigma, acc);
+        unsigned long m = (chunk_size * i) + 2; //first even number in chunk 
+        unsigned long * sigma =  malloc(buffer_size * sizeof(unsigned long));
+        
+        for(int j = 0; j < buffer_size; j++){
+           sigma[j] = s(m + 2*j);
+        }
+       
+        for(int g = 0; g < UPPERPARENTS; g++){
+            accumulator(m, g, sigma, acc);
+        }
     }
     
-    acc[0] *= 1 / log(max_bound);
-    printf("\n acc[0] = %Lf\n", acc[0]);
-
+    for(int i = 0; i < UPPERPARENTS; i++){
+        acc[i] *= 1/(log(max_bound) * factorial(i));
+        printf("delta %d = %Lf\n", i, acc[i]);
+    }
 }
 
-long factorial(int n)
-{
-   int c;
-   long result = 1;
- 
-   for( c = 1 ; c <= n ; c++ )
-         result = result*c;
- 
-   return ( result );
+unsigned long s(unsigned long n){
+    fmpz_t res, num;
+    fmpz_init(res);
+    fmpz_init_set_ui(num,n);
+
+    arith_divisor_sigma(res, num, 1);
+
+    fmpz_sub(res, res, num);
+    return fmpz_get_ui(res);
 }
 
+unsigned long factorial(unsigned long n) { 
+    if (n == 0) return 1; 
+    else return n * factorial(n - 1); 
+} 
 
-// void factorial(mpz_t result, unsigned long input) {
-//     mpz_set_ui(result, 1);
-//     while (input > 1) {
-//         mpz_mul_ui(result, result, input--);
-//     }
-// }
+
+double accumulator( unsigned long start_a, char k,  unsigned long * propSumDiv, long double * acc){
+    double numer;
+    double denom;
+    double a;
+    unsigned long s_a;
+   
+    for(unsigned long i = 0; i < buffer_size; i++){
+       
+        a = (2 * i) + start_a;
+        s_a = propSumDiv[i];
+
+        //This needs to be treated casewise because computers dont understand neg. exp. correctly
+        if(k == 0){
+            numer =exp(-a / s_a);
+            denom = a;
+        }else{
+            numer = pow(a, k-1) * exp(-a / s_a);
+            denom = pow(s_a, k);
+        }
+        
+        acc[k] += numer / denom;
+    }
+}
+  

@@ -5,7 +5,7 @@ CFLAGS= -fopenmp -g
 SYMBS=
 INCS=
 LIBS=
-LINKS=-lm -lgmp
+LINKS=-lm -L/home/gavin.guinn/flint-2.6.2 -lflint -lmpfr -lgmp -lpthread
 all: pp.c sieve.c 
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o $(NAME) $^ $(LIBS) $(LINKS)
 lib:

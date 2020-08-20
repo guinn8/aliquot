@@ -1,10 +1,9 @@
 NAME=main.exe
 CC=gcc
 #orignially compiled with icc
-CFLAGS= -fopenmp -std=c99 -g -O2 -I../shared/include/
+CFLAGS= -fopenmp -std=c99  -O3 -I../shared/include/
 #-fOpenMP: Threading
 #-std=c99: loop problem on some machines
-
 SYMBS=
 INCS=
 LIBS=

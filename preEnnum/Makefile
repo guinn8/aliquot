@@ -1,12 +1,12 @@
-NAME=py
+NAME=main.exe
 CC=gcc
 #orignially compiled with icc
-CFLAGS= -fopenmp -std=c99 -g -O2
-SYMBS=
+CFLAGS= 
+SYMBS= -std=c99 -g
 INCS=
 LIBS=
-LINKS=-lm -L/home/gavin.guinn/flint-2.6.2 -lflint -lmpfr -lgmp -lpthread
-all: py.c sieve.c  properSumDiv.c
+LINKS=-lm
+all: main.c
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o $(NAME) $^ $(LIBS) $(LINKS)
 lib:
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c init.c -o init.o

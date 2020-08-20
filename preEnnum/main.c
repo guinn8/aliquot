@@ -4,6 +4,8 @@
 #include <math.h>
 #include <omp.h>
 
+#define FILENAME "counts.csv"
+
 const unsigned long max_bound = 1000000000;
 const int countMax = 256;
 
@@ -11,13 +13,13 @@ unsigned long wheelDivSum(unsigned long n);
 void recParents(char * characArr, unsigned long max_bound);
 
 int main(int argc, char *argv[]){
-    remove("preimagesParents.csv");
+    remove(FILENAME);
 
    
     unsigned long current_bound = 1000;
     unsigned long last_bound = 0;
 
-    FILE * fp = fopen("preimagesParents.csv","a");
+    FILE * fp = fopen(FILENAME, "a");
     fprintf(fp, "bound, 0");
     for(int i = 1; i < countMax; i++){
        fprintf(fp, ",%d", i);
@@ -127,7 +129,7 @@ unsigned long wheelDivSum(unsigned long n){
 
 void recParents(char * characArr, unsigned long max_bound){
 
-    FILE * fp = fopen("preimagesParents.csv","a");
+    FILE * fp = fopen(FILENAME,"a");
 
     unsigned long accPreimages[256] = {0};
 

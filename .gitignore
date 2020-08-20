@@ -1,2 +1,4 @@
-/archive/preimageStats/data
-**/*.out
+*.exe
+*.csv
+*.out
+.*

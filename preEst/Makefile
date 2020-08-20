@@ -1,4 +1,4 @@
-NAME=pp
+NAME=main.exe
 CC=gcc
 #orignially compiled with icc
 CFLAGS= -fopenmp -g 
@@ -6,7 +6,7 @@ SYMBS=
 INCS=
 LIBS=
 LINKS=-lm -L/home/gavin.guinn/flint-2.6.2 -lflint -lmpfr -lgmp -lpthread
-all: pp.c sieve.c 
+all: main.c sieve.c 
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o $(NAME) $^ $(LIBS) $(LINKS)
 lib:
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c init.c -o init.o

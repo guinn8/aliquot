@@ -1,2 +1,0 @@
-py: py.c:125: main: Assertion `s(m*m) == sigma[j]' failed.
-/var/spool/slurmd/job6599960/slurm_script: line 9: 808889 Aborted                 ./py $1

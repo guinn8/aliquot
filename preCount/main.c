@@ -258,6 +258,7 @@ void tabStats(uint8_t * characArr){
     fclose(fp);
 }
 
+#ifdef FLINT
 uint64_t s(uint64_t n){
     fmpz_t res, num;
     fmpz_init(res);
@@ -280,6 +281,7 @@ uint64_t s_sqInput(uint64_t n){
     fmpz_sub(res, res, num);
     return fmpz_get_ui(res);
 }
+#endif
 
 //When threading in this manner it is nessicary to choose a number of
 //chunks to split the problem into such that each thread can work through the problem

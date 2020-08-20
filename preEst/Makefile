@@ -1,17 +1,17 @@
 NAME=main.exe
 CC=gcc
 #orignially compiled with icc
-CFLAGS= -fopenmp -g 
+CFLAGS= -fopenmp -g -I../shared/include/
 SYMBS=
 INCS=
 LIBS=
 LINKS=-lm -L/home/gavin.guinn/flint-2.6.2 -lflint -lmpfr -lgmp -lpthread
-all: main.c sieve.c 
+all: main.c ../shared/src/sieve.c 
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o $(NAME) $^ $(LIBS) $(LINKS)
-lib:
-	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c init.c -o init.o
-	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c mult.c -o mult.o
-	ar rcs lib$(NAME).a init.o mult.o
+#lib:
+#	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c init.c -o init.o
+#	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -c mult.c -o mult.o
+#	ar rcs lib$(NAME).a init.o mult.o
 clean:
 	rm *.o
 

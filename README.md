@@ -8,3 +8,5 @@ This repo contains 3 programs
 2. preEnnum implements the simple ennumeration of s(n) for all n's such that n's image under s(.) lands below the bound
 
 3. preEst implements a generaliztion of Pollack/Pomerance conj. density for non-aliquots.
+
+see aliquot_parents.pdf for a (unfinished) explaination of the math

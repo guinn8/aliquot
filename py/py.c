@@ -22,6 +22,7 @@ int buffer_size;
 int numChunks ;
 
 unsigned long upperNumPres;
+unsigned long writtenPreAcc = 0;
 
 int main(int argc, char *argv[]){
 
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]){
         exit(0);
     }
 
-    upperNumPres = max_bound * 1.5;
+    upperNumPres = max_bound * .65;
 
     assert(max_bound % 2 == 0);
     assert(buffer_size > 0);
@@ -219,8 +220,9 @@ void writeBuffer( ulong * imageChunk, int chunkCount, char * characFunc){
         #pragma omp atomic
         characFunc[(imageChunk[i]/2)-1]++;
     }
+    writtenPreAcc += chunkCount;
     #ifdef TIMING
-    printf("%d preimages written in %f seconds\n", chunkCount, omp_get_wtime()-chunkTime);
+    printf("%%%-.2f || %d preimages written in %f seconds\n", (float)writtenPreAcc/upperNumPres ,chunkCount, omp_get_wtime()-chunkTime);
     #endif
 }
 

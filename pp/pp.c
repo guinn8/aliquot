@@ -3,11 +3,13 @@
 #include <assert.h> 
 #include <flint/arith.h>
 
-unsigned long max_bound;
+#define UPPERPARENTS 16
+
+
+
 int numChunks = 10;
 int chunk_size;
 int buffer_size;
-#define UPPERPARENTS 16
 
 unsigned long s(unsigned long n);
 unsigned long factorial(unsigned long n); 
@@ -20,6 +22,7 @@ double accumulator( unsigned long start_a, char k,  unsigned long * propSumDiv, 
 //let delta-k be the estimated density of k-parent aliquot numbers and s(n) be the sum-of-proper-divisors function
 //delta-k = 1/log(max_bound) * sum(forall a <= max_bound)( (a^(k-1) * e^(-a/s(a)) / k! * s(a)^k) )
 int main(int argc, char *argv[]){
+    unsigned long max_bound;
 
     long double acc[UPPERPARENTS] = {0};
 

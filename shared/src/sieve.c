@@ -3,6 +3,7 @@
  *
  *  Created on: Apr 18, 2014
  *      Author: antonmosunov
+ *  USED WITH PERMISSION
  */
 
 #ifdef WITH_PARI

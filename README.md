@@ -21,6 +21,7 @@ CARL POMERANCE and HEE-SUNG YANG,Variant of a theorem of erdŐs onthe sum-of-pro
 
 Anton's Untouchable Counts
 Bound,                  Untouchable Counts (even)
+
 100000000000,           16988116408
 
 200000000000,           34059307042

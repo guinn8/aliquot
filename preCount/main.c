@@ -1,39 +1,52 @@
-#define FLINT
+// Author: Gavin Guinn
+// Contact: gavinguinn1@gmail.com
+
+//#define FLINT
 //#define ASSERT //for any production runs ensure assert is not defined
 #define TIMING
 
-#include "properSumDiv.h"
+#define FILENAME "counts.csv"
+
 #include "sieve.h"
 #include <omp.h>
 #include <assert.h> 
 #include <string.h>
 #include <stdint.h>
-#ifdef FLINT
-#include <flint/arith.h>
-#endif
 //#include "/home/gavin.guinn/flint-2.6.2/arith.h"
 
-
-void writeBuffer(uint64_t * imageChunk, uint32_t chunkCount, uint8_t * characFunc);
-void tabStats(uint8_t * characArr);
-uint32_t writePreimage(uint64_t preimage, uint64_t * imageChunk, uint32_t chunkCount, uint8_t * characFunc);
-uint32_t chooseNumChunks(uint64_t max_bound);
+#ifdef FLINT
+#include <flint/arith.h>
 uint64_t s(uint64_t n);
 uint64_t s_sqInput(uint64_t n);
-
-uint32_t buffer_size;
-uint32_t numChunks;
-
-uint64_t max_bound;
-uint64_t chunk_size;
-uint64_t upperNumPres;
-uint64_t writtenPreAcc = 0;
-
+#else
+#include "properSumDiv.h"
+#endif
 
 //uints64 are used ensure consistant behaviour about over unsigned wrap
 //We are safe as long as all values are below 18,446,744,073,709,551,615
 //The largest number that can possibly be produced is: max_bound ^ 4/3
 //This means that approx 281474976700000 (2.81x10^14) is the largest safe value for max_bound
+
+void writeBuffer(uint64_t * imageBuffer, uint32_t bufferInd, uint8_t * characFunc);
+void tabStats(uint8_t * characArr);
+uint32_t writeImage(uint64_t image, uint64_t * imageBuffer, uint32_t bufferInd, uint8_t * characFunc);
+uint32_t chooseNumChunks(uint64_t max_bound);
+
+uint32_t buffer_size; //size of buffer alloced to each chunk
+uint64_t max_bound;
+
+//These 2 values are used to estimate the total percentage we are through the computation
+#ifdef TIMING
+uint64_t numPreimages;
+uint64_t writtenPreimages = 0;
+#endif
+
+//Purpose: Computed the counts of EVEN k-parent aliquot numbers  [2, max_bound]
+//Parameters: 
+//  -[max_bound] number to compute upto (inclusive)
+//  -(optional)[buffer_size] controls how big of a buffer each thread gets before writing to central characterstic function
+//Preconditions: Valid input
+//Postconditions: the counts of every k-parent EVEN value are appended to counts.csv
 void main(uint32_t argc, uint8_t *argv[]){
 
     double startTime = omp_get_wtime();
@@ -54,14 +67,16 @@ void main(uint32_t argc, uint8_t *argv[]){
         exit(0);
     }
 
-    upperNumPres = max_bound * .65;
+    #ifdef TIMING
+    numPreimages = max_bound * .65;
+    #endif
 
     assert(max_bound % 2 == 0);
+    assert(max_bound < 281474976700000); //max safe value for max_bound
     assert(buffer_size > 0);
 
-
-    numChunks = chooseNumChunks(max_bound);
-    chunk_size = max_bound/numChunks;
+    uint32_t numChunks = chooseNumChunks(max_bound); //number of pieces we break the problem into for threading
+    uint64_t chunk_size = max_bound/numChunks; //amount of numbers over which one thread will run the PY algorithm 
 
     //byte array that accumates parent information
     //characFunc[i] holds the number of parents for (i + 1) * 2
@@ -88,8 +103,8 @@ void main(uint32_t argc, uint8_t *argv[]){
         uint64_t * sigma =  malloc ((chunk_size /2)*sizeof(uint64_t));
 
         //this buffer holds preimages before they are written to disk in a batch
-        uint64_t * imageChunk = malloc (sizeof(uint64_t)* buffer_size);
-        uint32_t chunkCount; //counter for the imageChunk buffer
+        uint64_t * imageBuffer = malloc (sizeof(uint64_t)* buffer_size);
+        uint32_t bufferInd; //counter for the imageChunk buffer
        
         //splits the problem into chunks for threading
         #pragma omp for schedule(auto) 
@@ -99,9 +114,9 @@ void main(uint32_t argc, uint8_t *argv[]){
             double threadStart = omp_get_wtime();
             #endif
 
-            chunkCount = 0;
+            bufferInd = 0;
 
-            uint64_t  m = (i * chunk_size);//the number currently being processed by algo
+            uint64_t m = (i * chunk_size);//the number currently being processed by algo
 
             sum_of_divisors_odd(chunk_size, m, sigma, primes);//Antons again, very fast sum of divisors
       
@@ -132,7 +147,7 @@ void main(uint32_t argc, uint8_t *argv[]){
                         pow *= 2;
                         #endif
 
-                        chunkCount = writePreimage(t, imageChunk, chunkCount, characFunc);
+                        bufferInd = writeImage(t, imageBuffer, bufferInd, characFunc);
                         t = (2 * t) + sigma[j];
                     }
                 }
@@ -145,7 +160,7 @@ void main(uint32_t argc, uint8_t *argv[]){
                     //assert(s(m*m) == sigma[j]);
                     #endif
 
-                    chunkCount = writePreimage(m+1, imageChunk, chunkCount, characFunc);
+                    bufferInd = writeImage(m+1, imageBuffer, bufferInd, characFunc);
                 }
 
                 //catches odd composite values of m which are pushed to
@@ -160,9 +175,9 @@ void main(uint32_t argc, uint8_t *argv[]){
             }
 
             //finish up any leftover info
-           if(chunkCount > 0) {
-               writeBuffer(imageChunk, chunkCount, characFunc);
-               chunkCount = 0;
+           if(bufferInd > 0) {
+               writeBuffer(imageBuffer, bufferInd, characFunc);
+               bufferInd = 0;
            }
         }
 
@@ -183,43 +198,60 @@ void main(uint32_t argc, uint8_t *argv[]){
             #endif
 
             if(s_mSq <= max_bound) {
-                chunkCount = writePreimage(s_mSq, imageChunk, chunkCount, characFunc);
+                bufferInd = writeImage(s_mSq, imageBuffer, bufferInd, characFunc);
             }
         }
-        if(chunkCount > 0){
-            writeBuffer(imageChunk, chunkCount, characFunc);
-            chunkCount = 0;
+
+        if(bufferInd > 0){
+            writeBuffer(imageBuffer, bufferInd, characFunc);
+            bufferInd = 0;
         } 
     }
 
     tabStats(characFunc);
-    printf("\n\nFinished in %f seconds\n", omp_get_wtime()-startTime);
+
+    #ifdef TIMING
+    printf("\n\nFinished in %f seconds after writing %lu images\n", omp_get_wtime()-startTime, writtenPreimages);
+    #else
+    printf("\n\nFinished in %f seconds \n", omp_get_wtime()-startTime);
+    #endif
 }
 
-//writes a preimage to the chunks buffer
-//if the buffer is full it is written to the charac function
-uint32_t writePreimage(uint64_t preimage, uint64_t * imageChunk, uint32_t chunkCount, uint8_t * characFunc){
+//Purpose: writes a image of s(n) to the chunks buffer and if the buffer is full it is written to the charac function
+//Parameters:
+//  -image: s(n) = image found by the PY algorithm
+//  -* imageBuffer = buffer of images being held for a later write to the charac func
+//  -bufferInd = index currently being filled by preimages
+//  -* characFunc = charac function where statistics for each number is accumulated
+//Preconditions: valid input
+//Postconditions: the current chunkcount is returned
+uint32_t writeImage(uint64_t image, uint64_t * imageBuffer, uint32_t bufferInd, uint8_t * characFunc){
 
-    imageChunk[chunkCount] = preimage;
-    chunkCount++;
+    imageBuffer[bufferInd] = image;
+    bufferInd++;
     
-    if(chunkCount == buffer_size){
-        writeBuffer(imageChunk, chunkCount, characFunc);
-        chunkCount = 0;
+    if(bufferInd == buffer_size){
+        writeBuffer(imageBuffer, bufferInd, characFunc);
+        bufferInd = 0;
     }
 
-    return chunkCount;
+    return bufferInd;
 }
 
-//This function writes a buffer of preimages to the characFile
-void writeBuffer( uint64_t * imageChunk, uint32_t chunkCount, uint8_t * characFunc){
+//Purpose: This function writes a buffer of preimages to the characFile
+//Parameters:
+//  -* imageBuffer: buffer full of images to be acc'ed in characFunc
+//  -bufferInd = index currently being filled by preimages
+//  -* characFunc = charac function where statistics for each number is accumulated
+//Preconditions: Valid input
+//Postconditions: buffer is acc'ed in characFunc
+void writeBuffer( uint64_t * imageBuffer, uint32_t bufferInd, uint8_t * characFunc){
 
     #ifdef TIMING
     double chunkTime  = omp_get_wtime();
     #endif
 
-    for(uint32_t i = 0; i < chunkCount; i++){
-
+    for(uint32_t i = 0; i < bufferInd; i++){
         #ifdef ASSERT
         assert(imageChunk[i] <= max_bound);
         assert (imageChunk[i] > 0);
@@ -227,24 +259,27 @@ void writeBuffer( uint64_t * imageChunk, uint32_t chunkCount, uint8_t * characFu
         #endif
 
         #pragma omp atomic
-        characFunc[(imageChunk[i]/2)-1]++;
+        characFunc[(imageBuffer[i]/2)-1]++;
     }
-    writtenPreAcc += chunkCount;
     
     #ifdef TIMING
-    printf("%%%-.2f || %d preimages written in %f seconds\n", (float)100 * writtenPreAcc/upperNumPres ,chunkCount, omp_get_wtime()-chunkTime);
+    #pragma omp atomic
+    writtenPreimages += bufferInd;
+    printf("%%%-.2f || %d preimages written in %f seconds\n", (float)100 * writtenPreimages/numPreimages ,bufferInd, omp_get_wtime()-chunkTime);
     #endif
 }
 
-//This functions processes the characArray and tabulates statisics about k-parent numbers
-//characArr must be max_bound/2 in size
+//Purpose: This functions processes the characArray and tabulates statisics about k-parent numbers characArr must be max_bound/2 in size
+//Parameters: 
+//  -characArr: char array where the number of preimages for each evenb number is written
+//Preconditions: processed characArr
+//Postconditions: None
 void tabStats(uint8_t * characArr){
 
-    FILE * fp = fopen("counts.csv","a");
+    FILE * fp = fopen(FILENAME,"a");
 
     uint64_t accPreimages[256] = {0};
 
-    accPreimages[0]++; //accounts for 5 which is the
     for(uint64_t i = 0;  i < max_bound/2; i++){
         accPreimages[characArr[i]]++;
     }
@@ -259,6 +294,12 @@ void tabStats(uint8_t * characArr){
 }
 
 #ifdef FLINT
+
+//Purpose: compute the sum of proper divisors for input
+//Parameters:
+//  -n: natural number input for s(n) 
+//Precondtions: None
+//Postconditions: s(n) is returned
 uint64_t s(uint64_t n){
     fmpz_t res, num;
     fmpz_init(res);
@@ -270,6 +311,11 @@ uint64_t s(uint64_t n){
     return fmpz_get_ui(res);
 }
 
+//Purpose: compute the sum of proper divisors for input squared
+//Parameters:
+//  -n: natural number input for s(n*n) 
+//Precondtions: None
+//Postconditions: s(n*n) is returned
 uint64_t s_sqInput(uint64_t n){
     fmpz_t res, num;
     
@@ -283,10 +329,13 @@ uint64_t s_sqInput(uint64_t n){
 }
 #endif
 
-//When threading in this manner it is nessicary to choose a number of
-//chunks to split the problem into such that each thread can work through the problem
-//a chunk at a time
-//Chooses the first divisor greater than the sqrt of max bound to be the number of chunks
+//Purpose: When threading in this manner it is nessicary to choose a number of chunks to 
+//  split the problem into such that each thread can work through the problem a chunk at a time
+//  chooses the first divisor greater than the sqrt of max bound to be the number of chunks
+//Parameters:
+//  -max_bound: as described
+//Preconditions: Valid input
+//Postconditions: Returns a valid number of chunks to break the problem into
 uint32_t chooseNumChunks(uint64_t max_bound){
     uint32_t chunks;
     uint32_t root = sqrt(max_bound);

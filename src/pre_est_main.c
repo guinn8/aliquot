@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h> 
-#include <flint/arith.h>
+#include <math.h>
+//#include "flint-2.7.1/arith.h" todo rewrite without flint jesus
 
 #define UPPERPARENTS 16
 
@@ -57,14 +58,14 @@ int main(int argc, char *argv[]){
 }
 
 unsigned long s(unsigned long n){
-    fmpz_t res, num;
-    fmpz_init(res);
-    fmpz_init_set_ui(num,n);
+ //   fmpz_t res, num;
+// //    fmpz_init(res);
+//     fmpz_init_set_ui(num,n);
 
-    arith_divisor_sigma(res, num, 1);
+//     arith_divisor_sigma(res, num, 1);
 
-    fmpz_sub(res, res, num);
-    return fmpz_get_ui(res);
+//     fmpz_sub(res, res, num);
+    return 0; //fmpz_get_ui(0);
 }
 
 unsigned long factorial(unsigned long n) { 

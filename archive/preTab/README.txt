@@ -1,2 +1,0 @@
-The package is composed of 2 programs 'py3Simple' and 'pyData' see the README in the respective folders for more details.
-Note that both programs are depandant on the libconfig libary for compilation: https://github.com/hyperrealm/libconfig

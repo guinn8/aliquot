@@ -36,11 +36,10 @@ int main(int argc, char *argv[]){
     while(current_bound <= max_bound){
         
 
-        #pragma omp parallel
+        #pragma omp sections
         {
             #pragma omp section
             {
-                #pragma omp for 
                 for(unsigned long i = 2; i <= current_bound*2; i+=2){
                     unsigned long s_n = wheelDivSum(i);
                     //printf("i: %lu out of: %lu\n", i, max_bound*2);

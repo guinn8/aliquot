@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h> 
 #include <math.h>
+#include "../includes/properSumDiv.h"
 //#include "flint-2.7.1/arith.h" todo rewrite without flint jesus
 
 #define UPPERPARENTS 16
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]){
         unsigned long * sigma =  malloc(buffer_size * sizeof(unsigned long));
         
         for(int j = 0; j < buffer_size; j++){
-           sigma[j] = s(m + 2*j);
+           sigma[j] = wheelDivSum(m + 2*j);
         }
        
         for(int g = 0; g < UPPERPARENTS; g++){
@@ -58,13 +59,7 @@ int main(int argc, char *argv[]){
 }
 
 unsigned long s(unsigned long n){
- //   fmpz_t res, num;
-// //    fmpz_init(res);
-//     fmpz_init_set_ui(num,n);
 
-//     arith_divisor_sigma(res, num, 1);
-
-//     fmpz_sub(res, res, num);
     return 0; //fmpz_get_ui(0);
 }
 

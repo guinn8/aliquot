@@ -16,7 +16,7 @@ pre_count: $(SRCDIR)/pre_count_main.c $(SRCDIR)/sieve.c  $(SRCDIR)/properSumDiv.
 pre_ennum: $(SRCDIR)/pre_ennum_main.c $(SRCDIR)/properSumDiv.c
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o bin/pre_ennum $^ $(LIBS) $(LINKS)
 
-pre_est: $(SRCDIR)/pre_est_main.c $(SRCDIR)/sieve.c 
+pre_est: $(SRCDIR)/pre_est_main.c $(SRCDIR)/sieve.c  $(SRCDIR)/properSumDiv.c
 	$(CC) $(CFLAGS) $(SYMBS) $(INCS) -o bin/pre_est $^ $(LIBS) $(LINKS)
 
 clean: 

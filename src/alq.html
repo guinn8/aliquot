@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Example Homepage</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    
+    
+        <label for="int">Enter an Integer</label>
+        <br>
+        <input type="text" id="num" name="fname">
+    
+    <button onclick="next()">Submit</button>
+
+    <script>
+        function next(){
+            n = document.getElementById("num").value
+            location.assign("factors.html?"+n ); 
+        }
+    </script>
+  </body>
+</html>

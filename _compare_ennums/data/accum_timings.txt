@@ -1,0 +1,9 @@
+./sn_accum 100000 1000,0.00
+./sn_accum 1000000 10000,0.06
+./sn_accum 10000000 100000,0.73
+./sn_accum 100000000 1000000,8.10
+./sn_accum 1000000000 1000000,91.78 
+./sn_accum 1000000000 10000000,160.28 // note that block len has a huge impact on timings
+./sn_accum 10000000000 1000000,1061.11
+
+   

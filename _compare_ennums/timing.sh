@@ -1,0 +1,1 @@
+/usr/bin/time -f%C,%E -o sieve_timings.txt -a  ./sn_sieve 1000000 > /dev/null 

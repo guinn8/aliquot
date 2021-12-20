@@ -1,0 +1,4 @@
+sum_of_divisors_odd, ./pomyang 100000000, 21.56s
+sum_of_divisors_odd, ./pomyang 1000000000  222.78s
+ennum_sn, ./pomyang 100000000  3.71s
+ennum_sn, ./pomyang 1000000000  57.23s

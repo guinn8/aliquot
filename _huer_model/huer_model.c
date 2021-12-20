@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h> 
 #include <math.h>
-#include "../includes/properSumDiv.h"
+#include "../inc/properSumDiv.h"
 //#include "flint-2.7.1/arith.h" todo rewrite without flint jesus
 
 #define UPPERPARENTS 16

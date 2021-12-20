@@ -4,7 +4,7 @@ CFLAGS=-fopenmp -std=c99  -O3
 CC=gcc
 NAME=main.exe
 SYMBS=
-INCS=-Iincludes -Iflint-2.7.1 -I.
+INCS=-Iinc -Iflint-2.7.1 -I.
 LIBS= 
 LINKS= -lm -lpthread
 

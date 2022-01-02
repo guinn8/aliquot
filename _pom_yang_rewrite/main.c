@@ -53,7 +53,7 @@ int main(int argc, const char **argv) {
     init_sigma_sieve(bound);
 
     printf("Pomerance-Yang Algorithm\n-> Bound = %ld\n-> Segment Length = %ld\n-> Number of segments = %ld\n"
-           "-> Bound^(2/3) = %f\n-> Integer Bound^(2/3) = %ld\n",
+           "-> Bound^(2/3) = %f\n-> Integer(Bound^(2/3)) = %ld\n",
             bound, seg_len, bound/seg_len, odd_comp_bound_float, odd_comp_bound);
 
     #pragma omp parallel shared(f)

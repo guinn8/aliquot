@@ -126,7 +126,7 @@ void segmented_sieve(uint max_prime, uint64_t blocksize, uint64_t l, uint ** fac
  * @param primes buffer containing all primes <= M + N
  */
 void sum_of_divisors(const uint64_t N, const uint64_t M, uint64_t * sigma, const uint32_t * primes) {
-    uint64_t *q = calloc(N, sizeof(uint64_t));
+    uint64_t *q = (uint64_t *)calloc(N, sizeof(uint64_t));
 
     // q[j] are init'ed to M + j and r[j] to 1
     for (size_t j = 0; j < N; j++) {

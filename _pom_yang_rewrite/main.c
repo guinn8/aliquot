@@ -81,17 +81,6 @@ int main(int argc, const char **argv) {
             }
         }
 
-        // #pragma omp for nowait schedule(dynamic)
-        // for (size_t seg_start = 0; seg_start < odd_comp_bound; seg_start += seg_len) {
-        //     sigma_sieve_odd(seg_len, seg_start, sigma_buf, 1);
-
-        //     for (size_t i = 0; i < seg_len / 2; i++) {
-        //         set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma_buf[i]);
-        //         if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (sigma_m - m <= bound)) {
-        //             record_image(sigma_m - m, f);
-        //         }
-        //     }
-        // }
         #pragma omp for schedule(dynamic)
         for (size_t m = 1; m < odd_comp_bound; m += 2) {
             set_sigma(&m, &sigma_m, SQUARE(m), sigma(SQUARE(m)));

@@ -29,13 +29,14 @@
 #endif
 
 static uint32_t *primes;
-static size_t primes_len;
+static size_t num_primes;
 
-void init_sigma_sieve(const size_t bound) {
+uint64_t init_sigma_sieve(const size_t bound) {
     const uint64_t max_prime = (uint64_t)sqrt(2 * bound);
-    primes_len = (1.25506 * (max_prime + 1) / log(max_prime + 1)) + 1;
-    primes = (uint32_t *)calloc(sizeof(uint32_t), primes_len);
+    num_primes = (1.25506 * (max_prime + 1) / log(max_prime + 1)) + 1;
+    primes = (uint32_t *)calloc(sizeof(uint32_t), num_primes);
     prime_sieve(max_prime, primes);
+    return sizeof(uint32_t) * num_primes;
 }
 
 void destroy_sigma_sieve(void) {
@@ -44,7 +45,9 @@ void destroy_sigma_sieve(void) {
 
 void prime_sieve(const uint32_t max_prime, uint32_t *primes) {
     bool *is_prime = calloc(max_prime + 1, sizeof(bool));
-    memset(is_prime, 1, max_prime + 1);
+    for (size_t i = 0; i < max_prime + 1; i++) {
+        is_prime[i] = true;
+    }
     primes[0] = 0;
 
     for (size_t i = 2; i <= max_prime; i++) {
@@ -52,20 +55,18 @@ void prime_sieve(const uint32_t max_prime, uint32_t *primes) {
             primes[0]++;
             primes[primes[0]] = i;
             for (size_t j = 2 * i; j <= max_prime; j += i) {
-                is_prime[j] = 0;
+                is_prime[j] = false;
             }
         }
     }
-
     free(is_prime);
 }
 
-void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t *sigma_buf, const bool squared) {
+void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t *sigma_buf, uint64_t *numbers, const bool squared) {
     assert(EVEN(seg_len));
     assert(EVEN(seg_start));
 
     const uint64_t max_prime = (uint64_t)sqrt(seg_start + seg_len);
-    uint64_t *numbers = (uint64_t *)calloc(seg_len / 2, sizeof(uint64_t));
 
     for (size_t i = 0; i < seg_len / 2; i++) {
         sigma_buf[i] = 1;
@@ -121,6 +122,4 @@ void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t 
         }
         DEBUG(printf("sigma(%lu)=%lu\n", seg_start + 1 + (2 * i), (uint64_t)sigma_buf[i]);)
     }
-
-    free(numbers);
 }

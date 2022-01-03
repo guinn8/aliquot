@@ -4,10 +4,10 @@ LINKS=-lflint -lmpfr -lgmp -lpthread -lm
 CFLAGS=-g -fopenmp -Wall 
 
 
-main: main.c $(SRCDIR)/sieve_rewrite.c
+main: main.c $(SRCDIR)/sieve_rewrite.c 
 	gcc $(CFLAGS) -O3 -DNDEBUG $(INCS) -o $@ $^ $(LINKS)
 
-debug_main: main.c $(SRCDIR)/sieve_rewrite.c
+debug_main: main.c $(SRCDIR)/sieve_rewrite.c 
 	gcc $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
 
 test: debug_main

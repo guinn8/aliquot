@@ -11,5 +11,6 @@
 
 
 uint64_t wheelDivSum(uint64_t n);
+uint64_t wheelDivSigma(uint64_t n);
 
 #endif

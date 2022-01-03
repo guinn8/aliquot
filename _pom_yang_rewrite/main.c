@@ -8,8 +8,9 @@
  * 
  */
 
+
 #include <assert.h>
-#include <flint/fmpz.h>
+// #include <flint/fmpz.h>
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
@@ -17,6 +18,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "../inc/properSumDiv.h"
 #include "../inc/sieve_rewrite.h"
 
 #define EVEN(x) (0 == (x) % 2)
@@ -182,12 +184,13 @@ int main(int argc, const char **argv) {
 }
 
 uint64_t sigma(uint64_t n) {
-    fmpz_t tmp = {0};
-    fmpz_init_set_ui(tmp, n);
-    fmpz_t sigma_tmp = {0};
-    fmpz_divisor_sigma(sigma_tmp, tmp, 1);
-    assert(fmpz_abs_fits_ui(sigma_tmp));
-    return fmpz_get_ui(sigma_tmp);
+    // fmpz_t tmp = {0};
+    // fmpz_init_set_ui(tmp, n);
+    // fmpz_t sigma_tmp = {0};
+    // fmpz_divisor_sigma(sigma_tmp, tmp, 1);
+    // assert(fmpz_abs_fits_ui(sigma_tmp));
+    // return fmpz_get_ui(sigma_tmp);
+    return wheelDivSigma(n);
 }
 
 inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m) {

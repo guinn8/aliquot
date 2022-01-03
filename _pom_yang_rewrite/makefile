@@ -1,6 +1,6 @@
 SRCDIR=../src
 INCS=-I../inc
-LINKS=-lflint -lmpfr -lgmp -lpthread -lm
+LINKS= -lpthread -lm
 CFLAGS=-g -fopenmp -Wall 
 
 

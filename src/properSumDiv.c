@@ -11,7 +11,7 @@ uint64_t wheelDivSigma(uint64_t n) {
         exit(EXIT_FAILURE);
     }
 
-    uint64_t savedN = n;
+    // uint64_t savedN = n;
     uint64_t curr_sum = 1;
     uint64_t curr_term = 1;
     uint64_t res = 1;

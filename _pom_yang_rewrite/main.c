@@ -202,6 +202,8 @@ int main(int argc, const char **argv) {
     exit(EXIT_SUCCESS);
 }
 
+
+#ifndef NDEBUG
 uint64_t sigma(uint64_t n) {
     fmpz_t tmp = {0};
     fmpz_init_set_ui(tmp, n);
@@ -210,6 +212,7 @@ uint64_t sigma(uint64_t n) {
     assert(fmpz_abs_fits_ui(sigma_tmp));
     return fmpz_get_ui(sigma_tmp);
 }
+#endif
 
 inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m) {
     *m = set_m;

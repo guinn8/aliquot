@@ -17,7 +17,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef NDEBUG
+#ifndef NDEBUG
 #include <flint/fmpz.h>
 #endif // NDEBUG
 

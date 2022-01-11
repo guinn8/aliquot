@@ -71,7 +71,6 @@ enumerated_range_t *enumerate_sn(enumerate_handle_t sts) {
                 ////////////////////////
                 const size_t n = sts->mult[i] - sts->range.base;
                 const bool cond = (sts->mult[i] <= sts->blk);
-                printf("cond: %d\n", cond);
                 sts->range.s[n] += (i * cond);
                 sts->range.s[n] += sts->iter[i] * cond * (sts->iter[i] > sts->sqrt_max);  // accumlate the divisor's pair
 

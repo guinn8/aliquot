@@ -1,7 +1,7 @@
 SRCDIR=../src
 INCS=-I../inc
 LINKS=-lm -lpthread
-CFLAGS=-fopenmp -std=c99  -O3 
+CFLAGS=-fopenmp -std=c99  -O3 -fopenmp-simd -lflint -lmpfr -lgmp -lpthread
 
 all: sn_sieve sn_accum
 

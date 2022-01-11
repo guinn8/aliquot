@@ -10,13 +10,16 @@
 
 
 #include <assert.h>
-#include <flint/fmpz.h>
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+
+#ifdef NDEBUG
+#include <flint/fmpz.h>
+#endif // NDEBUG
 
 #include "../inc/properSumDiv.h"
 #include "../inc/sieve_rewrite.h"

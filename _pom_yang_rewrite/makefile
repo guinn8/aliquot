@@ -1,6 +1,6 @@
 SRCDIR=../src
 INCS=-I../inc
-LINKS= -lpthread -lm -lflint -lmpfr -lgmp -lpthread
+LINKS= -lpthread -lm 
 CFLAGS=-g -fopenmp -Wall 
 
 
@@ -8,7 +8,7 @@ main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c
 	gcc $(CFLAGS) -O3 -DNDEBUG $(INCS) -o $@ $^ $(LINKS)
 
 debug_main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c 
-	gcc $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
+	gcc $(CFLAGS) $(INCS) -o $@ $^ $(LINKS) -lflint -lmpfr -lgmp 
 
 test: debug_main
 	./test.sh

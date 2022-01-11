@@ -10,7 +10,7 @@
 
 
 #include <assert.h>
-// #include <flint/fmpz.h>
+#include <flint/fmpz.h>
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
@@ -40,8 +40,8 @@ void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint6
 void record_image(uint64_t x, uint8_t *f);
 
 int main(int argc, const char **argv) {
-    if (argc != 3 && argc != 4) {
-        printf("USAGE: <bound><segment_len><(optional)just_print_config>\n");
+    if (argc != 3 && argc != 4 && argc != 5) {
+        printf("USAGE: <bound><segment_len><(optional)num_threads><(optional)just_print_config>\n");
         exit(EXIT_FAILURE);
     }
 
@@ -49,9 +49,11 @@ int main(int argc, const char **argv) {
 
     const size_t bound = strtol(argv[1], NULL, 10);
     const size_t seg_len = strtol(argv[2], NULL, 10);
+
     int just_config = 0;
-    if (argc == 4) {
+    if (argc == 5) {
         just_config = strtol(argv[3], NULL, 10);
+        omp_set_num_threads(strtol(argv[4], NULL, 10));
     }
 
     if (!EVEN(bound) ||
@@ -65,6 +67,7 @@ int main(int argc, const char **argv) {
 
     const double odd_comp_bound_float = pow(bound, TWO_THIRDS);
     const size_t odd_comp_bound = round(odd_comp_bound_float);  // ! unsure of best way to convert to int
+    const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
 
     const size_t f_len = bound / 2;
     const uint64_t f_bytes = f_len * sizeof(uint8_t);
@@ -73,9 +76,9 @@ int main(int argc, const char **argv) {
     const uint64_t sigma_buf_bytes = sigma_buf_len * sizeof(uint64_t);
 
     printf(
-        "\nPomerance-Yang Algorithm\n-> Bound = %ld\n-> Segment Length = %ld\n-> Number of segments = %ld\n"
-        "-> Bound^(2/3) = %.2f\n-> Integer(Bound^(2/3)) = %ld\n-> Max number of threads = %d\n",
-        bound, seg_len, bound / seg_len, odd_comp_bound_float, odd_comp_bound, omp_get_max_threads());
+        "\nPomerance-Yang Algorithm\n-> Bound = %ld\n-> Segment Length = %ld\n-> Number of segments = %ld\n\n"
+        "-> Bound^(2/3) = %.2f\n-> Integer(Bound^(2/3)) = %ld\n-> Bound^(2/3) Max Segment = %ld\n\n-> Max number of threads = %d\n",
+        bound, seg_len, bound / seg_len, odd_comp_bound_float, odd_comp_bound, odd_comp_bound_seg, omp_get_max_threads());
 
     init_sigma_sieve(bound);
 
@@ -84,7 +87,7 @@ int main(int argc, const char **argv) {
            BYTES_TO_GB * f_bytes, BYTES_TO_GB * 2 * sigma_buf_bytes * omp_get_max_threads(), BYTES_TO_GB * min_heap_alloc);
     printf("Note: Flint allocates memory for itself which is excluded from this estimation.\n");
 
-    if (just_config) {
+    if (just_config == 1) {
         exit(EXIT_SUCCESS);
     }
 
@@ -122,16 +125,29 @@ int main(int argc, const char **argv) {
         printf("thread %d completed standard in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
         thread_start = omp_get_wtime();
 
+        /**
+         * odd_comp_bound is not necessarily divisable by seg_len, to enumerate to the bound
+         * we sieve to the next segment but halt reading the array once the bound has been reached 
+         */
 #pragma omp for schedule(dynamic)
-        for (size_t m = 1; m < odd_comp_bound; m += 2) {
-            set_sigma(&m, &sigma_m, SQUARE(m), sigma(SQUARE(m)));
+        for (size_t seg_start = 0; seg_start < odd_comp_bound_seg; seg_start += seg_len) {
+            sigma_sieve_odd(seg_len, seg_start, sigma_buf, sieve_buf, 1);
 
-            uint64_t s_m = sigma_m - m;
-            if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (s_m <= bound)) {
-                record_image(s_m, f);
+            for (size_t i = 0; i < sigma_buf_len; i++) {
+                set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma_buf[i]);
+
+                if (SEG_OFFSET(seg_start, i) > odd_comp_bound) {  // this test would be better pulled out of the loop (probably)
+                    printf("\n %ld > %ld (odd_comp_bound)reached by thread %d, breaking...\n\n",
+                            SEG_OFFSET(seg_start, i), odd_comp_bound, omp_get_thread_num());
+                    break;
+                }
+
+                uint64_t s_m = sigma_m - m;
+                if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (s_m <= bound)) {
+                    record_image(s_m, f);
+                }
             }
         }
-
         printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
 
         free(sigma_buf);
@@ -184,19 +200,18 @@ int main(int argc, const char **argv) {
 }
 
 uint64_t sigma(uint64_t n) {
-    // fmpz_t tmp = {0};
-    // fmpz_init_set_ui(tmp, n);
-    // fmpz_t sigma_tmp = {0};
-    // fmpz_divisor_sigma(sigma_tmp, tmp, 1);
-    // assert(fmpz_abs_fits_ui(sigma_tmp));
-    // return fmpz_get_ui(sigma_tmp);
-    return wheelDivSigma(n);
+    fmpz_t tmp = {0};
+    fmpz_init_set_ui(tmp, n);
+    fmpz_t sigma_tmp = {0};
+    fmpz_divisor_sigma(sigma_tmp, tmp, 1);
+    assert(fmpz_abs_fits_ui(sigma_tmp));
+    return fmpz_get_ui(sigma_tmp);
 }
 
 inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m) {
     *m = set_m;
     *sigma_m = set_sigma_m;
-    DEBUG(printf("sieved_sigma(%ld) = %ld, sigma(%ld) = %ld\n", *m, *sigma_m, *m, sigma(*m));)
+    // DEBUG(printf("sieved_sigma(%ld) = %ld, sigma(%ld) = %ld\n", *m, *sigma_m, *m, sigma(*m));)
     assert(sigma(*m) == *sigma_m);
 }
 

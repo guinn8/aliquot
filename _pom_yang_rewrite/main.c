@@ -8,7 +8,6 @@
  * 
  */
 
-
 #include <assert.h>
 #include <math.h>
 #include <omp.h>
@@ -19,8 +18,9 @@
 
 #ifndef NDEBUG
 #include <flint/fmpz.h>
-#endif // NDEBUG
+#endif  // NDEBUG
 
+#include "../PackedArray/PackedArray.h"
 #include "../inc/properSumDiv.h"
 #include "../inc/sieve_rewrite.h"
 
@@ -40,7 +40,9 @@
 
 uint64_t sigma(uint64_t n);
 void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m);
-void record_image(uint64_t x, uint8_t *f);
+void record_image(uint64_t x, PackedArray *f);
+void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind);
+void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind);
 
 int main(int argc, const char **argv) {
     if (argc != 3 && argc != 4 && argc != 5) {
@@ -69,7 +71,7 @@ int main(int argc, const char **argv) {
     }
 
     const double odd_comp_bound_float = pow(bound, TWO_THIRDS);
-    const size_t odd_comp_bound = round(odd_comp_bound_float);  // ! unsure of best way to convert to int
+    const size_t odd_comp_bound = round(odd_comp_bound_float);                                 // ! unsure of best way to convert to int
     const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
 
     const size_t f_len = bound / 2;
@@ -94,15 +96,21 @@ int main(int argc, const char **argv) {
         exit(EXIT_SUCCESS);
     }
 
-    uint8_t *f = (uint8_t *)malloc(f_bytes);  // counts preimages for odd numbers
-    memset(f, 0, f_bytes);
+    // uint8_t *f = (uint8_t *)malloc(f_bytes);  // counts preimages for odd numbers
+    PackedArray *f = PackedArray_create(1, f_len);
+    // memset(f, 0, f_bytes);
+    size_t write_buf_len = 5000000;
+
 
 #pragma omp parallel shared(f)
     {
         double thread_start = omp_get_wtime();
         uint64_t *sigma_buf = (uint64_t *)malloc(sigma_buf_bytes);
         uint64_t *sieve_buf = (uint64_t *)malloc(sigma_buf_bytes);
-        uint64_t m, sigma_m;
+        uint64_t m, sigma_m; 
+
+        uint64_t *write_buf = (uint64_t *)calloc(write_buf_len, sizeof(uint64_t));
+        size_t write_buf_ind = 0;
 
 #pragma omp for schedule(dynamic)
         for (size_t seg_start = 0; seg_start < bound; seg_start += seg_len) {
@@ -114,13 +122,15 @@ int main(int argc, const char **argv) {
                 if (EVEN(sigma_m)) {
                     uint64_t t = (3 * sigma_m) - (2 * m);
                     while (t <= bound) {
-                        record_image(t, f);
+                        buffered_record_image(t, f, write_buf, write_buf_len, &write_buf_ind);
                         t = (2 * t) + sigma_m;
                     }
                 }
 
                 if (IS_M_PRIME(m, sigma_m)) {
-                    record_image(m + 1, f);
+                    // record_image(m + 1, f);
+                    buffered_record_image(m + 1, f, write_buf, write_buf_len, &write_buf_ind);
+
                 }
             }
         }
@@ -141,18 +151,21 @@ int main(int argc, const char **argv) {
 
                 if (SEG_OFFSET(seg_start, i) > odd_comp_bound) {  // this test would be better pulled out of the loop (probably)
                     printf("\n %ld > %ld (odd_comp_bound)reached by thread %d, breaking...\n\n",
-                            SEG_OFFSET(seg_start, i), odd_comp_bound, omp_get_thread_num());
+                           SEG_OFFSET(seg_start, i), odd_comp_bound, omp_get_thread_num());
                     break;
                 }
 
                 uint64_t s_m = sigma_m - m;
                 if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (s_m <= bound)) {
-                    record_image(s_m, f);
+                    buffered_record_image(s_m, f, write_buf, write_buf_len, &write_buf_ind);
+
+                    // record_image(s_m, f);
                 }
             }
         }
         printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
 
+        flush_buf(f, write_buf, &write_buf_ind);
         free(sigma_buf);
         free(sieve_buf);
     }
@@ -160,7 +173,7 @@ int main(int argc, const char **argv) {
     double time_tabulate = omp_get_wtime();
     size_t count[UINT8_MAX + 1] = {0};
     for (size_t i = 0; i < f_len; i++) {
-        const uint8_t num_preimages = f[i];
+        const uint8_t num_preimages = PackedArray_get(f, i);
         count[num_preimages]++;
     }
     printf("\nTabulation completed in %.2f\n", omp_get_wtime() - time_tabulate);
@@ -202,7 +215,6 @@ int main(int argc, const char **argv) {
     exit(EXIT_SUCCESS);
 }
 
-
 #ifndef NDEBUG
 uint64_t sigma(uint64_t n) {
     fmpz_t tmp = {0};
@@ -221,10 +233,37 @@ inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, cons
     assert(sigma(*m) == *sigma_m);
 }
 
-inline void record_image(uint64_t x, uint8_t *f) {
+inline void record_image(uint64_t x, PackedArray *f) {
     assert(x > 0);
     assert(EVEN(x));
     size_t offset = (x / 2) - 1;
-#pragma omp atomic
-    f[offset]++;
+#pragma omp critical
+    PackedArray_set(f, offset, 1);
 }
+
+inline void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind) {
+#pragma omp critical
+    {
+        for (size_t i = 0; i < *bufind; i++) {
+            // printf("buf[%ld] = %ld\n", i, buf[i]);
+            size_t offset = (buf[i] / 2) - 1;
+            PackedArray_set(f, offset, 1);
+        }
+    }
+    *bufind = 0;
+}
+
+inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind) {
+    assert(x > 0);
+    assert(EVEN(x));
+    assert(*bufind + 1 < buflen);
+
+    buf[*bufind] = x;
+    *bufind = *bufind + 1;
+
+    if (*bufind + 1 == buflen) {
+        flush_buf(f, buf, bufind);
+        *bufind = 0;
+    }
+}
+

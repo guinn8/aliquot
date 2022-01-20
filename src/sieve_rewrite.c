@@ -43,17 +43,17 @@ void destroy_sigma_sieve(void) {
     free(primes);
 }
 
-void prime_sieve(const uint32_t max_prime, uint32_t *primes) {
+void prime_sieve(const uint32_t max_prime, uint32_t *returned_primes) {
     bool *is_prime = calloc(max_prime + 1, sizeof(bool));
     for (size_t i = 0; i < max_prime + 1; i++) {
         is_prime[i] = true;
     }
-    primes[0] = 0;
+    returned_primes[0] = 0;
 
     for (size_t i = 2; i <= max_prime; i++) {
         if (is_prime[i]) {
-            primes[0]++;
-            primes[primes[0]] = i;
+            returned_primes[0]++;
+            returned_primes[returned_primes[0]] = i;
             for (size_t j = 2 * i; j <= max_prime; j += i) {
                 is_prime[j] = false;
             }

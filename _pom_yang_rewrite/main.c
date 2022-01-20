@@ -1,5 +1,5 @@
 /**
- * @file main.cpp
+ * @file main.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief 
  * @date 2021-12-21
@@ -18,10 +18,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifndef NDEBUG
-#include <flint/fmpz.h>
-#endif  // NDEBUG
-
 #include "../PackedArray/PackedArray.h"
 #include "../inc/properSumDiv.h"
 #include "../inc/sieve_rewrite.h"
@@ -34,13 +30,14 @@
 #define BYTES_TO_GB 0.000000001
 #define OUTPUT_FILE "counts.csv"
 
-#ifndef NDEBUG
-#define DEBUG(x) x
+#ifdef DEBUG_ASSERT_ON
+#define DEBUG_ASSERT(x) x
 #else
-#define DEBUG(x)
+#define DEBUG_ASSERT(x)
 #endif
 
 typedef struct {
+    char name[32];
     size_t len;
     size_t item_size_bits;
     size_t instances;
@@ -49,33 +46,29 @@ typedef struct {
 static struct option long_options[] = {
     {"bound", required_argument, NULL, 'b'},
     {"seg_len", required_argument, NULL, 's'},
-    {0, 0, 0, 0}
-};
+    {"writebuf_len", required_argument, NULL, 'w'},
+    {"just_config", no_argument, NULL, 'j'},
+    {"num_threads", required_argument, NULL, 't'},
+    {0, 0, 0, 0}};
 
-uint64_t sigma(uint64_t n);
 void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m);
 void record_image(uint64_t x, PackedArray *f);
 void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind);
 void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind);
+size_t print_array_info(array_info_t x);
+
+void usage(void) {
+    printf("\nFast and Memory effiecent implementation of the Pomerance-Yang algorithm enumerating preimages under s()\n");
+    printf("Usage: [--bound=][--seg_len=][--writebuf_len=][(OPTIONAL)--just_config][(OPTIONAL)--num_threads=]\n\n");
+}
 
 int main(int argc, char **argv) {
-    // if (argc != 3 && argc != 4 && argc != 5) {
-    //     printf("USAGE: <bound><segment_len><(optional)num_threads><(optional)just_print_config>\n");
-    //     exit(EXIT_FAILURE);
-    // }
+    size_t bound = 0;
+    size_t seg_len = 0;
+    size_t writebuf_len = 0;
+    bool just_config = 0;
 
-    double start_time = omp_get_wtime();
-
-    size_t bound = 0;// = strtol(argv[1], NULL, 10);
-    size_t seg_len = 0;// = strtol(argv[2], NULL, 10);
-
-    int just_config = 0;
-    // if (argc == 5) {
-    //     just_config = strtol(argv[3], NULL, 10);
-    //     omp_set_num_threads(strtol(argv[4], NULL, 10));
-    // }
-    int option_index = 0;
-    int opt_code;
+    int opt_code, option_index;
     while (-1 != (opt_code = getopt_long(argc, argv, "", long_options, &option_index))) {
         switch (opt_code) {
             case 'b':
@@ -84,67 +77,85 @@ int main(int argc, char **argv) {
             case 's':
                 seg_len = strtol(optarg, NULL, 10);
                 break;
+            case 'w':
+                writebuf_len = strtol(optarg, NULL, 10);
+                break;
+            case 'j':
+                just_config = true;
+                break;
+            case 't':
+                omp_set_num_threads(strtol(optarg, NULL, 10));
+                break;
             default:
-                abort();
+                usage();
+                return EXIT_FAILURE;
         }
     }
 
-    if (!EVEN(bound) ||
-        !EVEN(seg_len) ||
-        !EVEN(seg_len / 2) ||
-        seg_len > bound ||
-        0 != bound % seg_len) {
-        printf("\nInvalid input!\n\n");
-        exit(EXIT_FAILURE);
+    if (0 == bound ||
+        0 == seg_len ||
+        0 == writebuf_len) {  // required args
+        usage();
+        return EXIT_FAILURE;
     }
+
+    assert(EVEN(bound));
+    assert(EVEN(seg_len));
+    assert(EVEN(seg_len / 2));
+    assert(seg_len <= bound);
+    assert(0 == bound % seg_len);
+
+    array_info_t f_info = {
+        .name = "f",
+        .instances = 1,
+        .item_size_bits = 1,
+        .len = bound / 2};
+    array_info_t sigma_info = {
+        .name = "sigma",
+        .instances = omp_get_max_threads(),
+        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
+        .len = seg_len / 2,
+    };
+    array_info_t sieve_info = {
+        .name = "sieve",
+        .instances = omp_get_max_threads(),
+        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
+        .len = seg_len / 2,
+    };
+    array_info_t writebuf_info = {
+        .name = "writebuf",
+        .instances = omp_get_max_threads(),
+        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
+        .len = writebuf_len,
+    };
 
     const double odd_comp_bound_float = pow(bound, TWO_THIRDS);
     const size_t odd_comp_bound = round(odd_comp_bound_float);                                 // ! unsure of best way to convert to int
     const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
 
-    array_info_t f_info = {
-        .instances = 1,
-        .item_size_bits = 1,
-        .len = bound / 2
-    };
+    printf("\nPomerance-Yang Algorithm Config Information\n");
+    printf("-> Bound = %ld\n", bound);
+    printf("-> Segment Length = %ld\n", seg_len);
+    printf("-> Number of segments = %ld\n", bound / seg_len);
+    printf("-> Bound^(2/3) = %.2f\n", odd_comp_bound_float);
+    printf("-> Integer(Bound^(2/3)) = %ld\n", odd_comp_bound);
+    printf("-> Bound^(2/3) Max Segment = %ld\n", odd_comp_bound_seg);
+    printf("-> Max number of threads = %d\n", omp_get_max_threads());
 
-    array_info_t sigma_info = {
-        .instances = omp_get_max_threads(),
-        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
-        .len = seg_len / 2,
-    };
+    size_t min_heap_alloc = 0;
+    printf("\nEstimated Minimum Heap Allocation\n");
+    min_heap_alloc += print_array_info(f_info);
+    min_heap_alloc += print_array_info(sigma_info);
+    min_heap_alloc += print_array_info(sieve_info);
+    min_heap_alloc += print_array_info(writebuf_info);
+    printf("This configuration requires a minimum of %0.2fgb\n\n", BYTES_TO_GB * min_heap_alloc);
 
-    array_info_t sieve_info = {
-        .instances = omp_get_max_threads(),
-        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
-        .len = seg_len / 2,
-    };
-
-    array_info_t write_info = {
-        .instances = omp_get_max_threads(),
-        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
-        .len = 5000000,
-    };
-
-    // const size_t sigma_buf_len = seg_len / 2;
-    // const uint64_t sigma_buf_bytes = sigma_buf_len * sizeof(uint64_t);
-
-    printf(
-        "\nPomerance-Yang Algorithm\n-> Bound = %ld\n-> Segment Length = %ld\n-> Number of segments = %ld\n\n"
-        "-> Bound^(2/3) = %.2f\n-> Integer(Bound^(2/3)) = %ld\n-> Bound^(2/3) Max Segment = %ld\n\n-> Max number of threads = %d\n",
-        bound, seg_len, bound / seg_len, odd_comp_bound_float, odd_comp_bound, odd_comp_bound_seg, omp_get_max_threads());
-
-    init_sigma_sieve(bound);
-
-    // uint64_t min_heap_alloc = 0;
-    // printf("\nHeap usage\n-> f: %.2fgb\n-> thread local buffers: %.2fgb\n-> Minimum heap allocation: %.2fgb\n",
-    //        BYTES_TO_GB * f_bytes, BYTES_TO_GB * 2 * sigma_buf_bytes * omp_get_max_threads(), BYTES_TO_GB * min_heap_alloc);
-    // printf("Note: Flint allocates memory for itself which is excluded from this estimation.\n");
-
-    if (just_config == 1) {
+    if (true == just_config) {
         exit(EXIT_SUCCESS);
     }
 
+    double start_time = omp_get_wtime();
+    init_sigma_sieve(bound);
     PackedArray *f = PackedArray_create(f_info.item_size_bits, f_info.len);
 
 #pragma omp parallel shared(f)
@@ -152,7 +163,7 @@ int main(int argc, char **argv) {
         double thread_start = omp_get_wtime();
         uint64_t *sigma_buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8);
         uint64_t *sieve_buf = (uint64_t *)calloc(sieve_info.len, sieve_info.item_size_bits / 8);
-        uint64_t *write_buf = (uint64_t *)calloc(write_info.len, write_info.item_size_bits / 8);
+        uint64_t *writebuf = (uint64_t *)calloc(writebuf_info.len, writebuf_info.item_size_bits / 8);
 
         uint64_t m, sigma_m;
         size_t write_buf_ind = 0;
@@ -167,18 +178,18 @@ int main(int argc, char **argv) {
                 if (EVEN(sigma_m)) {
                     uint64_t t = (3 * sigma_m) - (2 * m);
                     while (t <= bound) {
-                        buffered_record_image(t, f, write_buf, write_info.len, &write_buf_ind);
+                        buffered_record_image(t, f, writebuf, writebuf_info.len, &write_buf_ind);
                         t = (2 * t) + sigma_m;
                     }
                 }
 
                 if (IS_M_PRIME(m, sigma_m)) {
-                    buffered_record_image(m + 1, f, write_buf, write_info.len, &write_buf_ind);
+                    buffered_record_image(m + 1, f, writebuf, writebuf_info.len, &write_buf_ind);
                 }
             }
         }
 
-        printf("thread %d completed standard in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
+        printf("thread %d completed standard in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
         thread_start = omp_get_wtime();
 
         // odd_comp_bound is not necessarily divisable by seg_len, to enumerate to the bound
@@ -198,13 +209,13 @@ int main(int argc, char **argv) {
 
                 uint64_t s_m = sigma_m - m;
                 if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (s_m <= bound)) {
-                    buffered_record_image(s_m, f, write_buf, write_info.len, &write_buf_ind);
+                    buffered_record_image(s_m, f, writebuf, writebuf_info.len, &write_buf_ind);
                 }
             }
         }
         printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
 
-        flush_buf(f, write_buf, &write_buf_ind);
+        flush_buf(f, writebuf, &write_buf_ind);
         free(sigma_buf);
         free(sieve_buf);
     }
@@ -215,7 +226,7 @@ int main(int argc, char **argv) {
         const uint8_t num_preimages = PackedArray_get(f, i);
         count[num_preimages]++;
     }
-    printf("\nTabulation completed in %.2f\n", omp_get_wtime() - time_tabulate);
+    printf("\nTabulation completed in %.2fs\n", omp_get_wtime() - time_tabulate);
 
     printf("\nCount of odd k-parent numbers under %ld\n", bound);
     for (size_t i = 0; i < 8; i++) {
@@ -226,9 +237,9 @@ int main(int argc, char **argv) {
     free(f);
 
     double end_time = omp_get_wtime();
-    printf("\nCompleted in %.2f seconds\n\n", end_time - start_time);
+    printf("\nCompleted in %.2fs\n\n", end_time - start_time);
 
-    const size_t max_line_len = 4162;
+    const size_t max_line_len = 65536;
     char *header_line = calloc(max_line_len, sizeof(char));
     if (0 != access(OUTPUT_FILE, F_OK)) {
         snprintf(header_line, max_line_len, "timestamp, bound, segment_length, timing, num_threads");
@@ -240,11 +251,11 @@ int main(int argc, char **argv) {
     FILE *fp = fopen("counts.csv", "a");
     fprintf(fp, "%s\n", header_line);
 
-    fprintf(fp, "%ld, ", time(NULL));              // timestamp
-    fprintf(fp, "%ld, ", bound);                   // bound
-    fprintf(fp, "%ld, ", seg_len);                 // segment length
-    fprintf(fp, "%.2f, ", end_time - start_time);  // timing
-    fprintf(fp, "%d", omp_get_max_threads());      // threads
+    fprintf(fp, "%ld, ", time(NULL));
+    fprintf(fp, "%ld, ", bound);
+    fprintf(fp, "%ld, ", seg_len);
+    fprintf(fp, "%.2f, ", end_time - start_time);
+    fprintf(fp, "%d", omp_get_max_threads());
 
     for (size_t i = 0; i <= UINT8_MAX; i++) {
         fprintf(fp, ", %ld", count[i]);
@@ -254,37 +265,17 @@ int main(int argc, char **argv) {
     exit(EXIT_SUCCESS);
 }
 
-#ifndef NDEBUG
-uint64_t sigma(uint64_t n) {
-    fmpz_t tmp = {0};
-    fmpz_init_set_ui(tmp, n);
-    fmpz_t sigma_tmp = {0};
-    fmpz_divisor_sigma(sigma_tmp, tmp, 1);
-    assert(fmpz_abs_fits_ui(sigma_tmp));
-    return fmpz_get_ui(sigma_tmp);
-}
-#endif
-
 inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m) {
     *m = set_m;
     *sigma_m = set_sigma_m;
-    // DEBUG(printf("sieved_sigma(%ld) = %ld, sigma(%ld) = %ld\n", *m, *sigma_m, *m, sigma(*m));)
-    assert(sigma(*m) == *sigma_m);
+    DEBUG_ASSERT(assert(wheelDivSigma(*m) == *sigma_m));
 }
 
-inline void record_image(uint64_t x, PackedArray *f) {
-    assert(x > 0);
-    assert(EVEN(x));
-    size_t offset = (x / 2) - 1;
-#pragma omp critical
-    PackedArray_set(f, offset, 1);
-}
 
 inline void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind) {
 #pragma omp critical
     {
         for (size_t i = 0; i < *bufind; i++) {
-            // printf("buf[%ld] = %ld\n", i, buf[i]);
             size_t offset = (buf[i] / 2) - 1;
             PackedArray_set(f, offset, 1);
         }
@@ -293,9 +284,9 @@ inline void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind) {
 }
 
 inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind) {
-    assert(x > 0);
-    assert(EVEN(x));
-    assert(*bufind + 1 < buflen);
+    DEBUG_ASSERT(assert(x > 0));
+    DEBUG_ASSERT(assert(EVEN(x)));
+    DEBUG_ASSERT(assert(*bufind + 1 < buflen));
 
     buf[*bufind] = x;
     *bufind = *bufind + 1;
@@ -304,4 +295,12 @@ inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, siz
         flush_buf(f, buf, bufind);
         *bufind = 0;
     }
+}
+
+size_t print_array_info(array_info_t x) {
+    size_t size_bytes = (x.item_size_bits * x.len) / 8;
+    size_t total_bytes = size_bytes * x.instances;
+    printf("%s: instances=%ld len=%ld size_bytes=%ld total_gb=%0.2f\n",
+           x.name, x.instances, x.len, size_bytes, BYTES_TO_GB * total_bytes);
+    return total_bytes;
 }

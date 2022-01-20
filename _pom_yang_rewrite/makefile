@@ -1,19 +1,17 @@
 SRCDIR=../src
-
 INCS=-I../inc -I../PackedArray
 LINKS= -lpthread -lm 
-CFLAGS=-g -fopenmp -Wall 
+CFLAGS=-g -fopenmp -Wall -Werror -Wextra -Wshadow -std=c99 -Wpedantic 
 
+main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c PackedArray.o
+	gcc $(CFLAGS) -O3 $(INCS) -o $@ $^ $(LINKS)
 
-main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c ../PackedArray/PackedArray.c
-	gcc $(CFLAGS) -O3 -DNDEBUG $(INCS) -o $@ $^ $(LINKS)
+debug_main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c  PackedArray.o
+	gcc $(CFLAGS) $(INCS) -DDEBUG_ASSERT_ON -o  $@ $^ $(LINKS)
 
-debug_main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c ../PackedArray/PackedArray.c
-	gcc $(CFLAGS) $(INCS) -o $@ $^ $(LINKS) -lflint -lmpfr -lgmp 
-
-test: debug_main
-	./test.sh
+PackedArray.o: ../PackedArray/PackedArray.c
+	gcc -c $^
 
 .PHONY: clean
 clean: 
-	rm main
+	rm main debug_main

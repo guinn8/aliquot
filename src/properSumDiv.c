@@ -4,10 +4,9 @@ const int initWheel[3] = {2, 3, 5};
 const int inc[8] = {4, 2, 4, 2, 4, 6, 2, 6};
 
 uint64_t wheelDivSigma(uint64_t n) {
-    if (n == 1 || n == 0){
+    if (n == 0) {
         return 0;
     }
- 
 
     // uint64_t savedN = n;
     uint64_t curr_sum = 1;

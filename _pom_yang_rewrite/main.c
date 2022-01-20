@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
 
 #pragma omp parallel shared(f)
     {
-        double thread_start = omp_get_wtime();
+        // double thread_start = omp_get_wtime();
         uint64_t *sigma_buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8);
         uint64_t *sieve_buf = (uint64_t *)calloc(sieve_info.len, sieve_info.item_size_bits / 8);
         uint64_t *writebuf = (uint64_t *)calloc(writebuf_info.len, writebuf_info.item_size_bits / 8);
@@ -189,8 +189,8 @@ int main(int argc, char **argv) {
             }
         }
 
-        printf("thread %d completed standard in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
-        thread_start = omp_get_wtime();
+        // printf("thread %d completed standard in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
+        // thread_start = omp_get_wtime();
 
         // odd_comp_bound is not necessarily divisable by seg_len, to enumerate to the bound
         // we sieve to the next segment but halt reading the array once the bound has been reached
@@ -200,6 +200,7 @@ int main(int argc, char **argv) {
 
             for (size_t i = 0; i < sigma_info.len; i++) {
                 set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma_buf[i]);
+                // printf("m = %ld\n", SEG_OFFSET(seg_start, i));
 
                 if (SEG_OFFSET(seg_start, i) > odd_comp_bound) {  // this test would be better pulled out of the loop (probably)
                     printf("\n %ld > %ld (odd_comp_bound)reached by thread %d, breaking...\n\n",
@@ -213,7 +214,7 @@ int main(int argc, char **argv) {
                 }
             }
         }
-        printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
+        // printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
 
         flush_buf(f, writebuf, &write_buf_ind);
         free(sigma_buf);
@@ -268,7 +269,7 @@ int main(int argc, char **argv) {
 inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m) {
     *m = set_m;
     *sigma_m = set_sigma_m;
-    DEBUG_ASSERT(assert(wheelDivSigma(*m) == *sigma_m));
+    // DEBUG_ASSERT(assert(wheelDivSigma(*m) == *sigma_m));
 }
 
 

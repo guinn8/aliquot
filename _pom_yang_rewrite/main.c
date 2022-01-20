@@ -9,9 +9,11 @@
  */
 
 #include <assert.h>
+#include <getopt.h>
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -38,27 +40,53 @@
 #define DEBUG(x)
 #endif
 
+typedef struct {
+    size_t len;
+    size_t item_size_bits;
+    size_t instances;
+} array_info_t;
+
+static struct option long_options[] = {
+    {"bound", required_argument, NULL, 'b'},
+    {"seg_len", required_argument, NULL, 's'},
+    {0, 0, 0, 0}
+};
+
 uint64_t sigma(uint64_t n);
 void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m);
 void record_image(uint64_t x, PackedArray *f);
 void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind);
 void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind);
 
-int main(int argc, const char **argv) {
-    if (argc != 3 && argc != 4 && argc != 5) {
-        printf("USAGE: <bound><segment_len><(optional)num_threads><(optional)just_print_config>\n");
-        exit(EXIT_FAILURE);
-    }
+int main(int argc, char **argv) {
+    // if (argc != 3 && argc != 4 && argc != 5) {
+    //     printf("USAGE: <bound><segment_len><(optional)num_threads><(optional)just_print_config>\n");
+    //     exit(EXIT_FAILURE);
+    // }
 
     double start_time = omp_get_wtime();
 
-    const size_t bound = strtol(argv[1], NULL, 10);
-    const size_t seg_len = strtol(argv[2], NULL, 10);
+    size_t bound = 0;// = strtol(argv[1], NULL, 10);
+    size_t seg_len = 0;// = strtol(argv[2], NULL, 10);
 
     int just_config = 0;
-    if (argc == 5) {
-        just_config = strtol(argv[3], NULL, 10);
-        omp_set_num_threads(strtol(argv[4], NULL, 10));
+    // if (argc == 5) {
+    //     just_config = strtol(argv[3], NULL, 10);
+    //     omp_set_num_threads(strtol(argv[4], NULL, 10));
+    // }
+    int option_index = 0;
+    int opt_code;
+    while (-1 != (opt_code = getopt_long(argc, argv, "", long_options, &option_index))) {
+        switch (opt_code) {
+            case 'b':
+                bound = strtol(optarg, NULL, 10);
+                break;
+            case 's':
+                seg_len = strtol(optarg, NULL, 10);
+                break;
+            default:
+                abort();
+        }
     }
 
     if (!EVEN(bound) ||
@@ -74,11 +102,32 @@ int main(int argc, const char **argv) {
     const size_t odd_comp_bound = round(odd_comp_bound_float);                                 // ! unsure of best way to convert to int
     const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
 
-    const size_t f_len = bound / 2;
-    const uint64_t f_bytes = f_len * sizeof(uint8_t);
+    array_info_t f_info = {
+        .instances = 1,
+        .item_size_bits = 1,
+        .len = bound / 2
+    };
 
-    const size_t sigma_buf_len = seg_len / 2;
-    const uint64_t sigma_buf_bytes = sigma_buf_len * sizeof(uint64_t);
+    array_info_t sigma_info = {
+        .instances = omp_get_max_threads(),
+        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
+        .len = seg_len / 2,
+    };
+
+    array_info_t sieve_info = {
+        .instances = omp_get_max_threads(),
+        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
+        .len = seg_len / 2,
+    };
+
+    array_info_t write_info = {
+        .instances = omp_get_max_threads(),
+        .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
+        .len = 5000000,
+    };
+
+    // const size_t sigma_buf_len = seg_len / 2;
+    // const uint64_t sigma_buf_bytes = sigma_buf_len * sizeof(uint64_t);
 
     printf(
         "\nPomerance-Yang Algorithm\n-> Bound = %ld\n-> Segment Length = %ld\n-> Number of segments = %ld\n\n"
@@ -87,50 +136,44 @@ int main(int argc, const char **argv) {
 
     init_sigma_sieve(bound);
 
-    uint64_t min_heap_alloc = f_bytes + 2 * sigma_buf_bytes * omp_get_max_threads();
-    printf("\nHeap usage\n-> f: %.2fgb\n-> thread local buffers: %.2fgb\n-> Minimum heap allocation: %.2fgb\n",
-           BYTES_TO_GB * f_bytes, BYTES_TO_GB * 2 * sigma_buf_bytes * omp_get_max_threads(), BYTES_TO_GB * min_heap_alloc);
-    printf("Note: Flint allocates memory for itself which is excluded from this estimation.\n");
+    // uint64_t min_heap_alloc = 0;
+    // printf("\nHeap usage\n-> f: %.2fgb\n-> thread local buffers: %.2fgb\n-> Minimum heap allocation: %.2fgb\n",
+    //        BYTES_TO_GB * f_bytes, BYTES_TO_GB * 2 * sigma_buf_bytes * omp_get_max_threads(), BYTES_TO_GB * min_heap_alloc);
+    // printf("Note: Flint allocates memory for itself which is excluded from this estimation.\n");
 
     if (just_config == 1) {
         exit(EXIT_SUCCESS);
     }
 
-    // uint8_t *f = (uint8_t *)malloc(f_bytes);  // counts preimages for odd numbers
-    PackedArray *f = PackedArray_create(1, f_len);
-    // memset(f, 0, f_bytes);
-    size_t write_buf_len = 5000000;
-
+    PackedArray *f = PackedArray_create(f_info.item_size_bits, f_info.len);
 
 #pragma omp parallel shared(f)
     {
         double thread_start = omp_get_wtime();
-        uint64_t *sigma_buf = (uint64_t *)malloc(sigma_buf_bytes);
-        uint64_t *sieve_buf = (uint64_t *)malloc(sigma_buf_bytes);
-        uint64_t m, sigma_m; 
+        uint64_t *sigma_buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8);
+        uint64_t *sieve_buf = (uint64_t *)calloc(sieve_info.len, sieve_info.item_size_bits / 8);
+        uint64_t *write_buf = (uint64_t *)calloc(write_info.len, write_info.item_size_bits / 8);
 
-        uint64_t *write_buf = (uint64_t *)calloc(write_buf_len, sizeof(uint64_t));
+        uint64_t m, sigma_m;
         size_t write_buf_ind = 0;
 
 #pragma omp for schedule(dynamic)
         for (size_t seg_start = 0; seg_start < bound; seg_start += seg_len) {
             sigma_sieve_odd(seg_len, seg_start, sigma_buf, sieve_buf, 0);
 
-            for (size_t i = 0; i < sigma_buf_len; i++) {
+            for (size_t i = 0; i < sigma_info.len; i++) {
                 set_sigma(&m, &sigma_m, SEG_OFFSET(seg_start, i), sigma_buf[i]);
 
                 if (EVEN(sigma_m)) {
                     uint64_t t = (3 * sigma_m) - (2 * m);
                     while (t <= bound) {
-                        buffered_record_image(t, f, write_buf, write_buf_len, &write_buf_ind);
+                        buffered_record_image(t, f, write_buf, write_info.len, &write_buf_ind);
                         t = (2 * t) + sigma_m;
                     }
                 }
 
                 if (IS_M_PRIME(m, sigma_m)) {
-                    // record_image(m + 1, f);
-                    buffered_record_image(m + 1, f, write_buf, write_buf_len, &write_buf_ind);
-
+                    buffered_record_image(m + 1, f, write_buf, write_info.len, &write_buf_ind);
                 }
             }
         }
@@ -138,15 +181,13 @@ int main(int argc, const char **argv) {
         printf("thread %d completed standard in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
         thread_start = omp_get_wtime();
 
-        /**
-         * odd_comp_bound is not necessarily divisable by seg_len, to enumerate to the bound
-         * we sieve to the next segment but halt reading the array once the bound has been reached 
-         */
+        // odd_comp_bound is not necessarily divisable by seg_len, to enumerate to the bound
+        // we sieve to the next segment but halt reading the array once the bound has been reached
 #pragma omp for schedule(dynamic)
         for (size_t seg_start = 0; seg_start < odd_comp_bound_seg; seg_start += seg_len) {
             sigma_sieve_odd(seg_len, seg_start, sigma_buf, sieve_buf, 1);
 
-            for (size_t i = 0; i < sigma_buf_len; i++) {
+            for (size_t i = 0; i < sigma_info.len; i++) {
                 set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma_buf[i]);
 
                 if (SEG_OFFSET(seg_start, i) > odd_comp_bound) {  // this test would be better pulled out of the loop (probably)
@@ -157,9 +198,7 @@ int main(int argc, const char **argv) {
 
                 uint64_t s_m = sigma_m - m;
                 if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (s_m <= bound)) {
-                    buffered_record_image(s_m, f, write_buf, write_buf_len, &write_buf_ind);
-
-                    // record_image(s_m, f);
+                    buffered_record_image(s_m, f, write_buf, write_info.len, &write_buf_ind);
                 }
             }
         }
@@ -172,7 +211,7 @@ int main(int argc, const char **argv) {
 
     double time_tabulate = omp_get_wtime();
     size_t count[UINT8_MAX + 1] = {0};
-    for (size_t i = 0; i < f_len; i++) {
+    for (size_t i = 0; i < f_info.len; i++) {
         const uint8_t num_preimages = PackedArray_get(f, i);
         count[num_preimages]++;
     }
@@ -266,4 +305,3 @@ inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, siz
         *bufind = 0;
     }
 }
-

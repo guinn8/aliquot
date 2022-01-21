@@ -405,7 +405,7 @@ PackedArray* PackedArray_create(uint64_t bitsPerItem, uint64_t count)
     a->count = count;
   }
 
-  // memset(a->buffer, 0, bufferSize);
+  memset(a->buffer, 0, bufferSize);
 
   return a;
 }

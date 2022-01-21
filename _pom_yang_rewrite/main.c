@@ -40,8 +40,13 @@ typedef struct {
     char name[32];
     size_t len;
     size_t item_size_bits;
-    size_t instances;
-} array_info_t;
+    size_t num_instances;
+} buf_info_t;
+
+typedef struct {
+    buf_info_t *info;
+    uint64_t *buf;
+} u64_buf_t;
 
 static struct option long_options[] = {
     {"bound", required_argument, NULL, 'b'},
@@ -49,20 +54,22 @@ static struct option long_options[] = {
     {"writebuf_len", required_argument, NULL, 'w'},
     {"just_config", no_argument, NULL, 'j'},
     {"num_threads", required_argument, NULL, 't'},
+    {"preimage_count_bits", required_argument, NULL, 'p'},
     {0, 0, 0, 0}};
 
 void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m);
 void record_image(uint64_t x, PackedArray *f);
-void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind);
-void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind);
-size_t print_array_info(array_info_t x);
+void buffered_record_image(uint64_t x, PackedArray *f, u64_buf_t *writebuf, size_t *bufind);
+void flush_buf(PackedArray *f, u64_buf_t *writebuf, size_t *bufind);
+size_t print_array_info(buf_info_t x);
 
 void usage(void) {
     printf("\nFast and Memory effiecent implementation of the Pomerance-Yang algorithm enumerating preimages under s()\n");
-    printf("Usage: [--bound=][--seg_len=][--writebuf_len=][(OPTIONAL)--just_config][(OPTIONAL)--num_threads=]\n\n");
+    printf("Usage: [--bound=][--seg_len=][--writebuf_len=][(OPTIONAL)--just_config][(OPTIONAL)--num_threads=][(OPTIONAL)--preimage_count_bits]\n\n");
 }
 
 int main(int argc, char **argv) {
+    size_t preimage_count_bits = 8;
     size_t bound = 0;
     size_t seg_len = 0;
     size_t writebuf_len = 0;
@@ -86,6 +93,9 @@ int main(int argc, char **argv) {
             case 't':
                 omp_set_num_threads(strtol(optarg, NULL, 10));
                 break;
+            case 'p':
+                preimage_count_bits = strtol(optarg, NULL, 10);
+                break;
             default:
                 usage();
                 return EXIT_FAILURE;
@@ -104,27 +114,30 @@ int main(int argc, char **argv) {
     assert(EVEN(seg_len / 2));
     assert(seg_len <= bound);
     assert(0 == bound % seg_len);
+    assert(preimage_count_bits >= 1 && preimage_count_bits <= 8);
 
-    array_info_t f_info = {
+    buf_info_t f_info = {
+        // this is only for the heap estimation, use the PackedArray helpers in practice
         .name = "f",
-        .instances = 1,
-        .item_size_bits = 1,
-        .len = bound / 2};
-    array_info_t sigma_info = {
+        .num_instances = 1,
+        .item_size_bits = preimage_count_bits,
+        .len = bound / 2,
+    };
+    buf_info_t sigma_info = {
         .name = "sigma",
-        .instances = omp_get_max_threads(),
+        .num_instances = omp_get_max_threads(),
         .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
         .len = seg_len / 2,
     };
-    array_info_t sieve_info = {
+    buf_info_t sieve_info = {
         .name = "sieve",
-        .instances = omp_get_max_threads(),
+        .num_instances = omp_get_max_threads(),
         .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
         .len = seg_len / 2,
     };
-    array_info_t writebuf_info = {
+    buf_info_t writebuf_info = {
         .name = "writebuf",
-        .instances = omp_get_max_threads(),
+        .num_instances = omp_get_max_threads(),
         .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
         .len = writebuf_len,
     };
@@ -134,6 +147,7 @@ int main(int argc, char **argv) {
     const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
 
     printf("\nPomerance-Yang Algorithm Config Information\n");
+    printf("-> Using %ld bits per number, count upto 0-%d preimages\n", preimage_count_bits, (1 << preimage_count_bits) - 1);
     printf("-> Bound = %ld\n", bound);
     printf("-> Segment Length = %ld\n", seg_len);
     printf("-> Number of segments = %ld\n", bound / seg_len);
@@ -160,47 +174,55 @@ int main(int argc, char **argv) {
 
 #pragma omp parallel shared(f)
     {
-        // double thread_start = omp_get_wtime();
-        uint64_t *sigma_buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8);
-        uint64_t *sieve_buf = (uint64_t *)calloc(sieve_info.len, sieve_info.item_size_bits / 8);
-        uint64_t *writebuf = (uint64_t *)calloc(writebuf_info.len, writebuf_info.item_size_bits / 8);
+        double thread_start = omp_get_wtime();
+        u64_buf_t sigma = {
+            .info = &sigma_info,
+            .buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8),
+        };
+        u64_buf_t sieve = {
+            .info = &sieve_info,
+            .buf = (uint64_t *)calloc(sieve_info.len, sieve_info.item_size_bits / 8),
+        };
+        u64_buf_t writebuf = {
+            .info = &writebuf_info,
+            .buf = (uint64_t *)calloc(writebuf_info.len, writebuf_info.item_size_bits / 8),
+        };
 
         uint64_t m, sigma_m;
         size_t write_buf_ind = 0;
 
 #pragma omp for schedule(dynamic)
         for (size_t seg_start = 0; seg_start < bound; seg_start += seg_len) {
-            sigma_sieve_odd(seg_len, seg_start, sigma_buf, sieve_buf, 0);
+            sigma_sieve_odd(seg_len, seg_start, sigma.buf, sieve.buf, 0);
 
             for (size_t i = 0; i < sigma_info.len; i++) {
-                set_sigma(&m, &sigma_m, SEG_OFFSET(seg_start, i), sigma_buf[i]);
+                set_sigma(&m, &sigma_m, SEG_OFFSET(seg_start, i), sigma.buf[i]);
 
                 if (EVEN(sigma_m)) {
                     uint64_t t = (3 * sigma_m) - (2 * m);
                     while (t <= bound) {
-                        buffered_record_image(t, f, writebuf, writebuf_info.len, &write_buf_ind);
+                        buffered_record_image(t, f, &writebuf, &write_buf_ind);
                         t = (2 * t) + sigma_m;
                     }
                 }
 
                 if (IS_M_PRIME(m, sigma_m)) {
-                    buffered_record_image(m + 1, f, writebuf, writebuf_info.len, &write_buf_ind);
+                    buffered_record_image(m + 1, f, &writebuf, &write_buf_ind);
                 }
             }
         }
 
-        // printf("thread %d completed standard in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
-        // thread_start = omp_get_wtime();
+        printf("thread %d completed standard in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
+        thread_start = omp_get_wtime();
 
         // odd_comp_bound is not necessarily divisable by seg_len, to enumerate to the bound
         // we sieve to the next segment but halt reading the array once the bound has been reached
 #pragma omp for schedule(dynamic)
         for (size_t seg_start = 0; seg_start < odd_comp_bound_seg; seg_start += seg_len) {
-            sigma_sieve_odd(seg_len, seg_start, sigma_buf, sieve_buf, 1);
+            sigma_sieve_odd(seg_len, seg_start, sigma.buf, sieve.buf, 1);
 
             for (size_t i = 0; i < sigma_info.len; i++) {
-                set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma_buf[i]);
-                // printf("m = %ld\n", SEG_OFFSET(seg_start, i));
+                set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma.buf[i]);
 
                 if (SEG_OFFSET(seg_start, i) > odd_comp_bound) {  // this test would be better pulled out of the loop (probably)
                     printf("\n %ld > %ld (odd_comp_bound)reached by thread %d, breaking...\n\n",
@@ -210,15 +232,15 @@ int main(int argc, char **argv) {
 
                 uint64_t s_m = sigma_m - m;
                 if (!IS_M_PRIME(m, sigma_m) && (m > 1) && (s_m <= bound)) {
-                    buffered_record_image(s_m, f, writebuf, writebuf_info.len, &write_buf_ind);
+                    buffered_record_image(s_m, f, &writebuf, &write_buf_ind);
                 }
             }
         }
-        // printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
+        printf("thread %d completed squares in %.2f\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
 
-        flush_buf(f, writebuf, &write_buf_ind);
-        free(sigma_buf);
-        free(sieve_buf);
+        flush_buf(f, &writebuf, &write_buf_ind);
+        free(sigma.buf);
+        free(sieve.buf);
     }
 
     double time_tabulate = omp_get_wtime();
@@ -266,42 +288,45 @@ int main(int argc, char **argv) {
     exit(EXIT_SUCCESS);
 }
 
-inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m) {
+inline void set_sigma(uint64_t *m, uint64_t *sigma_m, uint64_t set_m, uint64_t set_sigma_m) {
     *m = set_m;
     *sigma_m = set_sigma_m;
-    // DEBUG_ASSERT(assert(wheelDivSigma(*m) == *sigma_m));
+    DEBUG_ASSERT(assert(wheelDivSigma(*m) == *sigma_m));
 }
 
-
-inline void flush_buf(PackedArray *f, uint64_t *buf, size_t *bufind) {
+inline void flush_buf(PackedArray *f, u64_buf_t *writebuf, size_t *bufind) {
 #pragma omp critical
     {
         for (size_t i = 0; i < *bufind; i++) {
-            size_t offset = (buf[i] / 2) - 1;
-            PackedArray_set(f, offset, 1);
+            size_t offset = (writebuf->buf[i] / 2) - 1;
+            uint8_t count = PackedArray_get(f, offset);
+            if (count + 1 < (1 << f->bitsPerItem)) {  // 2 ** f->bitsPerItem, prevents overflow
+                PackedArray_set(f, offset, count + 1);
+            }
         }
     }
+
     *bufind = 0;
 }
 
-inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *buf, size_t buflen, size_t *bufind) {
+inline void buffered_record_image(uint64_t x, PackedArray *f, u64_buf_t *writebuf, size_t *bufind) {
     DEBUG_ASSERT(assert(x > 0));
     DEBUG_ASSERT(assert(EVEN(x)));
-    DEBUG_ASSERT(assert(*bufind + 1 < buflen));
+    DEBUG_ASSERT(assert(*bufind + 1 < writebuf->info->len));
 
-    buf[*bufind] = x;
+    writebuf->buf[*bufind] = x;
     *bufind = *bufind + 1;
 
-    if (*bufind + 1 == buflen) {
-        flush_buf(f, buf, bufind);
+    if (*bufind + 1 == writebuf->info->len) {
+        flush_buf(f, writebuf, bufind);
         *bufind = 0;
     }
 }
 
-size_t print_array_info(array_info_t x) {
+size_t print_array_info(const buf_info_t x) {
     size_t size_bytes = (x.item_size_bits * x.len) / 8;
-    size_t total_bytes = size_bytes * x.instances;
-    printf("%s: instances=%ld len=%ld size_bytes=%ld total_gb=%0.2f\n",
-           x.name, x.instances, x.len, size_bytes, BYTES_TO_GB * total_bytes);
+    size_t total_bytes = size_bytes * x.num_instances;
+    printf("%s: num_instances=%ld len=%ld size_bytes=%ld total_gb=%0.2f\n",
+           x.name, x.num_instances, x.len, size_bytes, BYTES_TO_GB * total_bytes);
     return total_bytes;
 }

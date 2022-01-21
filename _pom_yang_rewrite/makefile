@@ -10,7 +10,7 @@ debug_main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c  PackedArr
 	gcc $(CFLAGS) $(INCS) -DDEBUG_ASSERT_ON -o  $@ $^ $(LINKS)
 
 PackedArray.o: ../PackedArray/PackedArray.c
-	gcc -c $^
+	gcc -c  $^
 
 .PHONY: clean
 clean: 

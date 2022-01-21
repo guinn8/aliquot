@@ -1,5 +1,6 @@
 // see README.md for usage instructions.
 // (‑●‑●)> released under the WTFPL v2 license, by Gregory Pakosz (@gpakosz)
+#include <string.h>
 
 #ifndef PACKEDARRAY_SELF
 #define PACKEDARRAY_SELF "PackedArray.c"
@@ -403,6 +404,8 @@ PackedArray* PackedArray_create(uint64_t bitsPerItem, uint64_t count)
     a->bitsPerItem = bitsPerItem;
     a->count = count;
   }
+
+  // memset(a->buffer, 0, bufferSize);
 
   return a;
 }

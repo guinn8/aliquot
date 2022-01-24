@@ -2,3 +2,6 @@
 *.out
 .*
 counts.csv
+PackedArray.o
+debug_main
+main

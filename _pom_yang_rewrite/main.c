@@ -1,7 +1,8 @@
 /**
  * @file main.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
- * @brief 
+ * @brief Implementation of algorithm to enumerate the number preimages under s(n) for all
+ *        odd numbers under the user supplied bound
  * @date 2021-12-21
  * 
  * @copyright Copyright (c) 2021
@@ -44,7 +45,7 @@ typedef struct {
 } buf_info_t;
 
 typedef struct {
-    buf_info_t *info;
+    const buf_info_t *info;
     uint64_t *buf;
 } u64_buf_t;
 
@@ -116,35 +117,34 @@ int main(int argc, char **argv) {
     assert(0 == bound % seg_len);
     assert(preimage_count_bits >= 1 && preimage_count_bits <= 8);
 
-    buf_info_t f_info = {
-        // this is only for the heap estimation, use the PackedArray helpers in practice
+    // this is only for the heap estimation, use the PackedArray helpers in practice
+    const buf_info_t f_info = {
         .name = "f",
         .num_instances = 1,
         .item_size_bits = preimage_count_bits,
         .len = bound / 2,
     };
-    buf_info_t sigma_info = {
+    const buf_info_t sigma_info = {
         .name = "sigma",
         .num_instances = omp_get_max_threads(),
         .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
         .len = seg_len / 2,
     };
-    buf_info_t sieve_info = {
+    const buf_info_t sieve_info = {
         .name = "sieve",
         .num_instances = omp_get_max_threads(),
         .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
         .len = seg_len / 2,
     };
-    buf_info_t writebuf_info = {
+    const buf_info_t writebuf_info = {
         .name = "writebuf",
         .num_instances = omp_get_max_threads(),
         .item_size_bits = sizeof(uint64_t) * 8,  // ! measuring by bits
         .len = writebuf_len,
     };
 
-    const double odd_comp_bound_float = pow(bound, TWO_THIRDS);
-    const size_t odd_comp_bound = round(odd_comp_bound_float);                                 // ! unsure of best way to convert to int
-    const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
+    const double odd_comp_bound_float = pow(bound, TWO_THIRDS);  // we need to compute values for all odd && composite numbers <= x^(2/3)
+    const size_t odd_comp_bound_seg = ceil((float)odd_comp_bound_float / (float)seg_len) * seg_len;  // largest segment to sieve to reach max bound
 
     printf("\nPomerance-Yang Algorithm Config Information\n");
     printf("-> Using %ld bits per number, count upto 0-%d preimages\n", preimage_count_bits, (1 << preimage_count_bits) - 1);
@@ -152,7 +152,6 @@ int main(int argc, char **argv) {
     printf("-> Segment Length = %ld\n", seg_len);
     printf("-> Number of segments = %ld\n", bound / seg_len);
     printf("-> Bound^(2/3) = %.2f\n", odd_comp_bound_float);
-    printf("-> Integer(Bound^(2/3)) = %ld\n", odd_comp_bound);
     printf("-> Bound^(2/3) Max Segment = %ld\n", odd_comp_bound_seg);
     printf("-> Max number of threads = %d\n", omp_get_max_threads());
 
@@ -224,9 +223,9 @@ int main(int argc, char **argv) {
             for (size_t i = 0; i < sigma_info.len; i++) {
                 set_sigma(&m, &sigma_m, SQUARE(SEG_OFFSET(seg_start, i)), sigma.buf[i]);
 
-                if (SEG_OFFSET(seg_start, i) > odd_comp_bound) {  // this test would be better pulled out of the loop (probably)
-                    printf("\n %ld > %ld (odd_comp_bound)reached by thread %d, breaking...\n\n",
-                           SEG_OFFSET(seg_start, i), odd_comp_bound, omp_get_thread_num());
+                if ((float)SEG_OFFSET(seg_start, i) > odd_comp_bound_float) {  // this test would be better pulled out of the loop (probably)
+                    printf("\n %ld > %.2f (odd_comp_bound_float)reached by thread %d, breaking...\n\n",
+                           SEG_OFFSET(seg_start, i), odd_comp_bound_float, omp_get_thread_num());
                     break;
                 }
 

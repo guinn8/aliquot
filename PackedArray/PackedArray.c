@@ -1,6 +1,5 @@
 // see README.md for usage instructions.
 // (‑●‑●)> released under the WTFPL v2 license, by Gregory Pakosz (@gpakosz)
-#include <string.h>
 
 #ifndef PACKEDARRAY_SELF
 #define PACKEDARRAY_SELF "PackedArray.c"
@@ -378,7 +377,7 @@ void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(con
 #endif
 
 #if !defined(PACKEDARRAY_MALLOC)
-#define PACKEDARRAY_MALLOC(size) malloc(size)
+#define PACKEDARRAY_MALLOC(size) calloc(size, 1)
 #endif
 
 #if !defined(PACKEDARRAY_FREE)
@@ -401,11 +400,10 @@ PackedArray* PackedArray_create(uint64_t bitsPerItem, uint64_t count)
   if (a != NULL)
   {
     a->buffer[((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32 - 1] = 0;
-    a->bitsPerItem = bitsPerItem;
+    a->bitsPerItem = bitsPerItem; 
     a->count = count;
   }
 
-  memset(a->buffer, 0, bufferSize);
 
   return a;
 }

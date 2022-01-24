@@ -126,7 +126,7 @@
 #define PACKEDARRAY_IMPL_START_BIT ((PACKEDARRAY_IMPL_CASE_I * PACKEDARRAY_IMPL_BITS_PER_ITEM) % 32)
 #endif
 #ifndef PACKEDARRAY_IMPL_MASK
-#define PACKEDARRAY_IMPL_MASK (uint64_t)((1ULL << PACKEDARRAY_IMPL_BITS_PER_ITEM) - 1)
+#define PACKEDARRAY_IMPL_MASK (uint32_t)((1ULL << PACKEDARRAY_IMPL_BITS_PER_ITEM) - 1)
 #endif
 
 #if defined(PACKEDARRAY_IMPL_PACK_CASES)
@@ -172,7 +172,7 @@
 #endif
 #else
         {
-          uint64_t low, high;
+          uint32_t low, high;
           low = packed >> PACKEDARRAY_IMPL_START_BIT;
           packed = *++in;
           high = packed << PACKEDARRAY_IMPL_BITS_AVAILABLE;
@@ -194,15 +194,15 @@
 
 #else // #if defined(PACKEDARRAY_IMPL_PACK_CASES) || defined(PACKEDARRAY_IMPL_UNPACK_CASES)
 
-void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint64_t* __restrict out, uint64_t offset, const uint64_t* __restrict in, uint64_t count)
+void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint32_t* __restrict out, uint32_t offset, const uint32_t* __restrict in, uint32_t count)
 {
-  uint64_t startBit;
-  uint64_t packed;
-  const uint64_t* __restrict end;
+  uint32_t startBit;
+  uint32_t packed;
+  const uint32_t* __restrict end;
 
   out += ((uint64_t)offset * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM) / 32;
   startBit = ((uint64_t)offset * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM) % 32;
-  packed = *out & (uint64_t)((1ULL << startBit) - 1);
+  packed = *out & (uint32_t)((1ULL << startBit) - 1);
 
   offset = offset % 32;
   if (count >= 32 - offset)
@@ -239,15 +239,15 @@ void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint6
   PACKEDARRAY_ASSERT(in == end);
   if ((count * PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit) % 32)
   {
-    packed |= *out & ~((uint64_t)(1ULL << ((((uint64_t)count * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit - 1) % 32) + 1)) - 1);
+    packed |= *out & ~((uint32_t)(1ULL << ((((uint64_t)count * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit - 1) % 32) + 1)) - 1);
     *out = packed;
   }
 }
 
-void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(const uint64_t* __restrict in, uint64_t offset, uint64_t* __restrict out, uint64_t count)
+void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(const uint32_t* __restrict in, uint32_t offset, uint32_t* __restrict out, uint32_t count)
 {
-  uint64_t packed;
-  const uint64_t* __restrict end;
+  uint32_t packed;
+  const uint32_t* __restrict end;
 
   in += ((uint64_t)offset * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM) / 32;
   packed = *in;
@@ -386,7 +386,7 @@ void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(con
 
 #include <stddef.h>
 
-PackedArray* PackedArray_create(uint64_t bitsPerItem, uint64_t count)
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint32_t count)
 {
   PackedArray* a;
   size_t bufferSize;
@@ -394,16 +394,15 @@ PackedArray* PackedArray_create(uint64_t bitsPerItem, uint64_t count)
   PACKEDARRAY_ASSERT(bitsPerItem > 0);
   PACKEDARRAY_ASSERT(bitsPerItem <= 32);
 
-  bufferSize = sizeof(uint64_t) * (((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32);
+  bufferSize = sizeof(uint32_t) * (((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32);
   a = (PackedArray*)PACKEDARRAY_MALLOC(sizeof(PackedArray) + bufferSize);
 
   if (a != NULL)
   {
     a->buffer[((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32 - 1] = 0;
-    a->bitsPerItem = bitsPerItem; 
+    a->bitsPerItem = bitsPerItem;
     a->count = count;
   }
-
 
   return a;
 }
@@ -414,7 +413,7 @@ void PackedArray_destroy(PackedArray* a)
   PACKEDARRAY_FREE(a);
 }
 
-void PackedArray_pack(PackedArray* a, const uint64_t offset, const uint64_t* in, uint64_t count)
+void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count)
 {
   PACKEDARRAY_ASSERT(a != NULL);
   PACKEDARRAY_ASSERT(in != NULL);
@@ -456,7 +455,7 @@ void PackedArray_pack(PackedArray* a, const uint64_t offset, const uint64_t* in,
   }
 }
 
-void PackedArray_unpack(const PackedArray* a, const uint64_t offset, uint64_t* out, uint64_t count)
+void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count)
 {
   PACKEDARRAY_ASSERT(a != NULL);
   PACKEDARRAY_ASSERT(out != NULL);
@@ -498,13 +497,13 @@ void PackedArray_unpack(const PackedArray* a, const uint64_t offset, uint64_t* o
   }
 }
 
-void PackedArray_set(PackedArray* a, const uint64_t offset, const uint64_t in)
+void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
 {
-  uint64_t* __restrict out;
-  uint64_t bitsPerItem;
-  uint64_t startBit;
-  uint64_t bitsAvailable;
-  uint64_t mask;
+  uint32_t* __restrict out;
+  uint32_t bitsPerItem;
+  uint32_t startBit;
+  uint32_t bitsAvailable;
+  uint32_t mask;
 
   PACKEDARRAY_ASSERT(a != NULL);
 
@@ -515,7 +514,7 @@ void PackedArray_set(PackedArray* a, const uint64_t offset, const uint64_t in)
 
   bitsAvailable = 32 - startBit;
 
-  mask = (uint64_t)(1ULL << bitsPerItem) - 1;
+  mask = (uint32_t)(1ULL << bitsPerItem) - 1;
   PACKEDARRAY_ASSERT(0 == (~mask & in));
 
   if (bitsPerItem <= bitsAvailable)
@@ -525,7 +524,7 @@ void PackedArray_set(PackedArray* a, const uint64_t offset, const uint64_t in)
   else
   {
     // value spans 2 buffer cells
-    uint64_t low, high;
+    uint32_t low, high;
 
     low = in << startBit;
     high = in >> bitsAvailable;
@@ -536,14 +535,14 @@ void PackedArray_set(PackedArray* a, const uint64_t offset, const uint64_t in)
   }
 }
 
-uint64_t PackedArray_get(const PackedArray* a, const uint64_t offset)
+uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset)
 {
-  const uint64_t* __restrict in;
-  uint64_t bitsPerItem;
-  uint64_t startBit;
-  uint64_t bitsAvailable;
-  uint64_t mask;
-  uint64_t out;
+  const uint32_t* __restrict in;
+  uint32_t bitsPerItem;
+  uint32_t startBit;
+  uint32_t bitsAvailable;
+  uint32_t mask;
+  uint32_t out;
 
   PACKEDARRAY_ASSERT(a != NULL);
 
@@ -554,7 +553,7 @@ uint64_t PackedArray_get(const PackedArray* a, const uint64_t offset)
 
   bitsAvailable = 32 - startBit;
 
-  mask = (uint64_t)(1ULL << bitsPerItem) - 1;
+  mask = (uint32_t)(1ULL << bitsPerItem) - 1;
 
   if (bitsPerItem <= bitsAvailable)
   {
@@ -563,7 +562,7 @@ uint64_t PackedArray_get(const PackedArray* a, const uint64_t offset)
   else
   {
     // out spans 2 buffer cells
-    uint64_t low, high;
+    uint32_t low, high;
 
     low = in[0] >> startBit;
     high = in[1] << (32 - startBit);
@@ -574,21 +573,21 @@ uint64_t PackedArray_get(const PackedArray* a, const uint64_t offset)
   return out;
 }
 
-uint64_t PackedArray_bufferSize(const PackedArray* a)
+uint32_t PackedArray_bufferSize(const PackedArray* a)
 {
   PACKEDARRAY_ASSERT(a != NULL);
-  return (uint64_t)(((uint64_t)a->bitsPerItem * (uint64_t)a->count + 31) / 32);
+  return (uint32_t)(((uint64_t)a->bitsPerItem * (uint64_t)a->count + 31) / 32);
 }
 
 #if !(defined(_MSC_VER) && _MSC_VER >= 1400) && !defined(__GNUC__)
 // log base 2 of an integer, aka the position of the highest bit set
-static uint64_t __PackedArray_log2(uint64_t v)
+static uint32_t __PackedArray_log2(uint32_t v)
 {
   // references
   // http://aggregate.org/MAGIC
   // http://graphics.stanford.edu/~seander/bithacks.html
 
-  static const uint64_t multiplyDeBruijnBitPosition[32] =
+  static const uint32_t multiplyDeBruijnBitPosition[32] =
   {
     0, 9, 1, 10, 13, 21, 2, 29, 11, 14, 16, 18, 22, 25, 3, 30,
     8, 12, 20, 28, 15, 17, 24, 7, 19, 27, 23, 6, 26, 5, 4, 31
@@ -600,12 +599,12 @@ static uint64_t __PackedArray_log2(uint64_t v)
   v |= v >> 8;
   v |= v >> 16;
 
-  return multiplyDeBruijnBitPosition[(uint64_t)(v * 0x7C4ACDDU) >> 27];
+  return multiplyDeBruijnBitPosition[(uint32_t)(v * 0x7C4ACDDU) >> 27];
 }
 #endif
 
 // position of the highest bit set
-static int __PackedArray_highestBitSet(uint64_t v)
+static int __PackedArray_highestBitSet(uint32_t v)
 {
 #if defined(_MSC_VER) && _MSC_VER >= 1400
   unsigned long index;
@@ -617,9 +616,9 @@ static int __PackedArray_highestBitSet(uint64_t v)
 #endif
 }
 
-uint64_t PackedArray_computeBitsPerItem(const uint64_t* in, uint64_t count)
+uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count)
 {
-  uint64_t i, in_max, bitsPerItem;
+  uint32_t i, in_max, bitsPerItem;
 
   in_max = 0;
   for (i = 0; i < count; ++i)
@@ -644,14 +643,14 @@ uint64_t PackedArray_computeBitsPerItem(const uint64_t* in, uint64_t count)
 #include <stdio.h>
 #include <string.h> // memcmp
 
-static void PackedArray_pack_reference(PackedArray* a, const uint64_t offset, const uint64_t* in, uint64_t count)
+static void PackedArray_pack_reference(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count)
 {
-  uint64_t* __restrict out;
-  uint64_t bitsPerItem;
-  uint64_t startBit;
-  uint64_t bitsAvailable;
-  uint64_t mask;
-  uint64_t packed;
+  uint32_t* __restrict out;
+  uint32_t bitsPerItem;
+  uint32_t startBit;
+  uint32_t bitsAvailable;
+  uint32_t mask;
+  uint32_t packed;
 
   assert(a != NULL);
   assert(in != NULL);
@@ -664,13 +663,13 @@ static void PackedArray_pack_reference(PackedArray* a, const uint64_t offset, co
 
   bitsAvailable = 32 - startBit;
 
-  mask = (uint64_t)(1ULL << bitsPerItem) - 1;
+  mask = (uint32_t)(1ULL << bitsPerItem) - 1;
 
   packed = *out;
 
   while (count--)
   {
-    uint64_t value = *in++;
+    uint32_t value = *in++;
 
     assert(0 == (~mask & value));
 
@@ -697,7 +696,7 @@ static void PackedArray_pack_reference(PackedArray* a, const uint64_t offset, co
     else
     {
       // value spans 2 buffer cells
-      uint64_t low, high;
+      uint32_t low, high;
 
       low = value << startBit;
       high = value >> bitsAvailable;
@@ -715,14 +714,14 @@ static void PackedArray_pack_reference(PackedArray* a, const uint64_t offset, co
   *out = packed;
 }
 
-static void PackedArray_unpack_reference(const PackedArray* a, const uint64_t offset, uint64_t* out, uint64_t count)
+static void PackedArray_unpack_reference(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count)
 {
-  const uint64_t* __restrict in;
-  uint64_t bitsPerItem;
-  uint64_t startBit;
-  uint64_t bitsAvailable;
-  uint64_t mask;
-  uint64_t packed;
+  const uint32_t* __restrict in;
+  uint32_t bitsPerItem;
+  uint32_t startBit;
+  uint32_t bitsAvailable;
+  uint32_t mask;
+  uint32_t packed;
 
   assert(a != NULL);
   assert(out != NULL);
@@ -735,13 +734,13 @@ static void PackedArray_unpack_reference(const PackedArray* a, const uint64_t of
 
   bitsAvailable = 32 - startBit;
 
-  mask = (uint64_t)(1ULL << bitsPerItem) - 1;
+  mask = (uint32_t)(1ULL << bitsPerItem) - 1;
 
   packed = *in;
 
   while (count--)
   {
-    uint64_t value;
+    uint32_t value;
 
     if (bitsPerItem <= bitsAvailable)
     {
@@ -763,7 +762,7 @@ static void PackedArray_unpack_reference(const PackedArray* a, const uint64_t of
     else
     {
       // value spans 2 buffer cells
-      uint64_t low, high;
+      uint32_t low, high;
 
       low = packed >> startBit;
       packed = *++in;
@@ -780,7 +779,7 @@ static void PackedArray_unpack_reference(const PackedArray* a, const uint64_t of
 
 int main(void)
 {
-  uint64_t bitsPerItem;
+  uint32_t bitsPerItem;
 
   printf("-- PackedArray self test -------------------------------------------------------\n");
   printf("\n");
@@ -791,7 +790,7 @@ int main(void)
   printf("1 by 1 packing / unpacking:\n");
   for (bitsPerItem = 1; bitsPerItem <= 32; ++bitsPerItem)
   {
-    uint64_t mask = (uint64_t)(1ULL << bitsPerItem) - 1;
+    uint32_t mask = (uint32_t)(1ULL << bitsPerItem) - 1;
     int count;
 
     for (count = 1; count <= 1024; ++count)
@@ -800,8 +799,8 @@ int main(void)
       PackedArray* a2 = PackedArray_create(bitsPerItem, count);
       int i;
 
-      assert(a1->count == (uint64_t)count);
-      assert(a2->count == (uint64_t)count);
+      assert(a1->count == (uint32_t)count);
+      assert(a2->count == (uint32_t)count);
       assert(a1->bitsPerItem == bitsPerItem);
       assert(a2->bitsPerItem == bitsPerItem);
       assert(PackedArray_bufferSize(a1) == PackedArray_bufferSize(a2));
@@ -811,7 +810,7 @@ int main(void)
 
       for (i = 0; i < count; ++i)
       {
-        uint64_t v1, v2;
+        uint32_t v1, v2;
 
         v1 = rand() & mask;
         v2 = v1 + 1;
@@ -832,7 +831,7 @@ int main(void)
 
       for (i = count - 1; i >= 0; --i)
       {
-        uint64_t v1, v2;
+        uint32_t v1, v2;
 
         v1 = rand() & mask;
         v2 = v1 + 1;
@@ -861,20 +860,20 @@ int main(void)
   printf("bulk packing / unpacking:\n");
   for (bitsPerItem = 1; bitsPerItem <= 32; ++bitsPerItem)
   {
-    uint64_t mask = (uint64_t)(1ULL << bitsPerItem) - 1;
+    uint32_t mask = (uint32_t)(1ULL << bitsPerItem) - 1;
     int count;
 
     for (count = 1; count <= 128; ++count)
     {
-      uint64_t* v1;
-      uint64_t* v2;
+      uint32_t* v1;
+      uint32_t* v2;
       PackedArray* a1;
       PackedArray* a2;
       int i, j;
 
-      v1 = (uint64_t*)malloc(sizeof(uint64_t) * count);
+      v1 = (uint32_t*)malloc(sizeof(uint32_t) * count);
       assert(v1 != NULL);
-      v2 = (uint64_t*)malloc(sizeof(uint64_t) * count);
+      v2 = (uint32_t*)malloc(sizeof(uint32_t) * count);
       assert(v2 != NULL);
 
       a1 = PackedArray_create(bitsPerItem, count);
@@ -900,9 +899,9 @@ int main(void)
 
           PackedArray_unpack(a1, i, v2, j);
           assert(bitsPerItem >= PackedArray_computeBitsPerItem(v2, j));
-          assert(memcmp(v1, v2, j * sizeof(uint64_t)) == 0);
+          assert(memcmp(v1, v2, j * sizeof(uint32_t)) == 0);
           PackedArray_unpack_reference(a2, i, v2, j);
-          assert(memcmp(v1, v2, j * sizeof(uint64_t)) == 0);
+          assert(memcmp(v1, v2, j * sizeof(uint32_t)) == 0);
         }
       }
 
@@ -963,31 +962,31 @@ static double getChronometerTime()
 #endif
 
 #define LOOP_COUNT 1000
-static double bench_memcpy(uint64_t* in, uint64_t* out, uint64_t count)
+static double bench_memcpy(uint32_t* in, uint32_t* out, uint32_t count)
 {
   double start, end;
-  uint64_t i;
+  uint32_t i;
 
   start = getChronometerTime();
 
   for (i = 0; i < LOOP_COUNT; ++i)
-    memcpy(out, in, count * sizeof(uint64_t));
+    memcpy(out, in, count * sizeof(uint32_t));
 
   end = getChronometerTime();
 
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_loopcpy(uint64_t* in, uint64_t* out, uint64_t count)
+static double bench_loopcpy(uint32_t* in, uint32_t* out, uint32_t count)
 {
   double start, end;
-  uint64_t i;
+  uint32_t i;
 
   start = getChronometerTime();
 
   for (i = 0; i < LOOP_COUNT; ++i)
   {
-    uint64_t j;
+    uint32_t j;
 
     for (j = 0; j < count; ++j)
       out[j] = in[j];
@@ -998,7 +997,7 @@ static double bench_loopcpy(uint64_t* in, uint64_t* out, uint64_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_pack(uint64_t* in, PackedArray* out, uint64_t count)
+static double bench_pack(uint32_t* in, PackedArray* out, uint32_t count)
 {
   double start, end;
   int i;
@@ -1013,7 +1012,7 @@ static double bench_pack(uint64_t* in, PackedArray* out, uint64_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_unpack(PackedArray* in, uint64_t* out, uint64_t count)
+static double bench_unpack(PackedArray* in, uint32_t* out, uint32_t count)
 {
   double start, end;
   int i;
@@ -1033,11 +1032,11 @@ static double bench_unpack(PackedArray* in, uint64_t* out, uint64_t count)
 int main(void)
 {
   double start, end;
-  uint64_t* b1;
-  uint64_t* b2;
-  uint64_t count, bitsPerItem;
+  uint32_t* b1;
+  uint32_t* b2;
+  uint32_t count, bitsPerItem;
   PackedArray** packed;
-  uint64_t i;
+  uint32_t i;
   double* speed_memcpy;
   double avg_memcpy, min_memcpy, max_memcpy;
   double* speed_loopcpy;
@@ -1051,9 +1050,9 @@ int main(void)
 
   start = getChronometerTime();
 
-  b1 = (uint64_t*)malloc(sizeof(uint64_t) * MAX_ELEMENT_COUNT);
+  b1 = (uint32_t*)malloc(sizeof(uint32_t) * MAX_ELEMENT_COUNT);
   assert(b1 != NULL);
-  b2 = (uint64_t*)malloc(sizeof(uint64_t) * MAX_ELEMENT_COUNT);
+  b2 = (uint32_t*)malloc(sizeof(uint32_t) * MAX_ELEMENT_COUNT);
   assert(b2 != NULL);
 
   packed = (PackedArray**)malloc(sizeof(PackedArray*) * 32);
@@ -1076,8 +1075,8 @@ int main(void)
   for (count = 1, i = 0; count <= MAX_ELEMENT_COUNT; count *= 2, ++i)
   {
     double elapsed = bench_memcpy(b1, b2, count);
-    double speed = count * sizeof(uint64_t) / elapsed;
-    printf("%4d\t%8d\t%9.3f\t%12.3f\n", 32, (uint64_t)(count * sizeof(uint64_t)), elapsed, speed);
+    double speed = count * sizeof(uint32_t) / elapsed;
+    printf("%4d\t%8d\t%9.3f\t%12.3f\n", 32, (uint32_t)(count * sizeof(uint32_t)), elapsed, speed);
 
     avg_memcpy += speed;
     min_memcpy = MIN(min_memcpy, speed);
@@ -1104,8 +1103,8 @@ int main(void)
   for (count = 1, i = 0; count <= MAX_ELEMENT_COUNT; count *= 2, ++i)
   {
     double elapsed = bench_loopcpy(b1, b2, count);
-    double speed = count * sizeof(uint64_t) / elapsed;
-    printf("%4d\t%8d\t%9.3f\t%12.3f\n", 32, (uint64_t)(count * sizeof(uint64_t)), elapsed, speed);
+    double speed = count * sizeof(uint32_t) / elapsed;
+    printf("%4d\t%8d\t%9.3f\t%12.3f\n", 32, (uint32_t)(count * sizeof(uint32_t)), elapsed, speed);
 
     avg_loopcpy += speed;
     min_loopcpy = MIN(min_loopcpy, speed);
@@ -1143,16 +1142,16 @@ int main(void)
     assert(speed_unpack[bitsPerItem - 1] != NULL);
     for (count = 1, i = 0; count <= MAX_ELEMENT_COUNT; count *= 2, ++i)
     {
-      uint64_t mask = (uint64_t)(1ULL << bitsPerItem) - 1;
-      uint64_t j;
+      uint32_t mask = (uint32_t)(1ULL << bitsPerItem) - 1;
+      uint32_t j;
       double elapsed, speed;
 
       for (j = 0; j < count; ++j)
         b2[j] = b1[j] & mask;
 
       elapsed = bench_pack(b2, packed[bitsPerItem - 1], count);
-      speed = count * sizeof(uint64_t) / elapsed;
-      printf("%4d\t%8d\t%9.3f\t%12.3f", bitsPerItem, (uint64_t)(count * sizeof(uint64_t)), elapsed, speed);
+      speed = count * sizeof(uint32_t) / elapsed;
+      printf("%4d\t%8d\t%9.3f\t%12.3f", bitsPerItem, (uint32_t)(count * sizeof(uint32_t)), elapsed, speed);
 
       avg_pack += speed;
       min_pack = MIN(min_pack, speed);
@@ -1163,8 +1162,8 @@ int main(void)
       printf("\t");
 
       elapsed = bench_unpack(packed[bitsPerItem - 1], b2, count);
-      speed = count * sizeof(uint64_t) / elapsed;
-      printf("%4d\t%8d\t%9.3f\t%12.3f", bitsPerItem, (uint64_t)(count * sizeof(uint64_t)), elapsed, speed);
+      speed = count * sizeof(uint32_t) / elapsed;
+      printf("%4d\t%8d\t%9.3f\t%12.3f", bitsPerItem, (uint32_t)(count * sizeof(uint32_t)), elapsed, speed);
 
       avg_unpack += speed;
       min_unpack = MIN(min_unpack, speed);
@@ -1276,7 +1275,7 @@ int main(void)
       max_unpack = MAX(max_unpack, speed);
     }
 
-    printf("%7d\t", (uint64_t)sizeof(uint64_t) * count);
+    printf("%7d\t", (uint32_t)sizeof(uint32_t) * count);
 
     avg_pack /= 32;
     printf("%10.3f\t%10.3f\t%10.3f", avg_pack, min_pack, max_pack);

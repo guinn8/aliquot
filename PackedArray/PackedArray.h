@@ -11,7 +11,7 @@ extern "C" {
 
 PackedArray principle:
   . compact storage of <= 32 bits items
-  . items are tightly packed into a buffer of uint64_t integers
+  . items are tightly packed into a buffer of uint32_t integers
 
 PackedArray requirements:
   . you must know in advance how many bits are needed to hold a single item
@@ -33,15 +33,15 @@ PackedArray general in memory representation:
 
 struct _PackedArray
 {
-  uint64_t bitsPerItem;
-  uint64_t count;
+  uint32_t bitsPerItem;
+  uint32_t count;
 
-  uint64_t padding[2];
+  uint32_t padding[2];
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 4200)
 #endif // #ifdef _MSC_VER
-  uint64_t buffer[];
+  uint32_t buffer[];
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif // #ifdef _MSC_VER
@@ -49,21 +49,21 @@ struct _PackedArray
 typedef struct _PackedArray PackedArray;
 
 // creation / destruction
-PackedArray* PackedArray_create(uint64_t bitsPerItem, uint64_t count);
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint32_t count);
 void PackedArray_destroy(PackedArray* a);
 
 // packing / unpacking
 // offset is expressed in number of elements
-void PackedArray_pack(PackedArray* a, const uint64_t offset, const uint64_t* in, uint64_t count);
-void PackedArray_unpack(const PackedArray* a, const uint64_t offset, uint64_t* out, uint64_t count);
+void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count);
+void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count);
 
 // single item access
-void PackedArray_set(PackedArray* a, const uint64_t offset, const uint64_t in);
-uint64_t PackedArray_get(const PackedArray* a, const uint64_t offset);
+void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in);
+uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset);
 
 // helpers
-uint64_t PackedArray_bufferSize(const PackedArray* a);
-uint64_t PackedArray_computeBitsPerItem(const uint64_t* in, uint64_t count);
+uint32_t PackedArray_bufferSize(const PackedArray* a);
+uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count);
 
 #ifdef __cplusplus
 }

@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
         double thread_start = omp_get_wtime();
         u64_buf_t sigma = {
             .info = &sigma_info,
-            .buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8),
+            .buf = (uint64_t *)calloc(sigma_info.len, sigma_info.item_size_bits / 8), 
         };
         u64_buf_t sieve = {
             .info = &sieve_info,
@@ -299,7 +299,7 @@ inline void flush_buf(PackedArray *f, u64_buf_t *writebuf, size_t *bufind) {
         for (size_t i = 0; i < *bufind; i++) {
             size_t offset = (writebuf->buf[i] / 2) - 1;
             uint8_t count = PackedArray_get(f, offset);
-            if (count + 1 < (1 << f->bitsPerItem)) {  // 2 ** f->bitsPerItem, prevents overflow
+            if (count + 1 < (1 << f->bitsPerItem)) {  // 2^f->bitsPerItem, prevents overflow
                 PackedArray_set(f, offset, count + 1);
             }
         }

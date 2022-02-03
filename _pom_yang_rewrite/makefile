@@ -1,17 +1,19 @@
 SRCDIR=../src
 INCS=-I../inc -I../PackedArray
 LINKS= -lpthread -lm 
-CFLAGS=-g -fopenmp -Wall -Werror -Wextra -Wshadow -std=c99 -Wpedantic 
+CFLAGS=-g -fopenmp -Wall -Werror -Wextra -Wshadow -std=c99 -Wpedantic -O3
+CC=gcc
 
-main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c PackedArray.o
-	gcc $(CFLAGS) -O3 $(INCS) -o $@ $^ $(LINKS)
+bin/pom_yang_cli: bin/pom_yang.o bin/PackedArray.o pom_yang_cli.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c
+	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
 
-debug_main: main.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c  PackedArray.o
-	gcc $(CFLAGS) $(INCS) -DDEBUG_ASSERT_ON -o  $@ $^ $(LINKS)
+# -DDEBUG_ASSERT_ON if you want to *slowly* double check some steps 
+bin/pom_yang.o: pom_yang.c 
+	$(CC) -c $(CFLAGS) $^ -o $@ 
 
-PackedArray.o: ../PackedArray/PackedArray.c
-	gcc -c  $^
+bin/PackedArray.o: ../PackedArray/PackedArray.c
+	$(CC) -c -O3 $^ -o $@ 
 
 .PHONY: clean
 clean: 
-	rm main debug_main
+	rm bin/*

@@ -9,17 +9,13 @@
  * 
  */
 
-#include <assert.h>
-#include <getopt.h>
-#include <math.h>
-#include <omp.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
+#include "pom_yang.h"
 
-#include "../PackedArray/PackedArray.h"
+#include <omp.h>
+#include <assert.h>
+#include <math.h>
+#include <stdio.h>
+
 #include "../inc/properSumDiv.h"
 #include "../inc/sieve_rewrite.h"
 
@@ -29,7 +25,6 @@
 #define SEG_OFFSET(seg_start, i) ((seg_start) + (2 * (i)) + 1)
 #define TWO_THIRDS .6666666666666666666666
 #define BYTES_TO_GB 0.000000001
-#define OUTPUT_FILE "counts.csv"
 
 #ifdef DEBUG_ASSERT_ON
 #define DEBUG_ASSERT(x) x
@@ -37,48 +32,11 @@
 #define DEBUG_ASSERT(x)
 #endif
 
-typedef struct {
-    size_t preimage_count_bits;
-    size_t bound;
-    size_t seg_len;
-    size_t writebuf_len;
-    size_t num_threads;
-    bool just_config;
-} PomYang_config;
-static struct option long_options[] = {
-    {"bound", required_argument, NULL, 'b'},
-    {"seg_len", required_argument, NULL, 's'},
-    {"writebuf_len", required_argument, NULL, 'w'},
-    {"just_config", no_argument, NULL, 'j'},
-    {"num_threads", required_argument, NULL, 't'},
-    {"preimage_count_bits", required_argument, NULL, 'p'},
-    {0, 0, 0, 0}};
-
-void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m);
-void record_image(uint64_t x, PackedArray *f);
-inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *writebuf, size_t writebuf_len, size_t *bufind);
-void flush_buf(PackedArray *f, uint64_t *writebuf, size_t *bufind);
-void usage(void);
-uint64_t *tabulate_aliquot_parents(PackedArray *f);
-PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg);
-void print_to_file(uint64_t *count, size_t bound, size_t seg_len, float runtime);
-void get_args(PomYang_config *cfg, int argc, char **argv);
-void print_config(const PomYang_config *cfg, double odd_comp_bound, size_t odd_comp_bound_seg);
-
-int main(int argc, char **argv) {
-    PomYang_config cfg = {0};
-    get_args(&cfg, argc, argv);
-
-    double start_time = omp_get_wtime();
-    PackedArray *f = Pomerance_Yang_aliquot(&cfg);
-    uint64_t *count = tabulate_aliquot_parents(f);
-    free(f);
-
-    double PomYang_time = omp_get_wtime() - start_time;
-    printf("\nCompleted in %.2fs\n\n", PomYang_time);
-    print_to_file(count, cfg.bound, cfg.seg_len, PomYang_time);
-    exit(EXIT_SUCCESS);
-}
+static inline void set_sigma(uint64_t *m, uint64_t *sigma_m, const uint64_t set_m, const uint64_t set_sigma_m);
+static inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *writebuf, size_t writebuf_len, size_t *bufind);
+static void flush_buf(PackedArray *f, uint64_t *writebuf, size_t *bufind);
+static uint64_t *tabulate_aliquot_parents(PackedArray *f);
+// static void print_config(const PomYang_config *cfg, double odd_comp_bound, size_t odd_comp_bound_seg);
 
 PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
     assert(EVEN(cfg->bound));
@@ -104,7 +62,7 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
         uint64_t m, sigma_m;
         size_t write_buf_ind = 0;
 
-#pragma omp for schedule(dynamic)
+#pragma omp for schedule(guided)
         for (size_t seg_start = 0; seg_start < cfg->bound; seg_start += cfg->seg_len) {
             sigma_sieve_odd(cfg->seg_len, seg_start, sigma, sigma_scratch, 0);
 
@@ -155,28 +113,9 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
     return f;
 }
 
-void print_to_file(uint64_t *count, size_t bound, size_t seg_len, float runtime) {
-    const size_t max_line_len = 10000;
-    char *header_line = calloc(max_line_len, sizeof(char));
-    if (0 != access(OUTPUT_FILE, F_OK)) {
-        snprintf(header_line, max_line_len, "timestamp, bound, segment_length, timing, num_threads");
-        for (size_t i = 0; i <= UINT8_MAX; i++) {
-            snprintf(header_line + strlen(header_line), max_line_len - strlen(header_line), ", %ld", i);
-        }
-    }
-
-    FILE *fp = fopen("counts.csv", "a");
-    fprintf(fp, "%s\n", header_line);
-    fprintf(fp, "%ld, ", time(NULL));
-    fprintf(fp, "%ld, ", bound);
-    fprintf(fp, "%ld, ", seg_len);
-    fprintf(fp, "%.2f, ", runtime);
-    fprintf(fp, "%d", omp_get_max_threads());
-
-    for (size_t i = 0; i <= UINT8_MAX; i++) {
-        fprintf(fp, ", %ld", count[i]);
-    }
-    fclose(fp);
+uint64_t *count_kparent_aliquot(const PomYang_config *cfg) {
+    PackedArray *f = Pomerance_Yang_aliquot(cfg);
+    return tabulate_aliquot_parents(f);
 }
 
 inline void set_sigma(uint64_t *m, uint64_t *sigma_m, uint64_t set_m, uint64_t set_sigma_m) {
@@ -186,6 +125,7 @@ inline void set_sigma(uint64_t *m, uint64_t *sigma_m, uint64_t set_m, uint64_t s
 }
 
 void flush_buf(PackedArray *f, uint64_t *writebuf, size_t *bufind) {
+    // double s = omp_get_wtime();
 #pragma omp critical
     {
         for (size_t i = 0; i < *bufind; i++) {
@@ -196,11 +136,12 @@ void flush_buf(PackedArray *f, uint64_t *writebuf, size_t *bufind) {
             }
         }
     }
+    // printf("Thread %d drained buffer in %.2f, %.0f per second \n", omp_get_thread_num(), omp_get_wtime() - s, (double)*bufind / (omp_get_wtime() - s));
 
     *bufind = 0;
 }
 
-inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *writebuf, size_t writebuf_len, size_t *bufind) {
+static inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *writebuf, size_t writebuf_len, size_t *bufind) {
     DEBUG_ASSERT(assert(x > 0));
     DEBUG_ASSERT(assert(EVEN(x)));
     DEBUG_ASSERT(assert(*bufind + 1 < writebuf_len));
@@ -212,11 +153,6 @@ inline void buffered_record_image(uint64_t x, PackedArray *f, uint64_t *writebuf
         flush_buf(f, writebuf, bufind);
         *bufind = 0;
     }
-}
-
-void usage(void) {
-    printf("\nFast and Memory effiecent implementation of the Pomerance-Yang algorithm enumerating preimages under s()\n");
-    printf("Usage: [--bound=][--seg_len=][--writebuf_len=][(OPTIONAL)--just_config][(OPTIONAL)--num_threads=][(OPTIONAL)--preimage_count_bits]\n\n");
 }
 
 uint64_t *tabulate_aliquot_parents(PackedArray *f) {
@@ -236,52 +172,17 @@ uint64_t *tabulate_aliquot_parents(PackedArray *f) {
     return count;
 }
 
-void get_args(PomYang_config *cfg, int argc, char **argv) {
-    int opt_code, option_index;
-    while (-1 != (opt_code = getopt_long(argc, argv, "", long_options, &option_index))) {
-        switch (opt_code) {
-            case 'b':
-                cfg->bound = strtol(optarg, NULL, 10);
-                break;
-            case 's':
-                cfg->seg_len = strtol(optarg, NULL, 10);
-                break;
-            case 'w':
-                cfg->writebuf_len = strtol(optarg, NULL, 10);
-                break;
-            case 'j':
-                cfg->just_config = true;
-                break;
-            case 't':
-                cfg->num_threads = strtol(optarg, NULL, 10);
-                break;
-            case 'p':
-                cfg->preimage_count_bits = strtol(optarg, NULL, 10);
-                break;
-            default:
-                usage();
-                assert(0);
-        }
-    }
+// void print_config(const PomYang_config *cfg, double odd_comp_bound, size_t odd_comp_bound_seg) {
+//     printf("\nPomerance-Yang Algorithm Config Information\n");
+//     printf("-> Using %ld bits per number, count upto 0-%d preimages\n", cfg->preimage_count_bits, (1 << cfg->preimage_count_bits) - 1);
+//     printf("-> Bound = %ld\n", cfg->bound);
+//     printf("-> Segment Length = %ld\n", cfg->seg_len);
+//     printf("-> Number of segments = %ld\n", cfg->bound / cfg->seg_len);
+//     printf("-> Max number of threads = %d\n", omp_get_max_threads());
+//     printf("-> Bound^(2/3) = %.2f\n", odd_comp_bound);
+//     printf("-> Bound^(2/3) Max Segment = %ld\n", odd_comp_bound_seg);
 
-    if (0 == cfg->bound ||
-        0 == cfg->seg_len ||
-        0 == cfg->writebuf_len) {  // required args
-        usage();
-        assert(0);
-    }
-}
-void print_config(const PomYang_config *cfg, double odd_comp_bound, size_t odd_comp_bound_seg) {
-    printf("\nPomerance-Yang Algorithm Config Information\n");
-    printf("-> Using %ld bits per number, count upto 0-%d preimages\n", cfg->preimage_count_bits, (1 << cfg->preimage_count_bits) - 1);
-    printf("-> Bound = %ld\n", cfg->bound);
-    printf("-> Segment Length = %ld\n", cfg->seg_len);
-    printf("-> Number of segments = %ld\n", cfg->bound / cfg->seg_len);
-    printf("-> Max number of threads = %d\n", omp_get_max_threads());
-    printf("-> Bound^(2/3) = %.2f\n", odd_comp_bound);
-    printf("-> Bound^(2/3) Max Segment = %ld\n", odd_comp_bound_seg);
-
-    if (true == cfg->just_config) {
-        exit(EXIT_SUCCESS);
-    }
-}
+//     if (true == cfg->just_config) {
+//         exit(EXIT_SUCCESS);
+//     }
+// }

@@ -34,7 +34,7 @@ PackedArray general in memory representation:
 struct _PackedArray
 {
   uint32_t bitsPerItem;
-  uint32_t count;
+  uint64_t count;
 
   uint32_t padding[2];
 #ifdef _MSC_VER
@@ -49,21 +49,21 @@ struct _PackedArray
 typedef struct _PackedArray PackedArray;
 
 // creation / destruction
-PackedArray* PackedArray_create(uint32_t bitsPerItem, uint32_t count);
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count);
 void PackedArray_destroy(PackedArray* a);
 
 // packing / unpacking
 // offset is expressed in number of elements
-void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count);
-void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count);
+void PackedArray_pack(PackedArray* a, const uint64_t offset, const uint32_t* in, uint64_t count);
+void PackedArray_unpack(const PackedArray* a, const uint64_t offset, uint32_t* out, uint64_t count);
 
 // single item access
-void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in);
-uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset);
+void PackedArray_set(PackedArray* a, const uint64_t offset, const uint32_t in);
+uint32_t PackedArray_get(const PackedArray* a, const uint64_t offset);
 
 // helpers
 uint32_t PackedArray_bufferSize(const PackedArray* a);
-uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count);
+uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint64_t count);
 
 #ifdef __cplusplus
 }

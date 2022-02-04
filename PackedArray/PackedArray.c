@@ -194,7 +194,7 @@
 
 #else // #if defined(PACKEDARRAY_IMPL_PACK_CASES) || defined(PACKEDARRAY_IMPL_UNPACK_CASES)
 
-void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint32_t* __restrict out, uint32_t offset, const uint32_t* __restrict in, uint32_t count)
+void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint32_t* __restrict out, uint64_t offset, const uint32_t* __restrict in, uint64_t count)
 {
   uint32_t startBit;
   uint32_t packed;
@@ -244,7 +244,7 @@ void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint3
   }
 }
 
-void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(const uint32_t* __restrict in, uint32_t offset, uint32_t* __restrict out, uint32_t count)
+void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(const uint32_t* __restrict in, uint64_t offset, uint32_t* __restrict out, uint64_t count)
 {
   uint32_t packed;
   const uint32_t* __restrict end;
@@ -386,7 +386,7 @@ void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(con
 
 #include <stddef.h>
 
-PackedArray* PackedArray_create(uint32_t bitsPerItem, uint32_t count)
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count)
 {
   PackedArray* a;
   size_t bufferSize;
@@ -413,7 +413,7 @@ void PackedArray_destroy(PackedArray* a)
   PACKEDARRAY_FREE(a);
 }
 
-void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count)
+void PackedArray_pack(PackedArray* a, const uint64_t offset, const uint32_t* in, uint64_t count)
 {
   PACKEDARRAY_ASSERT(a != NULL);
   PACKEDARRAY_ASSERT(in != NULL);
@@ -455,7 +455,7 @@ void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in,
   }
 }
 
-void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count)
+void PackedArray_unpack(const PackedArray* a, const uint64_t offset, uint32_t* out, uint64_t count)
 {
   PACKEDARRAY_ASSERT(a != NULL);
   PACKEDARRAY_ASSERT(out != NULL);
@@ -497,7 +497,7 @@ void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* o
   }
 }
 
-void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
+void PackedArray_set(PackedArray* a, const uint64_t offset, const uint32_t in)
 {
   uint32_t* __restrict out;
   uint32_t bitsPerItem;
@@ -535,7 +535,7 @@ void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
   }
 }
 
-uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset)
+uint32_t PackedArray_get(const PackedArray* a, const uint64_t offset)
 {
   const uint32_t* __restrict in;
   uint32_t bitsPerItem;
@@ -616,7 +616,7 @@ static int __PackedArray_highestBitSet(uint32_t v)
 #endif
 }
 
-uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count)
+uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint64_t count)
 {
   uint32_t i, in_max, bitsPerItem;
 
@@ -643,7 +643,7 @@ uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count)
 #include <stdio.h>
 #include <string.h> // memcmp
 
-static void PackedArray_pack_reference(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count)
+static void PackedArray_pack_reference(PackedArray* a, const uint64_t offset, const uint32_t* in, uint64_t count)
 {
   uint32_t* __restrict out;
   uint32_t bitsPerItem;
@@ -714,7 +714,7 @@ static void PackedArray_pack_reference(PackedArray* a, const uint32_t offset, co
   *out = packed;
 }
 
-static void PackedArray_unpack_reference(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count)
+static void PackedArray_unpack_reference(const PackedArray* a, const uint64_t offset, uint32_t* out, uint64_t count)
 {
   const uint32_t* __restrict in;
   uint32_t bitsPerItem;
@@ -962,7 +962,7 @@ static double getChronometerTime()
 #endif
 
 #define LOOP_COUNT 1000
-static double bench_memcpy(uint32_t* in, uint32_t* out, uint32_t count)
+static double bench_memcpy(uint32_t* in, uint32_t* out, uint64_t count)
 {
   double start, end;
   uint32_t i;
@@ -977,7 +977,7 @@ static double bench_memcpy(uint32_t* in, uint32_t* out, uint32_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_loopcpy(uint32_t* in, uint32_t* out, uint32_t count)
+static double bench_loopcpy(uint32_t* in, uint32_t* out, uint64_t count)
 {
   double start, end;
   uint32_t i;
@@ -997,7 +997,7 @@ static double bench_loopcpy(uint32_t* in, uint32_t* out, uint32_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_pack(uint32_t* in, PackedArray* out, uint32_t count)
+static double bench_pack(uint32_t* in, PackedArray* out, uint64_t count)
 {
   double start, end;
   int i;
@@ -1012,7 +1012,7 @@ static double bench_pack(uint32_t* in, PackedArray* out, uint32_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_unpack(PackedArray* in, uint32_t* out, uint32_t count)
+static double bench_unpack(PackedArray* in, uint32_t* out, uint64_t count)
 {
   double start, end;
   int i;
@@ -1034,7 +1034,7 @@ int main(void)
   double start, end;
   uint32_t* b1;
   uint32_t* b2;
-  uint32_t count, bitsPerItem;
+  uint64_t count, bitsPerItem;
   PackedArray** packed;
   uint32_t i;
   double* speed_memcpy;

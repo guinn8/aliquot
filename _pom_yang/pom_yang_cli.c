@@ -16,9 +16,7 @@
 #include <assert.h>
 #include <time.h>
 
-
 #include "./pom_yang.h"
-
 
 #define OUTPUT_FILE "counts.csv"
 
@@ -29,6 +27,7 @@ static struct option long_options[] = {
     {"just_config", no_argument, NULL, 'j'},
     {"num_threads", required_argument, NULL, 't'},
     {"preimage_count_bits", required_argument, NULL, 'p'},
+    {"quiet", required_argument, NULL, 'q'},
     {0, 0, 0, 0},
 };
 
@@ -72,7 +71,7 @@ static void print_to_file(uint64_t *count, size_t bound, size_t seg_len, float r
     fprintf(fp, "%ld, ", bound);
     fprintf(fp, "%ld, ", seg_len);
     fprintf(fp, "%.2f, ", runtime);
-    // fprintf(fp, "%d", omp_get_max_threads());  
+    // fprintf(fp, "%d", omp_get_max_threads());
 
     for (size_t i = 0; i <= UINT8_MAX; i++) {
         fprintf(fp, ", %ld", count[i]);
@@ -81,9 +80,9 @@ static void print_to_file(uint64_t *count, size_t bound, size_t seg_len, float r
 }
 
 static void get_args(PomYang_config *cfg, int argc, char **argv) {
-    // default values for optional parameters
     cfg->preimage_count_bits = 8;
     cfg->just_config = false;
+    cfg->quiet = false;
     cfg->num_threads = 1;
 
     int opt_code, option_index;
@@ -106,6 +105,9 @@ static void get_args(PomYang_config *cfg, int argc, char **argv) {
                 break;
             case 'p':
                 cfg->preimage_count_bits = strtol(optarg, NULL, 10);
+                break;
+            case 'q':
+                cfg->quiet = true;
                 break;
             default:
                 usage();

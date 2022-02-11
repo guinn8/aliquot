@@ -71,7 +71,7 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
     print_config(cfg, odd_comp_bound, odd_comp_bound_seg);
 
     init_sigma_sieve(cfg->bound);
-    PackedArray *f = PackedArray_create(cfg->preimage_count_bits, cfg->bound / 2, 1000);
+    PackedArray *f = PackedArray_create(cfg->preimage_count_bits, cfg->bound / 2, 100000);
 #pragma omp parallel shared(f)
     {
         double thread_start = omp_get_wtime();
@@ -115,7 +115,7 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
                     }
 
                     uint64_t s_m = sigma_m - m;
-                    if (!is_prime[i] && (m > 1) && (s_m <= cfg->bound)) {  // todo: is (m > 1) needed? is it just a hacky workaround
+                    if (!is_prime[i] && s_m > 0 && (s_m <= cfg->bound)) {
                         record_image(s_m, f);
                     }
                 }
@@ -163,7 +163,7 @@ uint64_t *tabulate_aliquot_parents(PackedArray *f) {
     for (size_t i = 0; i < f->count; i++) {
         const uint8_t num_preimages = PackedArray_get(f, i);
         count[num_preimages]++;
-    }
+    } 
 
     LOG(quiet, "\nTabulation completed in %.2fs\n", omp_get_wtime() - time_tabulate);
     LOG(0, "Count of odd k-parent numbers under %ld\n", f->count * 2);

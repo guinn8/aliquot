@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <omp.h>
 
 /*
 
@@ -31,10 +32,16 @@ PackedArray general in memory representation:
 
 */
 
+typedef struct {
+  uint32_t num_locks;
+  uint32_t lock_interval;
+  omp_lock_t *locks;
+} lock_info_t;
 struct _PackedArray
 {
   uint32_t bitsPerItem;
   uint64_t count;
+  lock_info_t lock_info;
 
   uint32_t padding[2];
 #ifdef _MSC_VER
@@ -49,7 +56,7 @@ struct _PackedArray
 typedef struct _PackedArray PackedArray;
 
 // creation / destruction
-PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count);
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);
 void PackedArray_destroy(PackedArray* a);
 
 // packing / unpacking
@@ -64,7 +71,8 @@ uint32_t PackedArray_get(const PackedArray* a, const uint64_t offset);
 // helpers
 uint32_t PackedArray_bufferSize(const PackedArray* a);
 uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint64_t count);
-
+void PackedArray_unlock_offset(PackedArray* a, const uint64_t offset);
+void PackedArray_lock_offset(PackedArray* a, const uint64_t offset);
 #ifdef __cplusplus
 }
 #endif

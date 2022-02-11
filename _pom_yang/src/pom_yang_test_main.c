@@ -69,11 +69,7 @@ int main(int argc, char **argv) {
 
     numbits_1_10_to_the_5();
     numbits_2_10_to_the_5();
-    numbits_3_10_to_the_5();
     numbits_4_10_to_the_5();
-    numbits_5_10_to_the_5();
-    numbits_6_10_to_the_5();
-    numbits_7_10_to_the_5();
     numbits_8_10_to_the_5();
 
     writebuf_0_edge_10_to_the_6();
@@ -500,7 +496,7 @@ void simple_10_to_the_10(void) {
     PomYang_config cfg = {
         .preimage_count_bits = 1,
         .bound = 10000000000,
-        .seg_len = 50000000,
+        .seg_len = 5000000,
         .writebuf_len = 1000000,
         .num_threads = 8,
         .just_config = false,

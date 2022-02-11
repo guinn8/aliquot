@@ -385,8 +385,9 @@ void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(con
 #endif
 
 #include <stddef.h>
+#include <math.h>
 
-PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count)
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks)
 {
   PackedArray* a;
   size_t bufferSize;
@@ -404,7 +405,29 @@ PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count)
     a->count = count;
   }
 
+  a->lock_info.num_locks = num_locks;
+
+  // this will result some locks hanging off the end of the array, not really a big
+  // deal that it doesn't perfectly match up as all elements are covered
+  a->lock_info.lock_interval = ceil((float)bufferSize / (float)num_locks);
+  a->lock_info.locks = calloc(num_locks, sizeof(omp_lock_t));
+  for (size_t i = 0; i < num_locks; i++) {
+    omp_init_lock(&a->lock_info.locks[i]);
+  }
+
   return a;
+}
+
+void PackedArray_lock_offset(PackedArray* a, const uint64_t offset) {
+  size_t bufind = ((uint64_t)offset * (uint64_t)a->bitsPerItem) / 32;
+  size_t lockind = bufind / a->lock_info.lock_interval;  // using implicit floor
+  omp_set_lock(&(a->lock_info.locks[lockind]));
+}
+
+void PackedArray_unlock_offset(PackedArray* a, const uint64_t offset) {
+  size_t bufind = ((uint64_t)offset * (uint64_t)a->bitsPerItem) / 32;
+  size_t lockind = bufind / a->lock_info.lock_interval;  // using implicit floor
+  omp_unset_lock(&(a->lock_info.locks[lockind]));
 }
 
 void PackedArray_destroy(PackedArray* a)
@@ -523,6 +546,7 @@ void PackedArray_set(PackedArray* a, const uint64_t offset, const uint32_t in)
   }
   else
   {
+    PACKEDARRAY_ASSERT(0); // not supporting num_bits that doesnt evenly divide 32
     // value spans 2 buffer cells
     uint32_t low, high;
 
@@ -561,6 +585,8 @@ uint32_t PackedArray_get(const PackedArray* a, const uint64_t offset)
   }
   else
   {
+    PACKEDARRAY_ASSERT(0); // not supporting num_bits that doesnt evenly divide 32
+
     // out spans 2 buffer cells
     uint32_t low, high;
 

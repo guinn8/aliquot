@@ -21,4 +21,4 @@ obj/PackedArray.o: ../PackedArray/PackedArray.c
 
 .PHONY: clean
 clean: 
-	rm bin/*
+	rm obj/*

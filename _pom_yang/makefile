@@ -1,22 +1,23 @@
-SRCDIR=../src
-INCS=-I../inc -I../PackedArray
-LINKS= -lpthread -lm 
-CFLAGS=-g -fopenmp -Wall -Werror -Wextra -Wshadow -std=c99 -Wpedantic -O3
-CC=gcc
+# todo: compile sources all (non-main) sources into objects, look into grouped targets
 
-bin/pom_yang_cli: bin/pom_yang.o bin/PackedArray.o pom_yang_cli.c $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c
+INCS= -I../inc -I../PackedArray
+LINKS= -lpthread -lm 
+CFLAGS= -g -fopenmp -Wall -Werror -Wextra -Wshadow -std=c99 -Wpedantic -O3
+CC= gcc
+
+cli: src/pom_yang_cli_main.c src/sieve_rewrite.c src/properSumDiv.c obj/pom_yang.o obj/PackedArray.o
 	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
 
-# -DDEBUG_ASSERT_ON if you want to *slowly* double check the sieving results
-bin/pom_yang.o: pom_yang.c 
+test: src/pom_yang_test_main.c src/sieve_rewrite.c src/properSumDiv.c src/brute_force_preimages.c obj/pom_yang.o obj/PackedArray.o
+	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
+
+# -DDEBUG_ASSERT_ON if you want to *slowly* double check the sieving results and some misc. other asserts
+obj/pom_yang.o: src/pom_yang.c 
 	$(CC) -c $(CFLAGS) $^ -o $@ 
 
-bin/PackedArray.o: ../PackedArray/PackedArray.c
+obj/PackedArray.o: ../PackedArray/PackedArray.c
 	$(CC) -c -O3 $^ -o $@ 
 
-test: bin/pom_yang_test
-bin/pom_yang_test: pom_yang_test.c bin/pom_yang.o bin/PackedArray.o $(SRCDIR)/sieve_rewrite.c $(SRCDIR)/properSumDiv.c
-	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
 
 .PHONY: clean
 clean: 

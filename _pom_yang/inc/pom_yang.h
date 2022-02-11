@@ -13,7 +13,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include "../PackedArray/PackedArray.h"
+#include "../../PackedArray/PackedArray.h"
 
 typedef struct {
     size_t preimage_count_bits;

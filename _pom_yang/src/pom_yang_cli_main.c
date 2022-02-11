@@ -16,7 +16,7 @@
 #include <assert.h>
 #include <time.h>
 
-#include "./pom_yang.h"
+#include "../inc/pom_yang.h"
 
 #define OUTPUT_FILE "counts.csv"
 

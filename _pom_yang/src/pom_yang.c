@@ -18,7 +18,7 @@
  *     can access a data-structure in a reentrant manner unless specifically designed for that purpose.
  */
 
-#include "pom_yang.h"
+#include "../inc/pom_yang.h"
 
 #include <omp.h>
 #include <assert.h>

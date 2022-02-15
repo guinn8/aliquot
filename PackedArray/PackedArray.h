@@ -58,6 +58,7 @@ typedef struct _PackedArray PackedArray;
 // creation / destruction
 PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);
 void PackedArray_destroy(PackedArray* a);
+uint64_t PackedArray_estimate_heap(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);
 
 // packing / unpacking
 // offset is expressed in number of elements

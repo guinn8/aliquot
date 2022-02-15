@@ -39,7 +39,6 @@
 #define SEG_OFFSET(seg_start, i) ((seg_start) + (2 * (i)) + 1)
 #define SEG_DEOFFSET(seg_start, m) ((m - 1 - seg_start) / 2)
 #define TWO_THIRDS .6666666666666666666666
-#define BYTES_TO_GB 0.000000001
 #define LOG(shush, fmt, ...)                          \
     do {                                              \
         if (!shush) {                                 \
@@ -80,7 +79,7 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
 
 #pragma omp for schedule(dynamic, 1)
         for (size_t seg_start = 0; seg_start < cfg->bound; seg_start += cfg->seg_len) {
-            sigma_sieve_odd(worker, seg_start, false);
+            sigma_sieve_odd(worker, seg_start);
             get_primes(worker);
 
             for (uint64_t m = seg_start + 1; m < seg_start + cfg->seg_len; m += 2) {
@@ -100,7 +99,7 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
             }
 
             if (seg_start < odd_comp_bound) {
-                sigma_sieve_odd(worker, seg_start, true);  // ! squared
+                sigma_sieve_odd_squared(worker, seg_start);  // ! squared
 
                 uint64_t seg_bound = MIN((seg_start + cfg->seg_len), odd_comp_bound);
                 for (uint64_t m = seg_start + 1; m < seg_bound; m += 2) {
@@ -168,7 +167,7 @@ void print_config(const PomYang_config *cfg, double odd_comp_bound) {
     printf("-> Max number of threads = %d\n", omp_get_max_threads());
     printf("-> Bound^(2/3) = %.2f\n", odd_comp_bound);
     printf("\n");
-    if (true == cfg->just_config) {
+    if (true == cfg->est_heap) {
         exit(EXIT_SUCCESS);
     }
 }

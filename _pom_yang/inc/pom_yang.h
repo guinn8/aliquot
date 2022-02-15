@@ -21,7 +21,7 @@ typedef struct {
     size_t seg_len;
     size_t num_locks;
     size_t num_threads;
-    bool just_config;
+    bool est_heap;
     bool quiet;
 } PomYang_config;
 

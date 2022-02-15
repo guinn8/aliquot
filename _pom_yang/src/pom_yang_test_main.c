@@ -95,7 +95,7 @@ void bruteforce_kparent_aliquot_10024(void) {
         .seg_len = 56,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -115,7 +115,7 @@ void bruteforce_kparent_aliquot_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -136,7 +136,7 @@ void bruteforce_kparent_aliquot_2_to_the_20(void) {
         .seg_len = 65536,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -155,7 +155,7 @@ void bruteforce_kparent_aliquot_2_to_the_3(void) {
         .seg_len = 4,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -174,7 +174,7 @@ void bruteforce_kparent_aliquot_24(void) {
         .seg_len = 8,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -193,7 +193,7 @@ void numbits_1_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -209,7 +209,7 @@ void numbits_2_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -225,7 +225,7 @@ void numbits_3_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -241,7 +241,7 @@ void numbits_4_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -257,7 +257,7 @@ void numbits_5_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -273,7 +273,7 @@ void numbits_6_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -289,7 +289,7 @@ void numbits_7_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -305,7 +305,7 @@ void numbits_8_10_to_the_5(void) {
         .seg_len = 10000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -321,7 +321,7 @@ void num_locks_0_edge_10_to_the_6(void) {
         .seg_len = 10000,
         .num_locks = 1,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -337,7 +337,7 @@ void num_locks_1_edge_10_to_the_6(void) {
         .seg_len = 10000,
         .num_locks = 9999999,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -353,7 +353,7 @@ void seg_len_0_edge_10_to_the_6(void) {
         .seg_len = 4,
         .num_locks = 100,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -369,7 +369,7 @@ void seg_len_1_edge_10_to_the_6(void) {
         .seg_len = 1000000,
         .num_locks = 100,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -385,7 +385,7 @@ void seg_len_2_edge_10_to_the_6(void) {
         .seg_len = 62500,
         .num_locks = 100,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -401,7 +401,7 @@ void simple_10_to_the_4(void) {
         .seg_len = 100,
         .num_locks = 100,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -417,7 +417,7 @@ void simple_10_to_the_5(void) {
         .seg_len = 1000,
         .num_locks = 1000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -433,7 +433,7 @@ void simple_10_to_the_6(void) {
         .seg_len = 10000,
         .num_locks = 10000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -449,7 +449,7 @@ void simple_10_to_the_7(void) {
         .seg_len = 100000,
         .num_locks = 100000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -465,7 +465,7 @@ void simple_10_to_the_8(void) {
         .seg_len = 1000000,
         .num_locks = 100000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -481,7 +481,7 @@ void simple_10_to_the_9(void) {
         .seg_len = 5000000,
         .num_locks = 1000000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 
@@ -499,7 +499,7 @@ void simple_10_to_the_10(void) {
         .seg_len = 5000000,
         .num_locks = 100000000,
         .num_threads = 8,
-        .just_config = false,
+        .est_heap = false,
         .quiet = true,
     };
 

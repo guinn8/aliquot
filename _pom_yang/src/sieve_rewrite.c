@@ -3,13 +3,12 @@
  * @author Anton Mosunov and Gavin Guinn (gavinguinn1@gmail.com)
  * @brief functions to sieve blocks of sigma
  * @date Originally Apr 18, 2014, modified 2021-12-27
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 #include "../inc/sieve_rewrite.h"
-#include "../inc/properSumDiv.h"
 
 #include <assert.h>
 #include <dirent.h>
@@ -19,6 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../inc/properSumDiv.h"
 
 #define EVEN(x) (0 == (x) % 2)
 #define ODD(x) (0 == ((x) + 1) % 2)
@@ -31,6 +32,31 @@
 #else
 #define DEBUG_ASSERT(x)
 #endif
+
+void _sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared);
+
+void sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start) {
+    _sigma_sieve_odd(worker, seg_start, 0);
+}
+
+void sigma_sieve_odd_squared(sieve_worker_t *worker, const uint64_t seg_start) {
+    _sigma_sieve_odd(worker, seg_start, 1);
+}
+
+size_t sieve_estimate_heap_usage(const size_t bound, const size_t seg_len, size_t num_workers) {
+    size_t total = 0;
+
+    const uint64_t max_prime = (uint64_t)sqrt(2 * bound);
+    size_t num_primes = (1.25506 * (max_prime + 1) / log(max_prime + 1)) + 1;
+    total += num_primes * sizeof(uint32_t);
+
+    size_t sigma_buf_len = seg_len / 2;
+    total += sigma_buf_len * sizeof(uint64_t) * num_workers;  // sigma_buf
+    total += sigma_buf_len * sizeof(uint64_t) * num_workers;  // numbers_buf
+    total += sigma_buf_len * sizeof(bool) * num_workers;      // is_prime
+
+    return total;
+}
 
 void prime_sieve(const uint32_t max_prime, uint32_t *returned_primes) {
     bool *is_prime = calloc(max_prime + 1, sizeof(bool));
@@ -82,13 +108,13 @@ void destroy_worker(sieve_worker_t *worker) {
 sieve_worker_t *init_sieve_worker(sieve_config_t *cfg) {
     sieve_worker_t *worker = malloc(sizeof(sieve_worker_t));
     worker->cfg = cfg;
-    worker->sigma_buf = calloc(cfg->sigma_buf_len, sizeof(uint64_t));          // todo: move into sieve
+    worker->sigma_buf = calloc(cfg->sigma_buf_len, sizeof(uint64_t));    // todo: move into sieve
     worker->numbers_buf = calloc(cfg->sigma_buf_len, sizeof(uint64_t));  // todo: move into sieve
-    worker->is_prime = calloc(cfg->sigma_buf_len, sizeof(bool));  // todo: move into sieve
+    worker->is_prime = calloc(cfg->sigma_buf_len, sizeof(bool));         // todo: move into sieve
     return worker;
 }
 
-void sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared) {
+void _sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared) {
     assert(EVEN(worker->cfg->seg_len));
     assert(EVEN(seg_start));
     worker->seg_start = seg_start;

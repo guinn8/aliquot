@@ -32,14 +32,17 @@ typedef struct {
     bool *is_prime;
 } sieve_worker_t;
 
+
+void sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start);
+void sigma_sieve_odd_squared(sieve_worker_t *worker, const uint64_t seg_start);
 sieve_config_t *init_sigma_sieve(const size_t bound, const size_t seg_len);
 sieve_worker_t *init_sieve_worker(sieve_config_t *cfg);
 void destroy_sieve(sieve_config_t *cfg);
 void prime_sieve(const uint32_t max_prime, uint32_t *primes);
-void sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared);
 uint64_t get_sigma_m(sieve_worker_t *worker, uint64_t m);
 void get_primes(sieve_worker_t *worker);
 bool is_prime(sieve_worker_t *worker, uint64_t m);
 void destroy_worker(sieve_worker_t *worker);
+size_t sieve_estimate_heap_usage(const size_t bound, const size_t seg_len, size_t num_workers);
 
 #endif  // _POM_YANG_INC_SIEVE_REWRITE_H_

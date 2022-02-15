@@ -1,30 +1,33 @@
 /**
  * @file pom_yang_cli.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
- * @brief 
+ * @brief
  * @date 2022-02-02
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
+#include <alloca.h>
+#include <assert.h>
 #include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
-#include <assert.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "../inc/pom_yang.h"
+#include "../inc/sieve_rewrite.h"
 
 #define OUTPUT_FILE "counts.csv"
+#define BYTES_TO_GB 0.000000001
 
 static struct option long_options[] = {
     {"bound", required_argument, NULL, 'b'},
     {"seg_len", required_argument, NULL, 's'},
     {"num_locks", required_argument, NULL, 'n'},
-    {"just_config", no_argument, NULL, 'j'},
+    {"est_heap", no_argument, NULL, 'e'},
     {"num_threads", required_argument, NULL, 't'},
     {"preimage_count_bits", required_argument, NULL, 'p'},
     {"quiet", required_argument, NULL, 'q'},
@@ -39,20 +42,32 @@ int main(int argc, char **argv) {
     PomYang_config cfg = {0};
     get_args(&cfg, argc, argv);
 
+    size_t total = 0;
+    total += PackedArray_estimate_heap(cfg.preimage_count_bits, cfg.bound / 2, cfg.num_locks);
+    total += sieve_estimate_heap_usage(cfg.bound, cfg.seg_len, cfg.num_threads);
+    printf("This configuration will use a minimum of: \n");
+    printf("\t%ld B\n", total);
+    printf("\t%.2f GB\n", total * BYTES_TO_GB);
+    if (cfg.est_heap) {
+        exit(EXIT_SUCCESS);
+    }
+
     clock_t start = clock();
     uint64_t *count = count_kparent_aliquot(&cfg);
     print_to_file(&cfg, count, clock() - start);
+    free(count);
     exit(EXIT_SUCCESS);
 }
 
 static void usage(void) {
     printf("\nFast and Memory effiecent implementation of the Pomerance-Yang algorithm enumerating preimages under s()\n");
-    printf("Usage: [--bound=][--seg_len=][--num_locks=][(OPTIONAL)--just_config][(OPTIONAL)--num_threads=][(OPTIONAL)--preimage_count_bits]\n\n");
+    printf("Usage: [--bound=][--seg_len=][--num_locks=][(OPTIONAL)--est_heap][(OPTIONAL)--num_threads=][(OPTIONAL)--preimage_count_bits]\n\n");
 }
 
 static void print_to_file(PomYang_config *cfg, uint64_t *count, float runtime) {
     const size_t max_line_len = 10000;
-    char *header_line = calloc(max_line_len, sizeof(char));
+    char *header_line = alloca(max_line_len * sizeof(char));
+    memset(header_line, 0, max_line_len * sizeof(char));
     if (0 != access(OUTPUT_FILE, F_OK)) {
         snprintf(header_line, max_line_len, "timestamp, bound, segment_length, num_locks, timing, num_threads");
         for (size_t i = 0; i <= UINT8_MAX; i++) {
@@ -77,7 +92,7 @@ static void print_to_file(PomYang_config *cfg, uint64_t *count, float runtime) {
 
 static void get_args(PomYang_config *cfg, int argc, char **argv) {
     cfg->preimage_count_bits = 8;
-    cfg->just_config = false;
+    cfg->est_heap = false;
     cfg->quiet = false;
     cfg->num_threads = 1;
 
@@ -93,8 +108,8 @@ static void get_args(PomYang_config *cfg, int argc, char **argv) {
             case 'n':
                 cfg->num_locks = strtol(optarg, NULL, 10);
                 break;
-            case 'j':
-                cfg->just_config = true;
+            case 'e':
+                cfg->est_heap = true;
                 break;
             case 't':
                 cfg->num_threads = strtol(optarg, NULL, 10);

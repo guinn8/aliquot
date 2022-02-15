@@ -387,6 +387,13 @@ void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(con
 #include <stddef.h>
 #include <math.h>
 
+uint64_t PackedArray_estimate_heap(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks) {
+  uint64_t total = 0;
+  total += sizeof(uint32_t) * (((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32);
+  total += num_locks * sizeof(omp_lock_t);
+  return total;
+}
+
 PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks)
 {
   PackedArray* a;

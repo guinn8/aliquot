@@ -8,16 +8,38 @@
  * 
  */
 
-#ifndef INC_SIEVE_REWRITE_H_
-#define INC_SIEVE_REWRITE_H_
+#ifndef _POM_YANG_INC_SIEVE_REWRITE_H_
+#define _POM_YANG_INC_SIEVE_REWRITE_H_
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 
-uint64_t init_sigma_sieve(const size_t bound);
-void destroy_sigma_sieve(void);
-void prime_sieve(const uint32_t max_prime, uint32_t *primes);
-void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t *sigma_buf, uint64_t *numbers, const bool squared);
+typedef struct {
+    size_t bound;
+    size_t seg_len;
+    size_t sigma_buf_len;
+    size_t num_primes;
+    uint32_t *primes;
+} sieve_config_t;
 
-#endif  // INC_SIEVE_REWRITE_H_
+typedef struct {
+    sieve_config_t *cfg;
+    bool squared;
+    size_t seg_start;
+    uint64_t *sigma_buf;
+    uint64_t *numbers_buf;
+    bool *is_prime;
+} sieve_worker_t;
+
+sieve_config_t *init_sigma_sieve(const size_t bound, const size_t seg_len);
+sieve_worker_t *init_sieve_worker(sieve_config_t *cfg);
+void destroy_sieve(sieve_config_t *cfg);
+void prime_sieve(const uint32_t max_prime, uint32_t *primes);
+void sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared);
+uint64_t get_sigma_m(sieve_worker_t *worker, uint64_t m);
+void get_primes(sieve_worker_t *worker);
+bool is_prime(sieve_worker_t *worker, uint64_t m);
+void destroy_worker(sieve_worker_t *worker);
+
+#endif  // _POM_YANG_INC_SIEVE_REWRITE_H_

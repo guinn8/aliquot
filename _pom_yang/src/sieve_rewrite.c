@@ -9,6 +9,7 @@
  */
 
 #include "../inc/sieve_rewrite.h"
+#include "../inc/properSumDiv.h"
 
 #include <assert.h>
 #include <dirent.h>
@@ -20,28 +21,16 @@
 #include <string.h>
 
 #define EVEN(x) (0 == (x) % 2)
+#define ODD(x) (0 == ((x) + 1) % 2)
+#define SEG_OFFSET(seg_start, i) ((seg_start) + (2 * (i)) + 1)
+#define SEG_DEOFFSET(seg_start, m) ((m - 1 - seg_start) / 2)
+#define IS_M_PRIME(m, sigma_m) ((m) + 1 == (sigma_m))
 
-// #define DEBUG_SIEVE
-#ifdef DEBUG_SIEVE
-#define DEBUG(x) x
+#ifdef DEBUG_ASSERT_ON
+#define DEBUG_ASSERT(x) x
 #else
-#define DEBUG(x)
+#define DEBUG_ASSERT(x)
 #endif
-
-static uint32_t *primes;
-static size_t num_primes;
-
-uint64_t init_sigma_sieve(const size_t bound) {
-    const uint64_t max_prime = (uint64_t)sqrt(2 * bound);
-    num_primes = (1.25506 * (max_prime + 1) / log(max_prime + 1)) + 1;
-    primes = (uint32_t *)calloc(sizeof(uint32_t), num_primes);
-    prime_sieve(max_prime, primes);
-    return sizeof(uint32_t) * num_primes;
-}
-
-void destroy_sigma_sieve(void) {
-    free(primes);
-}
 
 void prime_sieve(const uint32_t max_prime, uint32_t *returned_primes) {
     bool *is_prime = calloc(max_prime + 1, sizeof(bool));
@@ -62,21 +51,59 @@ void prime_sieve(const uint32_t max_prime, uint32_t *returned_primes) {
     free(is_prime);
 }
 
-void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t *sigma_buf, uint64_t *numbers, const bool squared) {
-    assert(EVEN(seg_len));
+sieve_config_t *init_sigma_sieve(const size_t bound, const size_t seg_len) {
+    sieve_config_t *cfg = malloc(sizeof(sieve_config_t));
+
+    const uint64_t max_prime = (uint64_t)sqrt(2 * bound);
+    cfg->num_primes = (1.25506 * (max_prime + 1) / log(max_prime + 1)) + 1;
+    cfg->primes = (uint32_t *)calloc(sizeof(uint32_t), cfg->num_primes);
+    prime_sieve(max_prime, cfg->primes);
+
+    cfg->bound = bound;
+    cfg->seg_len = seg_len;
+    cfg->sigma_buf_len = seg_len / 2;
+    assert(EVEN(cfg->sigma_buf_len));
+
+    return cfg;
+}
+
+void destroy_sieve(sieve_config_t *cfg) {
+    free(cfg->primes);
+    free(cfg);
+}
+
+void destroy_worker(sieve_worker_t *worker) {
+    free(worker->sigma_buf);
+    free(worker->numbers_buf);
+    free(worker->is_prime);
+    free(worker);
+}
+
+sieve_worker_t *init_sieve_worker(sieve_config_t *cfg) {
+    sieve_worker_t *worker = malloc(sizeof(sieve_worker_t));
+    worker->cfg = cfg;
+    worker->sigma_buf = calloc(cfg->sigma_buf_len, sizeof(uint64_t));          // todo: move into sieve
+    worker->numbers_buf = calloc(cfg->sigma_buf_len, sizeof(uint64_t));  // todo: move into sieve
+    worker->is_prime = calloc(cfg->sigma_buf_len, sizeof(bool));  // todo: move into sieve
+    return worker;
+}
+
+void sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared) {
+    assert(EVEN(worker->cfg->seg_len));
     assert(EVEN(seg_start));
+    worker->seg_start = seg_start;
+    worker->squared = squared;
+    const uint64_t max_prime = (uint64_t)sqrt(seg_start + worker->cfg->seg_len);
 
-    const uint64_t max_prime = (uint64_t)sqrt(seg_start + seg_len);
-
-    for (size_t i = 0; i < seg_len / 2; i++) {
-        sigma_buf[i] = 1;
-        numbers[i] = seg_start + 1 + (2 * i);
+    for (size_t i = 0; i < worker->cfg->seg_len / 2; i++) {
+        worker->sigma_buf[i] = 1;
+        worker->numbers_buf[i] = seg_start + 1 + (2 * i);
     }
 
     uint64_t offset[100];
     size_t prime_ind = 2;
     uint64_t p;
-    while (max_prime >= (p = primes[prime_ind++])) {
+    while (max_prime >= (p = worker->cfg->primes[prime_ind++])) {
         uint64_t k = 0;
         offset[k] = (p - (seg_start % p)) % p;
 
@@ -84,8 +111,8 @@ void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t 
             offset[k] += p;
         }
 
-        for (uint64_t p_pow = p; p_pow <= (seg_start + seg_len); p_pow *= p) {
-            if (offset[k] > seg_len) {
+        for (uint64_t p_pow = p; p_pow <= (seg_start + worker->cfg->seg_len); p_pow *= p) {
+            if (offset[k] > worker->cfg->seg_len) {
                 break;
             }
 
@@ -98,12 +125,12 @@ void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t 
             uint64_t h = offset[k - 1];
             for (uint64_t s = 0; s < p; s++) {
                 if (h != offset[k]) {
-                    for (uint64_t j = h; j < seg_len; j += 2 * step) {
-                        numbers[(j - 1) / 2] /= p_pow;
+                    for (uint64_t j = h; j < worker->cfg->seg_len; j += 2 * step) {
+                        worker->numbers_buf[(j - 1) / 2] /= p_pow;
                         if (squared) {
-                            sigma_buf[(j - 1) / 2] *= ((step * p_pow - 1) / (p - 1));
+                            worker->sigma_buf[(j - 1) / 2] *= ((step * p_pow - 1) / (p - 1));
                         } else {
-                            sigma_buf[(j - 1) / 2] *= ((step - 1) / (p - 1));
+                            worker->sigma_buf[(j - 1) / 2] *= ((step - 1) / (p - 1));
                         }
                     }
                 }
@@ -112,14 +139,38 @@ void sigma_sieve_odd(const uint64_t seg_len, const uint64_t seg_start, uint64_t 
         }
     }
 
-    for (size_t i = 0; i < seg_len / 2; i++) {
-        if (numbers[i] > 1) {
+    for (size_t i = 0; i < worker->cfg->seg_len / 2; i++) {
+        if (worker->numbers_buf[i] > 1) {
             if (squared) {
-                sigma_buf[i] *= (numbers[i] * (numbers[i] + 1L) + 1L);
+                worker->sigma_buf[i] *= (worker->numbers_buf[i] * (worker->numbers_buf[i] + 1L) + 1L);
             } else {
-                sigma_buf[i] *= (numbers[i] + 1);
+                worker->sigma_buf[i] *= (worker->numbers_buf[i] + 1);
             }
         }
-        DEBUG(printf("sigma(%lu)=%lu\n", seg_start + 1 + (2 * i), (uint64_t)sigma_buf[i]);)
     }
+}
+
+uint64_t get_sigma_m(sieve_worker_t *worker, uint64_t m) {
+    DEBUG_ASSERT(assert(ODD(m)));
+    size_t index = SEG_DEOFFSET(worker->seg_start, m);
+    DEBUG_ASSERT(assert(index < worker->cfg->sigma_buf_len));
+
+    uint64_t sigma_m = worker->sigma_buf[index];
+    DEBUG_ASSERT(assert(sigma_m == wheelDivSigma((worker->squared) ? m * m : m)));
+
+    return sigma_m;
+}
+
+void get_primes(sieve_worker_t *worker) {
+    assert(worker->squared == false);
+    for (size_t i = 0; i < worker->cfg->sigma_buf_len; i++) {
+        uint64_t m = SEG_OFFSET(worker->seg_start, i);
+        uint64_t sigma_m = worker->sigma_buf[i];
+        worker->is_prime[i] = IS_M_PRIME(m, sigma_m);
+    }
+}
+
+bool is_prime(sieve_worker_t *worker, uint64_t m) {
+    size_t index = SEG_DEOFFSET(worker->seg_start, m);
+    return worker->is_prime[index];
 }

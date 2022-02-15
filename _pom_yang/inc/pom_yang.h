@@ -19,7 +19,7 @@ typedef struct {
     size_t preimage_count_bits;
     size_t bound;
     size_t seg_len;
-    size_t writebuf_len;
+    size_t num_locks;
     size_t num_threads;
     bool just_config;
     bool quiet;

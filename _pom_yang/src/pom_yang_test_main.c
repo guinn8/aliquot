@@ -39,8 +39,8 @@ void seg_len_0_edge_10_to_the_6(void);
 void seg_len_1_edge_10_to_the_6(void);
 void seg_len_2_edge_10_to_the_6(void);
 
-void writebuf_0_edge_10_to_the_6(void);
-void writebuf_1_edge_10_to_the_6(void);
+void num_locks_0_edge_10_to_the_6(void);
+void num_locks_1_edge_10_to_the_6(void);
 
 void numbits_1_10_to_the_5(void);
 void numbits_2_10_to_the_5(void);
@@ -72,8 +72,8 @@ int main(int argc, char **argv) {
     numbits_4_10_to_the_5();
     numbits_8_10_to_the_5();
 
-    writebuf_0_edge_10_to_the_6();
-    writebuf_1_edge_10_to_the_6();
+    num_locks_0_edge_10_to_the_6();
+    num_locks_1_edge_10_to_the_6();
 
     seg_len_0_edge_10_to_the_6();
     seg_len_1_edge_10_to_the_6();
@@ -93,7 +93,7 @@ void bruteforce_kparent_aliquot_10024(void) {
         .preimage_count_bits = 8,
         .bound = 10024,
         .seg_len = 56,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -113,7 +113,7 @@ void bruteforce_kparent_aliquot_10_to_the_5(void) {
         .preimage_count_bits = 8,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -134,7 +134,7 @@ void bruteforce_kparent_aliquot_2_to_the_20(void) {
         .preimage_count_bits = 8,
         .bound = 262144,
         .seg_len = 65536,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -153,7 +153,7 @@ void bruteforce_kparent_aliquot_2_to_the_3(void) {
         .preimage_count_bits = 8,
         .bound = 8,
         .seg_len = 4,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -172,7 +172,7 @@ void bruteforce_kparent_aliquot_24(void) {
         .preimage_count_bits = 8,
         .bound = 24,
         .seg_len = 8,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -191,7 +191,7 @@ void numbits_1_10_to_the_5(void) {
         .preimage_count_bits = 1,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -207,7 +207,7 @@ void numbits_2_10_to_the_5(void) {
         .preimage_count_bits = 2,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -223,7 +223,7 @@ void numbits_3_10_to_the_5(void) {
         .preimage_count_bits = 3,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -239,7 +239,7 @@ void numbits_4_10_to_the_5(void) {
         .preimage_count_bits = 4,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -255,7 +255,7 @@ void numbits_5_10_to_the_5(void) {
         .preimage_count_bits = 5,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -271,7 +271,7 @@ void numbits_6_10_to_the_5(void) {
         .preimage_count_bits = 6,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -287,7 +287,7 @@ void numbits_7_10_to_the_5(void) {
         .preimage_count_bits = 7,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -303,7 +303,7 @@ void numbits_8_10_to_the_5(void) {
         .preimage_count_bits = 8,
         .bound = 100000,
         .seg_len = 10000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -314,12 +314,12 @@ void numbits_8_10_to_the_5(void) {
     free(count);
 }
 
-void writebuf_0_edge_10_to_the_6(void) {
+void num_locks_0_edge_10_to_the_6(void) {
     PomYang_config cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 10000,
-        .writebuf_len = 1,
+        .num_locks = 1,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -330,12 +330,12 @@ void writebuf_0_edge_10_to_the_6(void) {
     free(count);
 }
 
-void writebuf_1_edge_10_to_the_6(void) {
+void num_locks_1_edge_10_to_the_6(void) {
     PomYang_config cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 10000,
-        .writebuf_len = 9999999,
+        .num_locks = 9999999,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -351,7 +351,7 @@ void seg_len_0_edge_10_to_the_6(void) {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 4,
-        .writebuf_len = 100,
+        .num_locks = 100,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -367,7 +367,7 @@ void seg_len_1_edge_10_to_the_6(void) {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 1000000,
-        .writebuf_len = 100,
+        .num_locks = 100,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -383,7 +383,7 @@ void seg_len_2_edge_10_to_the_6(void) {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 62500,
-        .writebuf_len = 100,
+        .num_locks = 100,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -399,7 +399,7 @@ void simple_10_to_the_4(void) {
         .preimage_count_bits = 1,
         .bound = 10000,
         .seg_len = 100,
-        .writebuf_len = 100,
+        .num_locks = 100,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -415,7 +415,7 @@ void simple_10_to_the_5(void) {
         .preimage_count_bits = 1,
         .bound = 100000,
         .seg_len = 1000,
-        .writebuf_len = 1000,
+        .num_locks = 1000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -431,7 +431,7 @@ void simple_10_to_the_6(void) {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 10000,
-        .writebuf_len = 10000,
+        .num_locks = 10000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -447,7 +447,7 @@ void simple_10_to_the_7(void) {
         .preimage_count_bits = 1,
         .bound = 10000000,
         .seg_len = 100000,
-        .writebuf_len = 100000,
+        .num_locks = 100000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -463,7 +463,7 @@ void simple_10_to_the_8(void) {
         .preimage_count_bits = 1,
         .bound = 100000000,
         .seg_len = 1000000,
-        .writebuf_len = 100000,
+        .num_locks = 100000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -479,7 +479,7 @@ void simple_10_to_the_9(void) {
         .preimage_count_bits = 1,
         .bound = 1000000000,
         .seg_len = 5000000,
-        .writebuf_len = 1000000,
+        .num_locks = 1000000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,
@@ -497,7 +497,7 @@ void simple_10_to_the_10(void) {
         .preimage_count_bits = 1,
         .bound = 10000000000,
         .seg_len = 5000000,
-        .writebuf_len = 1000000,
+        .num_locks = 100000000,
         .num_threads = 8,
         .just_config = false,
         .quiet = true,

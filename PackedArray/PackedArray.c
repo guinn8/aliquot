@@ -401,8 +401,9 @@ PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t n
 
   PACKEDARRAY_ASSERT(bitsPerItem > 0);
   PACKEDARRAY_ASSERT(bitsPerItem <= 32);
-
   bufferSize = sizeof(uint32_t) * (((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32);
+  PACKEDARRAY_ASSERT(num_locks <= bufferSize);
+
   a = (PackedArray*)PACKEDARRAY_MALLOC(sizeof(PackedArray) + bufferSize);
 
   if (a != NULL)

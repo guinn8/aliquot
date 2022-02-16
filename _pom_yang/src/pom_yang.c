@@ -99,7 +99,7 @@ PackedArray *Pomerance_Yang_aliquot(const PomYang_config *cfg) {
             }
 
             if (seg_start < odd_comp_bound) {
-                sigma_sieve_odd_squared(worker, seg_start);  // ! squared
+                sigma_sieve_odd_squared(worker, seg_start);
 
                 uint64_t seg_bound = MIN((seg_start + cfg->seg_len), odd_comp_bound);
                 for (uint64_t m = seg_start + 1; m < seg_bound; m += 2) {
@@ -148,7 +148,7 @@ uint64_t *tabulate_aliquot_parents(PackedArray *f) {
         count[num_preimages]++;
     }
 
-    LOG(quiet, "\nTabulation completed in %.2fs\n", omp_get_wtime() - time_tabulate);
+    LOG(quiet, "Tabulation completed in %.2fs\n", omp_get_wtime() - time_tabulate);
     LOG(0, "Count of odd k-parent numbers under %ld\n", f->count * 2);
     for (size_t i = 0; i < 8; i++) {
         LOG(0, "%ld: %ld\n", i, count[i]);

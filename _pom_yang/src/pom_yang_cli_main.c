@@ -11,6 +11,7 @@
 #include <alloca.h>
 #include <assert.h>
 #include <getopt.h>
+#include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -38,6 +39,8 @@ static void print_to_file(PomYang_config *cfg, uint64_t *count, float runtime);
 static void usage(void);
 static void get_args(PomYang_config *cfg, int argc, char **argv);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat"  // printf ' flag
 int main(int argc, char **argv) {
     PomYang_config cfg = {0};
     get_args(&cfg, argc, argv);
@@ -46,7 +49,8 @@ int main(int argc, char **argv) {
     total += PackedArray_estimate_heap(cfg.preimage_count_bits, cfg.bound / 2, cfg.num_locks);
     total += sieve_estimate_heap_usage(cfg.bound, cfg.seg_len, cfg.num_threads);
     printf("This configuration will use a minimum of: \n");
-    printf("\t%ld B\n", total);
+    setlocale(LC_NUMERIC, "");
+    printf("\t%'ld B\n", total);
     printf("\t%.2f GB\n", total * BYTES_TO_GB);
     if (cfg.est_heap) {
         exit(EXIT_SUCCESS);
@@ -54,10 +58,11 @@ int main(int argc, char **argv) {
 
     clock_t start = clock();
     uint64_t *count = count_kparent_aliquot(&cfg);
-    print_to_file(&cfg, count, clock() - start);
+    print_to_file(&cfg, count, (clock() - start) / CLOCKS_PER_SEC);
     free(count);
     exit(EXIT_SUCCESS);
 }
+#pragma GCC diagnostic pop
 
 static void usage(void) {
     printf("\nFast and Memory effiecent implementation of the Pomerance-Yang algorithm enumerating preimages under s()\n");

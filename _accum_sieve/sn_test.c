@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     enumerated_range_t *range;
     while (NULL != (range = enumerate_sn(sts))) {
         for (size_t i = 0; i < range->len; i++) {
-            // printf("%ld\n", range->s[i] - (i + range->base));
+            printf("%ld\n", range->s[i] - (i + range->base));
         }
     }
 

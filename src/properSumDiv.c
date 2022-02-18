@@ -3,7 +3,7 @@
 const int initWheel[3] = {2, 3, 5};
 const int inc[8] = {4, 2, 4, 2, 4, 6, 2, 6};
 
-uint64_t wheelDivSigma(uint64_t n) {
+uint64_t sumdiv_sigma(uint64_t n) {
     if (n == 0) {
         return 0;
     }
@@ -49,6 +49,6 @@ uint64_t wheelDivSigma(uint64_t n) {
     return res;
 }
 
-uint64_t wheelDivSum(uint64_t n) {
-    return wheelDivSigma(n) - n;
+uint64_t sumdiv_s(uint64_t n) {
+    return sumdiv_sigma(n) - n;
 }

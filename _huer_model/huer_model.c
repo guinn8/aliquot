@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
         unsigned long * sigma =  malloc(buffer_size * sizeof(unsigned long));
         
         for(int j = 0; j < buffer_size; j++){
-           sigma[j] = wheelDivSum(m + 2*j);
+           sigma[j] = sumdiv_s(m + 2*j);
         }
        
         for(int g = 0; g < UPPERPARENTS; g++){

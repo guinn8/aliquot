@@ -9,7 +9,7 @@
 #define PROP_DIV_SUM_H_
 
 
-uint64_t wheelDivSum(uint64_t n);
-uint64_t wheelDivSigma(uint64_t n);
+uint64_t sumdiv_s(uint64_t n);
+uint64_t sumdiv_sigma(uint64_t n);
 
 #endif

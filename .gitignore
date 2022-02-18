@@ -1,7 +1,7 @@
 *.exe
 *.out
 .*
-counts.csv
+*.csv
 *.o
 debug_main
 test

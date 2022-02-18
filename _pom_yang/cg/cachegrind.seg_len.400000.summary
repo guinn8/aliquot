@@ -1,0 +1,90 @@
+--------------------------------------------------------------------------------
+I1 cache:         32768 B, 64 B, 8-way associative
+D1 cache:         32768 B, 64 B, 8-way associative
+LL cache:         33554432 B, 64 B, direct-mapped
+Command:          ./cli --bound=100000000 --seg_len=400000 --num_locks=1000000 --preimage_count_bits=1 --num_thread=12
+Data file:        cachegrind.seg_len.400000
+Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Event sort order: DLmr
+Thresholds:       0.1
+Include dirs:     
+User annotated:   /home/guinn8/Code/aliquot/_pom_yang/src/moews_moews_sieve.c
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir              I1mr    ILmr    Dr              D1mr            DLmr            Dw              D1mw       DLmw      
+--------------------------------------------------------------------------------
+18,957,251,287  2,828   2,595   3,657,840,388   291,320,844     3,284,891       790,125,588     13,399,296      2,253,894  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+-- User-annotated source: /home/guinn8/Code/aliquot/_pom_yang/src/moews_moews_sieve.c
+--------------------------------------------------------------------------------
+Ir            I1mr ILmr Dr          D1mr       DLmr    Dw         D1mw      DLmw      
+        3,012    3    3         251        239      22      2,259       511        68  void _sigma_sieve_odd(sieve_worker_t *worker, const uint64_t seg_start, const bool squared) {
+        1,255    1    1         502        239      19          0         0         0      assert(EVEN(worker->cfg->seg_len));
+          753    0    0           0          0       0        251         0         0      assert(EVEN(seg_start));
+          502    0    0         251          0       0        251         0         0      worker->seg_start = seg_start;
+          251    0    0           0          0       0        251         0         0      worker->squared = squared;
+        3,514    2    2         251        251      21        251         0         0      const uint64_t max_prime = (uint64_t)sqrt(seg_start + worker->cfg->seg_len);
+            .    .    .           .          .       .          .         .         .  
+  200,800,753    0    0  50,200,251          0       0          0         0         0      for (size_t i = 0; i < worker->cfg->sigma_buf_len; i++) {
+   50,200,502    1    1         502          0       0 50,200,000 6,275,239 1,005,329          worker->sigma_buf[i] = 1;
+   50,200,753    1    1         502          0       0 50,200,000 6,275,239 1,091,302          worker->numbers_buf[i] = seg_start + 1 + (2 * i);
+            .    .    .           .          .       .          .         .         .      }
+            .    .    .           .          .       .          .         .         .  
+            .    .    .           .          .       .          .         .         .      uint64_t offset[100];
+            .    .    .           .          .       .          .         .         .      size_t prime_ind = 2;
+            .    .    .           .          .       .          .         .         .      uint64_t p;
+    1,285,944    4    4     642,721     52,647   1,481    214,073       251        21      while (max_prime >= (p = worker->cfg->primes[prime_ind++])) {
+            .    .    .           .          .       .          .         .         .          uint64_t k = 0;
+    1,496,754    0    0     213,822          0       0          0         0         0          offset[k] = (p - (seg_start % p)) % p;
+            .    .    .           .          .       .          .         .         .  
+            .    .    .           .          .       .          .         .         .          if (EVEN(offset[k])) {
+      855,288    0    0           0          0       0    213,822       229        47              offset[k] += p;
+            .    .    .           .          .       .          .         .         .          }
+            .    .    .           .          .       .          .         .         .  
+    2,358,417    2    2     765,351      7,708      28    213,822        22         0          for (uint64_t p_pow = p; p_pow <= (seg_start + worker->cfg->seg_len); p_pow *= p) {
+    2,034,690    0    0     910,434     42,089     319          0         0         0              if (offset[k] > worker->cfg->seg_len) {
+            .    .    .           .          .       .          .         .         .                  break;
+            .    .    .           .          .       .          .         .         .              }
+            .    .    .           .          .       .          .         .         .  
+    1,027,329    0    0     241,395          0       0    261,978       229        46              uint64_t step = p_pow * p;
+    2,216,205    2    2     261,978          0       0    120,381       273        35              offset[++k] = (step - (seg_start % step)) % step;
+      523,956    0    0           0          0       0          0         0         0              if (EVEN(offset[k])) {
+      424,791    2    2     141,597          0       0    141,597       275        31                  offset[k] += step;
+            .    .    .           .          .       .          .         .         .              }
+            .    .    .           .          .       .          .         .         .  
+            .    .    .           .          .       .          .         .         .              uint64_t h = offset[k - 1];
+2,293,500,588    1    1           0          0       0          0         0         0              for (uint64_t s = 0; s < p; s++) {
+1,528,476,436    1    1           0          0       0          0         0         0                  if (h != offset[k]) {
+1,915,120,233    1    1  96,922,724          8       1          0         0         0                      for (uint64_t j = h; j < worker->cfg->seg_len; j += 2 * step) {
+  720,780,185    1    1 140,814,083 96,600,593   5,975 96,661,017         0         0                          worker->numbers_buf[(j - 1) / 2] /= p_pow;
+            .    .    .           .          .       .          .         .         .                          if (squared) {
+    1,511,519    0    0     414,270    326,288       0    326,748         0         0                              worker->sigma_buf[(j - 1) / 2] *= ((step * p_pow - 1) / (p - 1));
+            .    .    .           .          .       .          .         .         .                          } else {
+  540,882,400    2    2 162,476,617 96,238,616  24,847 96,810,069         0         0                              worker->sigma_buf[(j - 1) / 2] *= ((step - 1) / (p - 1));
+            .    .    .           .          .       .          .         .         .                          }
+            .    .    .           .          .       .          .         .         .                      }
+            .    .    .           .          .       .          .         .         .                  }
+  764,762,445    0    0 764,238,218     39,600     229    261,978         0         0                  h += (2 * p_pow);
+            .    .    .           .          .       .          .         .         .              }
+            .    .    .           .          .       .          .         .         .          }
+            .    .    .           .          .       .          .         .         .      }
+            .    .    .           .          .       .          .         .         .  
+  251,000,753    1    1           0          0       0          0         0         0      for (size_t i = 0; i < worker->cfg->seg_len / 2; i++) {
+  200,800,753    1    1  50,200,753  6,274,885     632          0         0         0          if (worker->numbers_buf[i] > 1) {
+            .    .    .           .          .       .          .         .         .              if (squared) {
+    1,274,598    0    0     566,488     24,955       0    141,622         0         0                  worker->sigma_buf[i] *= (worker->numbers_buf[i] * (worker->numbers_buf[i] + 1L) + 1L);
+            .    .    .           .          .       .          .         .         .              } else {
+  228,921,126    0    0 152,614,084  6,249,809     419 38,153,521         0         0                  worker->sigma_buf[i] *= (worker->numbers_buf[i] + 1);
+            .    .    .           .          .       .          .         .         .              }
+            .    .    .           .          .       .          .         .         .          }
+            .    .    .           .          .       .          .         .         .      }
+        2,761    0    0       2,259        753      87          0         0         0  }
+
+--------------------------------------------------------------------------------
+Ir            I1mr ILmr Dr            D1mr        DLmr    Dw          D1mw       DLmw      
+--------------------------------------------------------------------------------
+9,762,210,810   44   43 1,872,508,756 219,156,913 754,006 383,960,673 13,333,768 2,188,737  events annotated
+

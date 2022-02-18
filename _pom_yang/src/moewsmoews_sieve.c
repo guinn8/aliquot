@@ -75,13 +75,13 @@
  *      Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.
  */
 
-#include "../inc/moews_moews_sieve.h"
+#include "../inc/moewsmoews_sieve.h"
 
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
 
-#include "../inc/sumdiv.h"
+#include "../inc/sumdiv_util.h"
 
 #define EVEN(x) (0 == (x) % 2)
 #define ODD(x) (0 == ((x) + 1) % 2)

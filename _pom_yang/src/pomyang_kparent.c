@@ -63,7 +63,7 @@
  * TODO: Move all relevant .tex files into this repo and find a vsCode tex workflow
  */
 
-#include "../inc/pom_yang.h"
+#include "../inc/pomyang_kparent.h"
 
 #include <assert.h>
 #include <math.h>
@@ -74,8 +74,7 @@
 #include <alloca.h>
 #include <time.h>
 
-#include "../inc/sumdiv.h"
-#include "../inc/moews_moews_sieve.h"
+#include "../inc/moewsmoews_sieve.h"
 
 #define EVEN(x) (0 == (x) % 2)
 #define SQUARE(x) ((x) * (x))

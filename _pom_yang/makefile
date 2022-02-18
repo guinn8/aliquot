@@ -7,26 +7,27 @@ CC= gcc
 
 # -DDEBUG_ASSERT_ON if you want to *slowly* double check the sieving results and some misc. other asserts
 # CFLAGS += -DDEBUG_ASSERT_ON
+all: cli test profiler
 
-cli: src/pom_yang_cli_main.c obj/moews_moews_sieve.o obj/sumdiv.o obj/pom_yang.o obj/PackedArray.o
-	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
+cli: src/pomyang_cli_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomyang_kparent.o obj/PackedArray.o
+	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
 
-test: src/pom_yang_test_main.c obj/moews_moews_sieve.o obj/sumdiv.o obj/pom_yang.o obj/PackedArray.o obj/bruteforce_kparent.o
-	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS) 
+test: src/pomyang_test_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomyang_kparent.o obj/PackedArray.o obj/bruteforce_kparent.o
+	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS) 
 
-profile: src/profile_pom_yang.c obj/moews_moews_sieve.o obj/sumdiv.o obj/pom_yang.o obj/PackedArray.o
-	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)
+profiler: src/pomyang_profile_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomyang_kparent.o obj/PackedArray.o
+	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
 
-obj/pom_yang.o: src/pom_yang.c
+obj/pomyang_kparent.o: src/pomyang_kparent.c
 	$(CC) -c $(CFLAGS) $^ -o $@ 
 
 obj/PackedArray.o: ../PackedArray/PackedArray.c
 	$(CC) -c -O3 $^ -o $@ 
 
-obj/sumdiv.o: src/sumdiv.c
+obj/sumdiv_util.o: src/sumdiv_util.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
-obj/moews_moews_sieve.o: src/moews_moews_sieve.c
+obj/moewsmoews_sieve.o: src/moewsmoews_sieve.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
 obj/bruteforce_kparent.o: src/bruteforce_kparent.c

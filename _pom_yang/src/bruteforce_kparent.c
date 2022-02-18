@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <omp.h>
 
-#include "../inc/sumdiv.h"
+#include "../inc/sumdiv_util.h"
 
 #define EVEN(x) (0 == (x) % 2)
 #define F_OFFSET(x) ((x / 2) - 1)

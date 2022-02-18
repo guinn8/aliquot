@@ -12,9 +12,9 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "../inc/pom_yang.h"
+#include "../inc/pomyang_kparent.h"
 
-#define OUTPUT_FILE "profile.csv"
+#define OUTPUT_FILE "dat/profile.csv"
 
 int main(int argc, char const *argv[]) {
     (void)argc;

@@ -1,5 +1,5 @@
 /**
- * @file sumdiv.c
+ * @file sumdiv_util.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief   Uses factoring wheel (https://en.wikipedia.org/wiki/Wheel_factorization) to compute the sum of divisors.
  *          Not well tested but mostly used a backstop test for sigma sieves.
@@ -9,7 +9,7 @@
  *
  */
 
-#include "../inc/sumdiv.h"
+#include "../inc/sumdiv_util.h"
 
 const int initWheel[3] = {2, 3, 5};
 const int inc[8] = {4, 2, 4, 2, 4, 6, 2, 6};

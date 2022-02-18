@@ -15,10 +15,10 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "../inc/pom_yang.h"
-#include "../inc/moews_moews_sieve.h"
+#include "../inc/pomyang_kparent.h"
+#include "../inc/moewsmoews_sieve.h"
 
-#define OUTPUT_FILE "counts.csv"
+#define OUTPUT_FILE "dat/counts.csv"
 #define BYTES_TO_GB 0.000000001
 
 static struct option long_options[] = {

@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "../inc/bruteforce_kparent.h"
-#include "../inc/pom_yang.h"
+#include "../inc/pomyang_kparent.h"
 
 void simple_10_to_the_4(void);
 void simple_10_to_the_5(void);

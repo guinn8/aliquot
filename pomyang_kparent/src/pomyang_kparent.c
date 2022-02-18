@@ -58,8 +58,6 @@
  * 
  * TODO: Finish collecting data to 2^40
  * TODO: Revisit heuristic model computation code
- * TODO: Track PackedArray as a forked gitsubmodule rather than a standard git folder
- * TODO: Archive dead code to git history
  * TODO: Move all relevant .tex files into this repo and find a vsCode tex workflow
  */
 
@@ -104,7 +102,9 @@ static bool quiet = false;
 /* See header for documentation */
 PackedArray *pomyang_algorithm(const pomyang_config *cfg) {
     assert(EVEN(cfg->bound));
+    assert(cfg->bound > 0);
     assert(EVEN(cfg->seg_len));
+    assert(cfg->seg_len > 0);
     assert(cfg->seg_len <= cfg->bound);
     assert(DIVIDES(cfg->seg_len, cfg->bound));
     assert(DIVIDES(cfg->preimage_count_bits, 32));
@@ -169,7 +169,7 @@ uint64_t *pomyang_count_kparent(const pomyang_config *cfg) {
 }
 
 /* See header for documentation */
-void print_to_file(pomyang_config *cfg, char *filename, uint64_t *count, float runtime) {
+void print_to_file(pomyang_config *cfg, const char *filename, uint64_t *count, float runtime) {
     const size_t max_line_len = 10000;
     char *header_line = alloca(max_line_len * sizeof(char));
     memset(header_line, 0, max_line_len * sizeof(char));

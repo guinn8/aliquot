@@ -68,7 +68,7 @@ PackedArray *pomyang_algorithm(const pomyang_config *cfg);
 uint64_t *pomyang_count_kparent(const pomyang_config *cfg);
 
 
-void print_to_file(pomyang_config *cfg, char *filename, uint64_t *count, float runtime);
+void print_to_file(pomyang_config *cfg, const char *filename, uint64_t *count, float runtime);
 
 
 #endif  // _POM_YANG_INC_POM_YANG_H_

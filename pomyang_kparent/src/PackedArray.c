@@ -2,7 +2,7 @@
 // (‑●‑●)> released under the WTFPL v2 license, by Gregory Pakosz (@gpakosz)
 
 #ifndef PACKEDARRAY_SELF
-#define PACKEDARRAY_SELF "PackedArraySIMD.c"
+#define PACKEDARRAY_SELF "PackedArray.c"
 #endif
 
 #ifdef PACKEDARRAY_IMPL
@@ -125,6 +125,9 @@
 #ifndef PACKEDARRAY_IMPL_START_BIT
 #define PACKEDARRAY_IMPL_START_BIT ((PACKEDARRAY_IMPL_CASE_I * PACKEDARRAY_IMPL_BITS_PER_ITEM) % 32)
 #endif
+#ifndef PACKEDARRAY_IMPL_MASK
+#define PACKEDARRAY_IMPL_MASK (uint32_t)((1ULL << PACKEDARRAY_IMPL_BITS_PER_ITEM) - 1)
+#endif
 
 #if defined(PACKEDARRAY_IMPL_PACK_CASES)
 
@@ -134,21 +137,15 @@
 
       case PACKEDARRAY_IMPL_CASE_I:
 #if (PACKEDARRAY_IMPL_BITS_PER_ITEM <= PACKEDARRAY_IMPL_BITS_AVAILABLE)
-        in_4 = PackedArray_loadu_uint32x4(in);
-        packed = PackedArray_vsli0_uint32x4(packed, in_4, PACKEDARRAY_IMPL_START_BIT);
-        in += 4;
+        packed |= *in++ << PACKEDARRAY_IMPL_START_BIT;
 #if (PACKEDARRAY_IMPL_BITS_PER_ITEM == PACKEDARRAY_IMPL_BITS_AVAILABLE)
-        PackedArray_store_uint32x4(out, packed);
-        out += 4;
-        packed = PackedArray_uint32x4_zero;
+        *out++ = packed;
+        packed = 0;
 #endif
 #else
-        in_4 = PackedArray_loadu_uint32x4(in);
-        packed = PackedArray_vsli0_uint32x4(packed, in_4, PACKEDARRAY_IMPL_START_BIT);
-        PackedArray_store_uint32x4(out, packed);
-        out += 4;
-        packed = PackedArray_shr_uint32x4(in_4, PACKEDARRAY_IMPL_BITS_AVAILABLE);
-        in += 4;
+        packed |= *in << PACKEDARRAY_IMPL_START_BIT;
+        *out++ = packed;
+        packed = *in++ >> PACKEDARRAY_IMPL_BITS_AVAILABLE;
 #endif
         PACKEDARRAY_IMPL_PACK_CASE_BREAK
 
@@ -168,22 +165,20 @@
 
       case PACKEDARRAY_IMPL_CASE_I:
 #if (PACKEDARRAY_IMPL_BITS_PER_ITEM <= PACKEDARRAY_IMPL_BITS_AVAILABLE)
-        out_4 = PackedArray_and_uint32x4(PackedArray_shr_uint32x4(packed, PACKEDARRAY_IMPL_START_BIT), PackedArray_set_uint32x4(PACKEDARRAY_IMPL_MASK));
-        PackedArray_storeu_uint32x4(out, out_4);
-        out += 4;
+        *out++ = (packed >> PACKEDARRAY_IMPL_START_BIT) & PACKEDARRAY_IMPL_MASK;
         PACKEDARRAY_IMPL_UNPACK_CASE_BREAK
 #if (PACKEDARRAY_IMPL_CASE_I < 31) && (PACKEDARRAY_IMPL_BITS_PER_ITEM == PACKEDARRAY_IMPL_BITS_AVAILABLE)
-        in += 4;
-        packed = PackedArray_load_uint32x4(in);
+        packed = *++in;
 #endif
 #else
-        out_4 = PackedArray_shr_uint32x4(packed, PACKEDARRAY_IMPL_START_BIT);
-        in += 4;
-        packed = PackedArray_load_uint32x4(in);
-        out_4 = PackedArray_vsli0_uint32x4(out_4, packed, PACKEDARRAY_IMPL_BITS_AVAILABLE);
-        out_4 = PackedArray_and_uint32x4(out_4, PackedArray_set_uint32x4(PACKEDARRAY_IMPL_MASK));
-        PackedArray_storeu_uint32x4(out, out_4);
-        out += 4;
+        {
+          uint32_t low, high;
+          low = packed >> PACKEDARRAY_IMPL_START_BIT;
+          packed = *++in;
+          high = packed << PACKEDARRAY_IMPL_BITS_AVAILABLE;
+
+          *out++ = (low | high) & PACKEDARRAY_IMPL_MASK;
+        }
         PACKEDARRAY_IMPL_UNPACK_CASE_BREAK
 #endif
 
@@ -199,161 +194,98 @@
 
 #else // #if defined(PACKEDARRAY_IMPL_PACK_CASES) || defined(PACKEDARRAY_IMPL_UNPACK_CASES)
 
-#ifndef PACKEDARRAY_IMPL_MASK
-#define PACKEDARRAY_IMPL_MASK (uint32_t)((1ULL << PACKEDARRAY_IMPL_BITS_PER_ITEM) - 1)
-#endif
-
-void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint32_t* __restrict buffer, uint32_t offset, const uint32_t* __restrict in, uint32_t count)
+void PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(uint32_t* __restrict out, uint64_t offset, const uint32_t* __restrict in, uint64_t count)
 {
-  uint32_t pre, post;
-  uint32_t* __restrict out;
-  const uint32_t* __restrict end;
   uint32_t startBit;
-  PackedArray_uint32x4_t packed, in_4, mask;
-  uint32_t offset_4;
+  uint32_t packed;
+  const uint32_t* __restrict end;
 
-  pre = (offset + 3) / 4 * 4 - offset;
-  pre = pre > count ? count : pre;
+  out += ((uint64_t)offset * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM) / 32;
+  startBit = ((uint64_t)offset * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM) % 32;
+  packed = *out & (uint32_t)((1ULL << startBit) - 1);
 
-  if (pre > 0)
+  offset = offset % 32;
+  if (count >= 32 - offset)
   {
-    __PackedArray_pack_scalar(buffer, PACKEDARRAY_IMPL_BITS_PER_ITEM, PACKEDARRAY_IMPL_MASK, offset, in, pre);
-    offset += pre;
-    in += pre;
-    count -= pre;
-  }
+    int32_t n;
 
-  post = count % 4;
-  count -= post;
-
-  if (count > 0)
-  {
-    out = &buffer[(offset / 4 * PACKEDARRAY_IMPL_BITS_PER_ITEM) / 32 * 4];
-    startBit = (offset / 4 * PACKEDARRAY_IMPL_BITS_PER_ITEM) % 32;
-    packed = PackedArray_load_uint32x4(out);
-    mask = PackedArray_sub_uint32x4(PackedArray_shl_uint32x4(PackedArray_set_uint32x4(1), startBit), PackedArray_set_uint32x4(1));
-    packed = PackedArray_and_uint32x4(packed, mask);
-
-    offset_4 = offset % 128;
-    offset += count;
-
-    if (count >= 128 - offset_4)
+    n = (count + offset) / 32;
+    count -= 32 * n - offset;
+    switch (offset)
     {
-      int32_t n;
-
-      n = (count + offset_4) / 128;
-      count -= 128 * n - offset_4;
-      switch (offset_4 / 4)
+      do
       {
-        do
-        {
 #define PACKEDARRAY_IMPL_PACK_CASES
 #include PACKEDARRAY_SELF
-        } while (--n > 0);
-      }
-
-      if (count == 0)
-        goto PACKEDARRAY_JOIN(PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM), _post);
-
-      offset_4 = 0;
-      startBit = 0;
+      } while (--n > 0);
     }
 
-    end = in + count;
-    switch (offset_4 / 4)
-    {
+    if (count == 0)
+      return;
+
+    offset = 0;
+    startBit = 0;
+  }
+
+  end = in + count;
+  switch (offset)
+  {
 #define PACKEDARRAY_IMPL_PACK_CASES
 #define PACKEDARRAY_IMPL_PACK_CASE_BREAK \
-      if (in == end)\
-        break;
+    if (in == end)\
+      break;
 #include PACKEDARRAY_SELF
-    }
-    PACKEDARRAY_ASSERT(in == end);
-    if ((count / 4 * PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit) % 32)
-    {
-      in_4 = PackedArray_loadu_uint32x4(out);
-      mask = PackedArray_sub_uint32x4(PackedArray_shl_uint32x4(PackedArray_set_uint32x4(1), ((count / 4 * PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit - 1) % 32) + 1), PackedArray_set_uint32x4(1));
-      in_4 = PackedArray_andnot_uint32x4(in_4, mask);
-      packed = PackedArray_or_uint32x4(packed, in_4);
-      PackedArray_store_uint32x4(out, packed);
-    }
   }
-
-  PACKEDARRAY_JOIN(PACKEDARRAY_JOIN(__PackedArray_pack_, PACKEDARRAY_IMPL_BITS_PER_ITEM), _post):
-  if (post > 0)
-    __PackedArray_pack_scalar(buffer, PACKEDARRAY_IMPL_BITS_PER_ITEM, PACKEDARRAY_IMPL_MASK, offset, in, post);
+  PACKEDARRAY_ASSERT(in == end);
+  if ((count * PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit) % 32)
+  {
+    packed |= *out & ~((uint32_t)(1ULL << ((((uint64_t)count * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM + startBit - 1) % 32) + 1)) - 1);
+    *out = packed;
+  }
 }
 
-void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(const uint32_t* __restrict buffer, uint32_t offset, uint32_t* __restrict out, uint32_t count)
+void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(const uint32_t* __restrict in, uint64_t offset, uint32_t* __restrict out, uint64_t count)
 {
-  uint32_t pre, post;
-  const uint32_t* __restrict in;
+  uint32_t packed;
   const uint32_t* __restrict end;
-  PackedArray_uint32x4_t packed, out_4;
-  uint32_t offset_4;
 
-  pre = (offset + 3) / 4 * 4 - offset;
-  pre = pre > count ? count : pre;
+  in += ((uint64_t)offset * (uint64_t)PACKEDARRAY_IMPL_BITS_PER_ITEM) / 32;
+  packed = *in;
 
-  if (pre > 0)
+  offset = offset % 32;
+  if (count >= 32 - offset)
   {
-    __PackedArray_unpack_scalar(buffer, PACKEDARRAY_IMPL_BITS_PER_ITEM, PACKEDARRAY_IMPL_MASK, offset, out, pre);
-    offset += pre;
-    out += pre;
-    count -= pre;
-  }
+    int32_t n;
 
-  post = count % 4;
-  count -= post;
-
-  if (count > 0)
-  {
-    in = &buffer[(offset / 4 * PACKEDARRAY_IMPL_BITS_PER_ITEM) / 32 * 4];
-    packed = PackedArray_load_uint32x4(in);
-
-    offset_4 = offset % 128;
-    offset += count;
-
-    if (count >= 128 - offset_4)
+    n = (count + offset) / 32;
+    count -= 32 * n - offset;
+    switch (offset)
     {
-      int32_t n;
-
-      n = (count + offset_4) / 128;
-      count -= 128 * n - offset_4;
-      switch (offset_4 / 4)
+      do
       {
-        do
-        {
-          in += 4;
-          packed = PackedArray_load_uint32x4(in);
+        packed = *++in;
 #define PACKEDARRAY_IMPL_UNPACK_CASES
 #include PACKEDARRAY_SELF
-        } while (--n > 0);
-      }
-
-      if (count == 0)
-        goto PACKEDARRAY_JOIN(PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM), _post);
-
-      in += 4;
-      packed = PackedArray_loadu_uint32x4(in);
-      offset_4 = 0;
+      } while (--n > 0);
     }
 
-    end = out + count;
-    switch (offset_4 / 4)
-    {
+    if (count == 0)
+      return;
+
+    packed = *++in;
+    offset = 0;
+  }
+
+  end = out + count;
+  switch (offset)
+  {
 #define PACKEDARRAY_IMPL_UNPACK_CASES
 #define PACKEDARRAY_IMPL_UNPACK_CASE_BREAK \
-      if (out == end)\
-        break;
+    if (out == end)\
+      break;
 #include PACKEDARRAY_SELF
-    }
-    PACKEDARRAY_ASSERT(out == end);
   }
-
-  PACKEDARRAY_JOIN(PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM), _post):
-  if (post > 0)
-    __PackedArray_unpack_scalar(buffer, PACKEDARRAY_IMPL_BITS_PER_ITEM, PACKEDARRAY_IMPL_MASK, offset, out, post);
+  PACKEDARRAY_ASSERT(out == end);
 }
 
 #undef PACKEDARRAY_IMPL_BITS_PER_ITEM
@@ -365,146 +297,11 @@ void PACKEDARRAY_JOIN(__PackedArray_unpack_, PACKEDARRAY_IMPL_BITS_PER_ITEM)(con
 
 #else
 
-#include "PackedArray.h"
+#include "../inc/PackedArray.h"
 
 #if !defined(PACKEDARRAY_ASSERT)
 #include <assert.h>
 #define PACKEDARRAY_ASSERT(expression) assert(expression)
-#endif
-
-#include <stddef.h>
-
-static void __PackedArray_pack_scalar(uint32_t* buffer, const uint32_t bitsPerItem, const uint32_t mask, uint32_t offset, const uint32_t* in, uint32_t count)
-{
-  uint32_t* __restrict out;
-  uint32_t startBit;
-  uint32_t bitsAvailable;
-
-  PACKEDARRAY_ASSERT(buffer != NULL);
-  PACKEDARRAY_ASSERT(in != NULL);
-  PACKEDARRAY_ASSERT(count != 0);
-
-  while (count--)
-  {
-    uint32_t value = *in++;
-
-    PACKEDARRAY_ASSERT(0 == (~mask & value));
-
-    out = &buffer[((uint64_t)offset / 4 * (uint64_t)bitsPerItem) / 32 * 4 + offset % 4];
-    startBit = ((uint64_t)offset / 4 * (uint64_t)bitsPerItem) % 32;
-    ++offset;
-
-    bitsAvailable = 32 - startBit;
-
-    if (bitsPerItem <= bitsAvailable)
-    {
-      out[0] = (out[0] & ~(mask << startBit)) | (value << startBit);
-    }
-    else
-    {
-      // value spans 2 buffer cells
-      uint32_t low, high;
-
-      low = value << startBit;
-      high = value >> bitsAvailable;
-
-      out[0] = (out[0] & ~(mask << startBit)) | low;
-
-      out[4] = (out[4] & ~(mask >> bitsAvailable)) | high;
-    }
-  }
-}
-
-static void __PackedArray_unpack_scalar(const uint32_t* buffer, const uint32_t bitsPerItem, const uint32_t mask, uint32_t offset, uint32_t* out, uint32_t count)
-{
-  const uint32_t* __restrict in;
-  uint32_t startBit;
-  uint32_t bitsAvailable;
-
-  PACKEDARRAY_ASSERT(buffer != NULL);
-  PACKEDARRAY_ASSERT(out != NULL);
-  PACKEDARRAY_ASSERT(count != 0);
-
-  while (count--)
-  {
-    uint32_t value;
-
-    in = &buffer[((uint64_t)offset / 4 * (uint64_t)bitsPerItem) / 32 * 4 + offset % 4];
-    startBit = ((uint64_t)offset / 4 * (uint64_t)bitsPerItem) % 32;
-    ++offset;
-
-    bitsAvailable = 32 - startBit;
-
-    if (bitsPerItem <= bitsAvailable)
-    {
-      value = (in[0] >> startBit) & mask;
-    }
-    else
-    {
-      // value spans 2 buffer cells
-      uint32_t low, high;
-
-      low = in[0] >> startBit;
-      high = in[4] << bitsAvailable;
-
-      value = (low | high) & mask;
-    }
-    *out++ = value;
-  }
-}
-
-#if defined(__SSE2__) || defined(_M_IX86) || defined(_M_X64)
-
-#include <emmintrin.h>
-
-#define PackedArray_uint32x4_t                      __m128i
-#define PackedArray_uint32x4_zero                   _mm_setzero_si128()
-#define PackedArray_set_uint32x4(i)                 _mm_set1_epi32(i)
-#define PackedArray_sub_uint32x4(lhs, rhs)          _mm_sub_epi32(lhs, rhs)
-#define PackedArray_loadu_uint32x4(ptr)             _mm_loadu_si128((const __m128i*)ptr)
-#define PackedArray_storeu_uint32x4(ptr, v)         _mm_storeu_si128((__m128i*)ptr, v)
-#define PackedArray_load_uint32x4(ptr)              _mm_load_si128((const __m128i*)ptr)
-#define PackedArray_store_uint32x4(ptr, v)          _mm_store_si128((__m128i*)ptr, v)
-#define PackedArray_shl_uint32x4(v, shift)          _mm_slli_epi32(v, shift)
-#define PackedArray_shr_uint32x4(v, shift)          _mm_srli_epi32(v, shift)
-#define PackedArray_or_uint32x4(lhs, rhs)           _mm_or_si128(lhs, rhs)
-#define PackedArray_and_uint32x4(lhs, rhs)          _mm_and_si128(lhs, rhs)
-#define PackedArray_andnot_uint32x4(lhs, rhs)       _mm_andnot_si128(rhs, lhs)
-// assumes dst bits are cleared at inserted bit positions
-#define PackedArray_vsli0_uint32x4(dst, src, shift) PackedArray_or_uint32x4(dst, PackedArray_shl_uint32x4(src, shift))
-
-#elif defined(__ARM_NEON__) || defined(_M_ARM)
-
-#include <arm_neon.h>
-
-#define PackedArray_uint32x4_t                      uint32x4_t
-#define PackedArray_uint32x4_zero                   vdupq_n_u32(0)
-#define PackedArray_set_uint32x4(i)                 vdupq_n_u32(i)
-#define PackedArray_sub_uint32x4(lhs, rhs)          vsubq_u32(lhs, rhs)
-#define PackedArray_loadu_uint32x4(ptr)             vld1q_u32((const uint32_t*)ptr)
-#define PackedArray_storeu_uint32x4(ptr, v)         vst1q_u32(ptr, v)
-#if defined(__GNUC__)
-// because  __builtin_assume_aligned isn't always available...
-
-typedef uint32_t __attribute__((aligned(16)))       PackedArray_aligned_uint32_t;
-#define PackedArray_load_uint32x4(ptr)              vld1q_u32((const PackedArray_aligned_uint32_t*)ptr)
-#define PackedArray_store_uint32x4(ptr, v)          vst1q_u32((PackedArray_aligned_uint32_t*)ptr, v)
-#else
-#define PackedArray_load_uint32x4(ptr)              vld1q_u32((const uint32_t*)ptr)
-#define PackedArray_store_uint32x4(ptr, v)          vst1q_u32(ptr, v)
-#endif
-#define PackedArray_shl_uint32x4(v, shift)          vshlq_u32(v, vdupq_n_s32(shift))
-#define PackedArray_shr_uint32x4(v, shift)          vshlq_u32(v, vdupq_n_s32(-shift))
-#define PackedArray_or_uint32x4(lhs, rhs)           vorrq_u32(lhs, rhs)
-#define PackedArray_and_uint32x4(lhs, rhs)          vandq_u32(lhs, rhs)
-#define PackedArray_andnot_uint32x4(lhs, rhs)       vbicq_u32(lhs, rhs)
-// assumes dst bits are cleared at inserted bit positions
-#define PackedArray_vsli0_uint32x4(dst, src, shift) vsliq_n_u32(dst, src, shift)
-
-#else
-
-#error unsupported SIMD platform
-
 #endif
 
 #define PACKEDARRAY_IMPL
@@ -575,55 +372,70 @@ typedef uint32_t __attribute__((aligned(16)))       PackedArray_aligned_uint32_t
 #undef PACKEDARRAY_IMPL
 
 
-#if !defined(PACKEDARRAY_ALIGNED_MALLOC) || !defined(PACKEDARRAY_FREE)
+#if !defined(PACKEDARRAY_MALLOC) || !defined(PACKEDARRAY_FREE)
 #include <stdlib.h>
 #endif
 
-#if !defined(PACKEDARRAY_ALIGNED_MALLOC)
-#if defined (_MSC_VER)
-#define PACKEDARRAY_ALIGNED_MALLOC(alignment, size) _aligned_malloc(size, alignment)
-#elif defined (ANDROID) || defined (__ANDROID__)
-#define PACKEDARRAY_ALIGNED_MALLOC(alignment, size) memalign(alignment, size)
-#else
-static void* __PackedArray_aligned_malloc(size_t alignment, size_t size)
-{
-  void* p = NULL;
-  posix_memalign(&p, alignment, size);
-  return p;
-}
-#define PACKEDARRAY_ALIGNED_MALLOC(alignment, size) __PackedArray_aligned_malloc(alignment, size)
-#endif
+#if !defined(PACKEDARRAY_MALLOC)
+#define PACKEDARRAY_MALLOC(size) calloc(size, 1)
 #endif
 
 #if !defined(PACKEDARRAY_FREE)
-#if defined (_MSC_VER)
-#define PACKEDARRAY_FREE(p) _aligned_free(p)
-#else
 #define PACKEDARRAY_FREE(p) free(p)
 #endif
-#endif
 
-PackedArray* PackedArray_create(uint32_t bitsPerItem, uint32_t count)
+#include <stddef.h>
+#include <math.h>
+
+uint64_t PackedArray_estimate_heap(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks) {
+  uint64_t total = 0;
+  total += sizeof(uint32_t) * (((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32);
+  total += num_locks * sizeof(omp_lock_t);
+  return total;
+}
+
+PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks)
 {
   PackedArray* a;
   size_t bufferSize;
 
   PACKEDARRAY_ASSERT(bitsPerItem > 0);
   PACKEDARRAY_ASSERT(bitsPerItem <= 32);
+  bufferSize = sizeof(uint32_t) * (((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32);
+  PACKEDARRAY_ASSERT(num_locks <= bufferSize);
 
-  bufferSize = sizeof(uint32_t) * (((uint64_t)count / 4 * (uint64_t)bitsPerItem + 31) / 32 * 4);
-  bufferSize += count < 4 ? sizeof(uint32_t) * count : sizeof(uint32_t) * 4;
-  a = (PackedArray*)PACKEDARRAY_ALIGNED_MALLOC(16, sizeof(PackedArray) + bufferSize);
-  PACKEDARRAY_ASSERT((uint64_t)a->buffer % 16 == 0);
+  a = (PackedArray*)PACKEDARRAY_MALLOC(sizeof(PackedArray) + bufferSize);
 
   if (a != NULL)
   {
-    a->buffer[bufferSize / sizeof(uint32_t) - 1] = 0;
+    a->buffer[((uint64_t)bitsPerItem * (uint64_t)count + 31) / 32 - 1] = 0;
     a->bitsPerItem = bitsPerItem;
     a->count = count;
   }
 
+  a->lock_info.num_locks = num_locks;
+
+  // this will result some locks hanging off the end of the array, not really a big
+  // deal that it doesn't perfectly match up as all elements are covered
+  a->lock_info.lock_interval = ceil((float)bufferSize / (float)num_locks);
+  a->lock_info.locks = calloc(num_locks, sizeof(omp_lock_t));
+  for (size_t i = 0; i < num_locks; i++) {
+    omp_init_lock(&a->lock_info.locks[i]);
+  }
+
   return a;
+}
+
+void PackedArray_lock_offset(PackedArray* a, const uint64_t offset) {
+  size_t bufind = ((uint64_t)offset * (uint64_t)a->bitsPerItem) / 32;
+  size_t lockind = bufind / a->lock_info.lock_interval;  // using implicit floor
+  omp_set_lock(&(a->lock_info.locks[lockind]));
+}
+
+void PackedArray_unlock_offset(PackedArray* a, const uint64_t offset) {
+  size_t bufind = ((uint64_t)offset * (uint64_t)a->bitsPerItem) / 32;
+  size_t lockind = bufind / a->lock_info.lock_interval;  // using implicit floor
+  omp_unset_lock(&(a->lock_info.locks[lockind]));
 }
 
 void PackedArray_destroy(PackedArray* a)
@@ -632,7 +444,7 @@ void PackedArray_destroy(PackedArray* a)
   PACKEDARRAY_FREE(a);
 }
 
-void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in, uint32_t count)
+void PackedArray_pack(PackedArray* a, const uint64_t offset, const uint32_t* in, uint64_t count)
 {
   PACKEDARRAY_ASSERT(a != NULL);
   PACKEDARRAY_ASSERT(in != NULL);
@@ -674,7 +486,7 @@ void PackedArray_pack(PackedArray* a, const uint32_t offset, const uint32_t* in,
   }
 }
 
-void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* out, uint32_t count)
+void PackedArray_unpack(const PackedArray* a, const uint64_t offset, uint32_t* out, uint64_t count)
 {
   PACKEDARRAY_ASSERT(a != NULL);
   PACKEDARRAY_ASSERT(out != NULL);
@@ -716,7 +528,7 @@ void PackedArray_unpack(const PackedArray* a, const uint32_t offset, uint32_t* o
   }
 }
 
-void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
+void PackedArray_set(PackedArray* a, const uint64_t offset, const uint32_t in)
 {
   uint32_t* __restrict out;
   uint32_t bitsPerItem;
@@ -728,8 +540,8 @@ void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
 
   bitsPerItem = a->bitsPerItem;
 
-  out = &a->buffer[4 * (((uint64_t)offset / 4 * (uint64_t)bitsPerItem) / 32) + (offset % 4)];
-  startBit = ((uint64_t)offset / 4 * (uint64_t)bitsPerItem) % 32;
+  out = &a->buffer[((uint64_t)offset * (uint64_t)bitsPerItem) / 32];
+  startBit = ((uint64_t)offset * (uint64_t)bitsPerItem) % 32;
 
   bitsAvailable = 32 - startBit;
 
@@ -742,6 +554,7 @@ void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
   }
   else
   {
+    PACKEDARRAY_ASSERT(0); // not supporting num_bits that doesnt evenly divide 32
     // value spans 2 buffer cells
     uint32_t low, high;
 
@@ -750,11 +563,11 @@ void PackedArray_set(PackedArray* a, const uint32_t offset, const uint32_t in)
 
     out[0] = (out[0] & ~(mask << startBit)) | low;
 
-    out[4] = (out[4] & ~(mask >> (32 - startBit))) | high;
+    out[1] = (out[1] & ~(mask >> (32 - startBit))) | high;
   }
 }
 
-uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset)
+uint32_t PackedArray_get(const PackedArray* a, const uint64_t offset)
 {
   const uint32_t* __restrict in;
   uint32_t bitsPerItem;
@@ -767,8 +580,8 @@ uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset)
 
   bitsPerItem = a->bitsPerItem;
 
-  in = &a->buffer[4 * (((uint64_t)offset / 4 * (uint64_t)bitsPerItem) / 32) + (offset % 4)];
-  startBit = ((uint64_t)offset / 4 * (uint64_t)bitsPerItem) % 32;
+  in = &a->buffer[((uint64_t)offset * (uint64_t)bitsPerItem) / 32];
+  startBit = ((uint64_t)offset * (uint64_t)bitsPerItem) % 32;
 
   bitsAvailable = 32 - startBit;
 
@@ -780,11 +593,13 @@ uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset)
   }
   else
   {
-    // value spans 2 buffer cells
+    PACKEDARRAY_ASSERT(0); // not supporting num_bits that doesnt evenly divide 32
+
+    // out spans 2 buffer cells
     uint32_t low, high;
 
     low = in[0] >> startBit;
-    high = in[4] << (32 - startBit);
+    high = in[1] << (32 - startBit);
 
     out = low ^ ((low ^ high) & (mask >> bitsAvailable << bitsAvailable));
   }
@@ -794,18 +609,8 @@ uint32_t PackedArray_get(const PackedArray* a, const uint32_t offset)
 
 uint32_t PackedArray_bufferSize(const PackedArray* a)
 {
-  size_t bufferSize;
-  uint32_t bitsPerItem, count;
-
   PACKEDARRAY_ASSERT(a != NULL);
-
-  bitsPerItem = a->bitsPerItem;
-  count = a->count;
-
-  bufferSize = ((uint64_t)count / 4 * (uint64_t)bitsPerItem + 31) / 32 * 4;
-  bufferSize += count < 4 ? count : 4;
-
-  return (uint32_t)bufferSize;
+  return (uint32_t)(((uint64_t)a->bitsPerItem * (uint64_t)a->count + 31) / 32);
 }
 
 #if !(defined(_MSC_VER) && _MSC_VER >= 1400) && !defined(__GNUC__)
@@ -845,7 +650,7 @@ static int __PackedArray_highestBitSet(uint32_t v)
 #endif
 }
 
-uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count)
+uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint64_t count)
 {
   uint32_t i, in_max, bitsPerItem;
 
@@ -872,20 +677,29 @@ uint32_t PackedArray_computeBitsPerItem(const uint32_t* in, uint32_t count)
 #include <stdio.h>
 #include <string.h> // memcmp
 
-static void PackedArray_pack_reference(PackedArray* a, uint32_t offset, const uint32_t* in, uint32_t count)
+static void PackedArray_pack_reference(PackedArray* a, const uint64_t offset, const uint32_t* in, uint64_t count)
 {
   uint32_t* __restrict out;
   uint32_t bitsPerItem;
   uint32_t startBit;
   uint32_t bitsAvailable;
   uint32_t mask;
+  uint32_t packed;
 
   assert(a != NULL);
   assert(in != NULL);
+  assert(count != 0);
 
   bitsPerItem = a->bitsPerItem;
 
-  mask = (uint32_t)((1ULL << bitsPerItem) - 1);
+  out = &a->buffer[(uint64_t)offset * (uint64_t)bitsPerItem / 32];
+  startBit = ((uint64_t)offset * (uint64_t)bitsPerItem) % 32;
+
+  bitsAvailable = 32 - startBit;
+
+  mask = (uint32_t)(1ULL << bitsPerItem) - 1;
+
+  packed = *out;
 
   while (count--)
   {
@@ -893,15 +707,25 @@ static void PackedArray_pack_reference(PackedArray* a, uint32_t offset, const ui
 
     assert(0 == (~mask & value));
 
-    out = &a->buffer[((uint64_t)offset / 4 * (uint64_t)bitsPerItem) / 32 * 4 + offset % 4];
-    startBit = ((uint64_t)offset / 4 * (uint64_t)bitsPerItem) % 32;
-    ++offset;
-
-    bitsAvailable = 32 - startBit;
-
     if (bitsPerItem <= bitsAvailable)
     {
-      out[0] = (out[0] & ~(mask << startBit)) | (value << startBit);
+      packed = (packed & ~(mask << startBit)) | (value << startBit);
+
+      startBit += bitsPerItem;
+      bitsAvailable -= bitsPerItem;
+    }
+    else if (bitsAvailable == 0)
+    {
+      *out++ = packed;
+      packed = *out;
+
+      startBit = 0;
+      bitsAvailable = 32;
+
+      packed = (packed & ~mask) | value;
+
+      startBit += bitsPerItem;
+      bitsAvailable -= bitsPerItem;
     }
     else
     {
@@ -911,53 +735,79 @@ static void PackedArray_pack_reference(PackedArray* a, uint32_t offset, const ui
       low = value << startBit;
       high = value >> bitsAvailable;
 
-      out[0] = (out[0] & ~(mask << startBit)) | low;
+      packed = (packed & ~(mask << startBit)) | low;
+      *out++ = packed;
 
-      out[4] = (out[4] & ~(mask >> bitsAvailable)) | high;
+      packed = *out;
+      packed = (packed & ~(mask >> (32 - startBit))) | high;
+
+      startBit = (startBit + bitsPerItem) % 32;
+      bitsAvailable = 32 - startBit;
     }
   }
+  *out = packed;
 }
 
-static void PackedArray_unpack_reference(const PackedArray* a, uint32_t offset, uint32_t* out, uint32_t count)
+static void PackedArray_unpack_reference(const PackedArray* a, const uint64_t offset, uint32_t* out, uint64_t count)
 {
   const uint32_t* __restrict in;
   uint32_t bitsPerItem;
   uint32_t startBit;
   uint32_t bitsAvailable;
   uint32_t mask;
+  uint32_t packed;
 
   assert(a != NULL);
   assert(out != NULL);
+  assert(count != 0);
 
   bitsPerItem = a->bitsPerItem;
 
-  mask = (uint32_t)((1ULL << bitsPerItem) - 1);
+  in = &a->buffer[(uint64_t)offset * (uint64_t)bitsPerItem / 32];
+  startBit = ((uint64_t)offset * (uint64_t)bitsPerItem) % 32;
+
+  bitsAvailable = 32 - startBit;
+
+  mask = (uint32_t)(1ULL << bitsPerItem) - 1;
+
+  packed = *in;
 
   while (count--)
   {
     uint32_t value;
 
-    in = &a->buffer[((uint64_t)offset / 4 * (uint64_t)bitsPerItem) / 32 * 4 + offset % 4];
-    startBit = ((uint64_t)offset / 4 * (uint64_t)bitsPerItem) % 32;
-    ++offset;
-
-    bitsAvailable = 32 - startBit;
-
     if (bitsPerItem <= bitsAvailable)
     {
-      value = (in[0] >> startBit) & mask;
+      value = (packed >> startBit) & mask;
+      *out++ = value;
+
+      startBit += bitsPerItem;
+      bitsAvailable -= bitsPerItem;
+    }
+    else if (bitsAvailable == 0)
+    {
+      packed = *++in;
+      value = packed & mask;
+      *out++ = value;
+
+      startBit = bitsPerItem;
+      bitsAvailable = 32 - bitsPerItem;
     }
     else
     {
       // value spans 2 buffer cells
       uint32_t low, high;
 
-      low = in[0] >> startBit;
-      high = in[4] << bitsAvailable;
+      low = packed >> startBit;
+      packed = *++in;
+      high = packed << (32 - startBit);
 
       value = low ^ ((low ^ high) & (mask >> bitsAvailable << bitsAvailable));
+      *out++ = value;
+
+      startBit = (startBit + bitsPerItem) % 32;
+      bitsAvailable = 32 - startBit;
     }
-    *out++ = value;
   }
 }
 
@@ -1064,7 +914,7 @@ int main(void)
       assert(a1 != NULL);
       a2 = PackedArray_create(bitsPerItem, count);
       assert(a2 != NULL);
-
+      
       for (i = 0; i < (int)PackedArray_bufferSize(a1); ++i)
         a1->buffer[i] = a2->buffer[i] = rand();
 
@@ -1146,7 +996,7 @@ static double getChronometerTime()
 #endif
 
 #define LOOP_COUNT 1000
-static double bench_memcpy(uint32_t* in, uint32_t* out, uint32_t count)
+static double bench_memcpy(uint32_t* in, uint32_t* out, uint64_t count)
 {
   double start, end;
   uint32_t i;
@@ -1161,7 +1011,7 @@ static double bench_memcpy(uint32_t* in, uint32_t* out, uint32_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_loopcpy(uint32_t* in, uint32_t* out, uint32_t count)
+static double bench_loopcpy(uint32_t* in, uint32_t* out, uint64_t count)
 {
   double start, end;
   uint32_t i;
@@ -1181,7 +1031,7 @@ static double bench_loopcpy(uint32_t* in, uint32_t* out, uint32_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_pack(uint32_t* in, PackedArray* out, uint32_t count)
+static double bench_pack(uint32_t* in, PackedArray* out, uint64_t count)
 {
   double start, end;
   int i;
@@ -1196,7 +1046,7 @@ static double bench_pack(uint32_t* in, PackedArray* out, uint32_t count)
   return 1e6 * (end - start) / LOOP_COUNT;
 }
 
-static double bench_unpack(PackedArray* in, uint32_t* out, uint32_t count)
+static double bench_unpack(PackedArray* in, uint32_t* out, uint64_t count)
 {
   double start, end;
   int i;
@@ -1218,7 +1068,7 @@ int main(void)
   double start, end;
   uint32_t* b1;
   uint32_t* b2;
-  uint32_t count, bitsPerItem;
+  uint64_t count, bitsPerItem;
   PackedArray** packed;
   uint32_t i;
   double* speed_memcpy;
@@ -1357,7 +1207,6 @@ int main(void)
 
       printf("\n");
     }
-    printf("%d\n",i);
     assert(i == LOG2_MAX_ELEMENT_COUNT + 1);
 
     printf("avg (B/µs)\tmin (B/µs)\tmax (B/µs)");

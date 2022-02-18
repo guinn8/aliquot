@@ -1,6 +1,6 @@
 # todo: compile sources all (non-main) sources into objects, look into grouped targets
 
-INCS= -I../inc -I../PackedArray
+INCS= -I../inc
 LINKS= -lpthread -lm 
 CFLAGS= -g -fopenmp -Wall -Wextra -Wshadow -std=c99 -Wpedantic -O3 -Wstrict-overflow -fno-strict-aliasing
 CC= gcc
@@ -21,7 +21,7 @@ profiler: src/pomyang_profile_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o ob
 obj/pomyang_kparent.o: src/pomyang_kparent.c
 	$(CC) -c $(CFLAGS) $^ -o $@ 
 
-obj/PackedArray.o: ../PackedArray/PackedArray.c
+obj/PackedArray.o: src/PackedArray.c
 	$(CC) -c -O3 $^ -o $@ 
 
 obj/sumdiv_util.o: src/sumdiv_util.c
@@ -36,3 +36,4 @@ obj/bruteforce_kparent.o: src/bruteforce_kparent.c
 .PHONY: clean
 clean: 
 	rm obj/*
+	rm bin/*

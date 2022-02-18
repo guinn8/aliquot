@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../../PackedArray/PackedArray.h"
+#include "../inc/PackedArray.h"
 
 // I had to manually type these non-aliquot counts from Numerical and Statistical Analysis of Aliquot Sequences (Chum et al.)
 #define _10_TO_THE_4 1212

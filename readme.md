@@ -1,6 +1,8 @@
 Aliquot
 ==========
 
+Documentation can be found at: `https://guinn8.github.io/aliquot/html/index.html` or `docs/index.html` 
+
 This repo contains several project, most related to sieve the sum-of-proper divisors function. More details can be found in detailed src documentation. PDF's are my writings on the subject of k-parent aliquot numbers.
 
 pomyang_kparent counts the occurrence of k-parent numbers, by far the most developed.

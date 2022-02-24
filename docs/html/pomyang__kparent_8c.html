@@ -152,20 +152,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a
 <dl class="section author"><dt>Author</dt><dd>Gavin Guinn (<a href="#" onclick="location.href='mai'+'lto:'+'gav'+'in'+'gui'+'nn'+'1@g'+'ma'+'il.'+'co'+'m'; return false;">gavin<span style="display: none;">.nosp@m.</span>guin<span style="display: none;">.nosp@m.</span>n1@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2021-2-17</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Public Domain (Please credit me; if you find this code useful I would love to hear about your work!)</dd></dl>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 NOTE</h2>
 <p><b>The counts of non-aliquots reported by this program will be exactly one less than the published figures!</b> This algorithm enumerates all <em>even</em> k-parent numbers, odd k-parent numbers exist but they are not considered. The user is expected to adjust the count to consider <em>5</em> which is the only odd aliquot (see sect. 3, [Chum et al.]). It may seem odd to only count even k-parent numbers while odd k-parents also exist, this program must be seen in the context of using heuristics to approach the Guy-Selfridge conjecture, see [Guy and Selfridge] and [Chum et al.] for details.</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 ALGORITHMS</h2>
 <p>This is a rewrite of Anton Mosunov's implementation of the tabulation of untouchable numbers, section 3 of [Chum et al.]. As described in the paper this program is capable of counting of aliquot untouchables and more generally counting numbers with k preimages under the sum-of-proper-divisors (<code>sumdiv</code> / <code>s(n)</code>) function, these numbers are referred to as k-parent. The algorithm employed in [Chum et al.] was originally developed in a paper of [Pomerance and Yang] where the author's describe a family of algorithms for enumerating preimages, the algorithm for s(n) will be referred to as the Pomerance-Yang (<code>pomyang</code>) algorithm. The <code>pomyang</code> algorithm takes the sum-of-divisors (sigma) for all odd numbers in the range (1, <code>bound</code>) as input, to produce these values a technique of [Moews and Moews] for sieving ranges of sigma is used to efficiently generate these values.</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 TECHNIQUE</h2>
 <p>The techniques used in this implementation broadly differ from those described in [Chum et al.], notably no disc operations are used. The sum-of-divisors (sigma) for all odd numbers in the range (1, <code>bound</code>) are sieved on-the-fly rather than ^pre-computed and stored. A buffer is required to hold the counts of preimages for all even numbers less than <code>bound</code>, this can require huge amounts of memory (using 8 bit counter takes <code>~500gb</code> at <code>bound</code> of 2^40). When enumerating non-aliquots only 1-bit per number is required, however <code>sizeof(bool) == sizeof(uint8_t)</code> as a byte is the smallest addressable unit of memory. A PackedArray data structure is used to create a buffer that can store 1, 2, or 4 bits of information in exactly that much memory, vasty decreasing memory requirements. Threads must share this buffer when running the otherwise embarrassingly parallel pomyang algorithm, this is accomplished by allocating an array of locks to protect portions of the resource. Locking the entire buffer whenever a thread wants to record a image bottlenecks the whole process.</p>
 <p>^ [Chum et al.] indicates only sieving odd sigma upto <code>bound</code> / 2 but odd sigma upto <code>bound</code> is certainly a required input for the Pomerance-Yang algorithm</p>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 PERFORMANCE</h2>
 <p>The parameter num_locks should be set to the highest value possible given memory constraits to optimize for speed. The parameter seg_len has a far more ambiguous effect on performance, if set either to low or high it can seriously impact performance see moews_moews_sieve.c for a more detailed analysis.</p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 CITATIONS</h2>
 <ul>
 <li>[Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018). Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.</li>
@@ -173,7 +173,7 @@ CITATIONS</h2>
 <li>[Moews and Moews] Moews, D. and Moews, P. C. (1991). A search for aliquot cycles below 10 10. Mathematics of Computation, 57(196):849.</li>
 <li>[Guy and Selfridge] Guy, R. K. and Selfridge, J. L. (1975). What drives an aliquot sequence? Mathematics of Computation, 29(129):101–101.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md32"></a>
 NOTATION</h2>
 <ul>
 <li>sumdiv / s(n) == sum-of-proper-divisors</li>

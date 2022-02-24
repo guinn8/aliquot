@@ -1,5 +1,5 @@
 /**
- * @file profile_pom_yang.c
+ * @file pomyang_profile_main.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief a scratch file to programatically run ranges of the pomerance-yang algorithm and dump to file
  * @date 2022-02-17
@@ -21,6 +21,7 @@ void run_seglen_perms(size_t sub_bound, const char *filename);
 int main(int argc, char const *argv[]) {
     assert(argc == 4);
     size_t minbound = strtol(argv[1], NULL, 10);
+    printf("minbound: %ld\n",minbound);
     size_t maxbound = strtol(argv[2], NULL, 10);
     const char *filename = argv[3];
     size_t bound = minbound;

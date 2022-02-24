@@ -1,64 +1,77 @@
 /**
- * @file pom_yang.c
+ * @file pomyang_kparent.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
- * @brief Counts the even numbers with k-preimages under the sum-of-proper-divisors function
  * @date 2021-2-17
- *
+ * 
+ * @brief Counts the even numbers with k-preimages under the sum-of-proper-divisors function
  * @copyright Public Domain (Please credit me; if you find this code useful I would love to hear about your work!)
  * 
- * NOTE:    THE COUNTS OF NON-ALIQUOTS REPORTED BY THIS PROGRAM WILL BE EXACTLY ONE LESS THAN THE PUBLISHED FIGURES!
- *          This algorithm enumerates all EVEN k-parent numbers, odd k-parent numbers exist but they are not considered.
- *          The user is expected to adjust the count to consider "5" which is the only odd aliquot (see sect. 3, [Chum et al.]).
- *          It may seem odd to only count even k-parent numbers while odd k-parents also exist,
- *          this program must be seen in the context of using heuristics to approach the Guy-Selfridge conjecture,
- *          see [Guy and Selfridge] and [Chum et al.] for details.
- *
- * ALGORITHMS:
+ * NOTE
+ * -----
+ * **The counts of non-aliquots reported by this program will be exactly one less than the published figures!**
+ * This algorithm enumerates all *even* k-parent numbers, odd k-parent numbers exist but they are not considered.
+ * The user is expected to adjust the count to consider *5* which is the only odd aliquot (see sect. 3, [Chum et al.]).
+ * It may seem odd to only count even k-parent numbers while odd k-parents also exist,
+ * this program must be seen in the context of using heuristics to approach the Guy-Selfridge conjecture,
+ * see [Guy and Selfridge] and [Chum et al.] for details.
+ * 
+ * ALGORITHMS
+ * ----------
  * This is a rewrite of Anton Mosunov's implementation of the tabulation of untouchable numbers, section 3 of [Chum et al.].
- * As described in the paper this program is capable of counting of aliquot untouchables and more generally counting numbers...
- * with k preimages under the sum-of-proper-divisors (sumdiv / s(n)) function, these numbers are referred to as k-parent. The algorithm employed in...
- * [Chum et al.] was originally developed in a paper of [Pomerance and Yang] where the author's describe a family of algorithms for enumerating...
- * preimages, the algorithm for s(n) will be referred to as the Pomerance-Yang (pom_yang) algorithm. The pom_yang algorithm takes...
- * the sum-of-divisors (sigma) for all odd numbers in the range (1, bound) as input, to produce these values a technique of [Moews and Moews]...
+ * As described in the paper this program is capable of counting of aliquot untouchables and more generally counting numbers
+ * with k preimages under the sum-of-proper-divisors (`sumdiv` / `s(n)`) function, these numbers are referred to as k-parent. The algorithm employed in
+ * [Chum et al.] was originally developed in a paper of [Pomerance and Yang] where the author's describe a family of algorithms for enumerating
+ * preimages, the algorithm for s(n) will be referred to as the Pomerance-Yang (`pomyang`) algorithm. The `pomyang` algorithm takes
+ * the sum-of-divisors (sigma) for all odd numbers in the range (1, `bound`) as input, to produce these values a technique of [Moews and Moews]
  * for sieving ranges of sigma is used to efficiently generate these values. 
  * 
- * TECHNIQUE:
- * The techniques used in this implementation broadly differ from those described in [Chum et al.], notably...
- * no disc operations are used. The sum-of-divisors (sigma) for all odd numbers in the range (1, bound) are sieved
- * on-the-fly rather than ^pre-computed and stored. A buffer is required to hold the counts of preimages for all even numbers less than bound,
- * this can require huge amounts of memory (using 8 bit counter takes ~500gb at bound of 2^40). When enumerating non-aliquots only 1-bit per
- * number is required, however sizeof(bool) == sizeof(uint8_t) as a byte is the smallest addressable unit of memory. A PackedArray data structure...
+ * TECHNIQUE
+ * ---------
+ * The techniques used in this implementation broadly differ from those described in [Chum et al.], notably
+ * no disc operations are used. The sum-of-divisors (sigma) for all odd numbers in the range (1, `bound`) are sieved
+ * on-the-fly rather than ^pre-computed and stored. A buffer is required to hold the counts of preimages for all even numbers less than `bound`,
+ * this can require huge amounts of memory (using 8 bit counter takes `~500gb` at `bound` of 2^40). When enumerating non-aliquots only 1-bit per
+ * number is required, however `sizeof(bool) == sizeof(uint8_t)` as a byte is the smallest addressable unit of memory. A PackedArray data structure
  * is used to create a buffer that can store 1, 2, or 4 bits of information in exactly that much memory, vasty decreasing memory requirements.
- * Threads must share this buffer when running the otherwise embarrassingly parallel pom_yang algorithm, this is accomplished by allocating...
- * an array of locks to protect portions of the resource. Locking the entire buffer whenever a thread wants to record a image bottlenecks...
+ * Threads must share this buffer when running the otherwise embarrassingly parallel pomyang algorithm, this is accomplished by allocating
+ * an array of locks to protect portions of the resource. Locking the entire buffer whenever a thread wants to record a image bottlenecks
  * the whole process. 
  *
- *  ^   [Chum et al.] indicates only sieving odd sigma upto bound / 2 but odd sigma upto bound is certainly a required input for the...
+ *  ^   [Chum et al.] indicates only sieving odd sigma upto `bound` / 2 but odd sigma upto `bound` is certainly a required input for the
  *      Pomerance-Yang algorithm
  * 
- * PERFORMANCE:
+ * PERFORMANCE
+ * ----------
  * The parameter num_locks should be set to the highest value possible given memory constraits to optimize for speed. 
- * The parameter seg_len has a far more ambiguous effect on performance, if set either to low or high it can seriously impact performance...
+ * The parameter seg_len has a far more ambiguous effect on performance, if set either to low or high it can seriously impact performance
  * see moews_moews_sieve.c for a more detailed analysis. 
  *  
- * CITATIONS:
- *  ->  [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018).
+ * CITATIONS
+ * -----------
+ *  -  [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018).
  *      Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.
- *  ->  [Pomerance and Yang] Pomerance, C. and Yang, H.-S. (2014).
+ * 
+ *  -  [Pomerance and Yang] Pomerance, C. and Yang, H.-S. (2014).
  *      Variant of a theorem of Erdos on the sum-of-proper-divisors function. Mathematics of Computation, 83(288):1903–1913.
- *  ->  [Moews and Moews] Moews, D. and Moews, P. C. (1991). A search for aliquot cycles below 10 10.
+ * 
+ *  -  [Moews and Moews] Moews, D. and Moews, P. C. (1991). A search for aliquot cycles below 10 10.
  *      Mathematics of Computation, 57(196):849.
- *  ->  [Guy and Selfridge] Guy, R. K. and Selfridge, J. L. (1975). What drives an aliquot sequence?
+ * 
+ *  -  [Guy and Selfridge] Guy, R. K. and Selfridge, J. L. (1975). What drives an aliquot sequence?
  *      Mathematics of Computation, 29(129):101–101.
  *
- * NOTATION:
- *  ->  sumdiv / s(n) == sum-of-proper-divisors
- *  ->  sigma == sum-of-divisors
- *  ->  kparent == number with k preimages under s(n) 
+ * NOTATION
+ * ----------
+ *  -  sumdiv / s(n) == sum-of-proper-divisors
+ * 
+ *  -  sigma == sum-of-divisors
+ * 
+ *  -  kparent == number with k preimages under s(n) 
  * 
  * TODO: Finish collecting data to 2^40
  * TODO: Revisit heuristic model computation code
  * TODO: Move all relevant .tex files into this repo and find a vsCode tex workflow
+ * 
  */
 
 #include "../inc/pomyang_kparent.h"
@@ -79,7 +92,7 @@
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define DIVIDES(x, y) (0 == y % x)
 #define TWO_THIRDS .6666666666666666666666
-#define LOG(shush, fmt, ...)                          \
+#define LOG(shush, fmt, )                          \
     do {                                              \
         if (!shush) {                                 \
             fprintf(stderr, "[%s:%d] " fmt, __FILE__, \
@@ -215,7 +228,7 @@ static inline void _record_image(uint64_t sumdiv_m, PackedArray *f) {
 }
 
 /**
- * @brief counts the occurrences of numbers with k-preimages (ie. there are n numbers with 0 preimages...) 
+ * @brief counts the occurrences of numbers with k-preimages (ie. there are n numbers with 0 preimages) 
  *
  * @param f PackedArray holding finalized preimage counts
  * @return uint64_t* buffer of length (UINT8_MAX + 1) with occurrence counts, must be free'd by caller 
@@ -241,7 +254,7 @@ uint64_t *_tabulate_kparent(const PackedArray *f) {
  * @brief prints config information
  *
  * @param cfg config struct (see definition)
- * @param odd_comp_bound computed bound relevant to pom_yang algorithm
+ * @param odd_comp_bound computed bound relevant to pomyang algorithm
  */
 void _print_config(const pomyang_config *cfg, double odd_comp_bound) {
     printf("\nPomerance-Yang Config\n");

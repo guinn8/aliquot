@@ -1,0 +1,6 @@
+<map id="inc/sumdiv_util.h" name="inc/sumdiv_util.h">
+<area shape="rect" id="node1" title="api for sumdiv functions" alt="" coords="213,5,346,32"/>
+<area shape="rect" id="node2" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="5,80,185,107"/>
+<area shape="rect" id="node3" href="$geomean__sn_8c.html" title=" " alt="" coords="210,80,349,107"/>
+<area shape="rect" id="node4" href="$sumdiv__util_8c.html" title="Uses factoring wheel (https://en.wikipedia.org/wiki/Wheel_factorization) to compute the sum of diviso..." alt="" coords="373,80,505,107"/>
+</map>

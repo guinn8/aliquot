@@ -1,5 +1,5 @@
 /**
- * @file sumdiv.h
+ * @file sumdiv_util.h
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief api for sumdiv functions
  * @date 2022-02-17

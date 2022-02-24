@@ -1,5 +1,5 @@
 /**
- * @file pom_yang_cli.c
+ * @file pomyang_cli_main.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief command line interface to interact with the pom_yang algorithm
  * @date 2022-02-02

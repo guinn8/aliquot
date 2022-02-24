@@ -1,5 +1,5 @@
 /**
- * @file sieve_rewrite.c
+ * @file moewsmoews_sieve.h
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief api to the Moews and Moews sieving algorithm
  * @date Originally Apr 18, 2014, modified 2021-12-27

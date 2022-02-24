@@ -18,6 +18,10 @@ test: src/pomyang_test_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomya
 profiler: src/pomyang_profile_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomyang_kparent.o obj/PackedArray.o
 	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
 
+geomean_sn: src/geomean_sn.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomyang_kparent.o obj/PackedArray.o
+	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
+
+
 obj/pomyang_kparent.o: src/pomyang_kparent.c
 	$(CC) -c $(CFLAGS) $^ -o $@ 
 

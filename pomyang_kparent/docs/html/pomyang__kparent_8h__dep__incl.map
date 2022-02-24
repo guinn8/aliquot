@@ -1,0 +1,8 @@
+<map id="inc/pomyang_kparent.h" name="inc/pomyang_kparent.h">
+<area shape="rect" id="node1" title="api for pom_yang algorithm operations" alt="" coords="371,5,546,32"/>
+<area shape="rect" id="node2" href="$geomean__sn_8c.html" title=" " alt="" coords="5,87,144,114"/>
+<area shape="rect" id="node3" href="$pomyang__cli__main_8c.html" title="command line interface to interact with the pom_yang algorithm" alt="" coords="168,87,347,114"/>
+<area shape="rect" id="node4" href="$pomyang__kparent_8c.html" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="371,87,546,114"/>
+<area shape="rect" id="node5" href="$pomyang__profile__main_8c.html" title="a scratch file to programatically run ranges of the pomerance&#45;yang algorithm and dump to file" alt="" coords="571,80,725,121"/>
+<area shape="rect" id="node6" href="$pomyang__test__main_8c.html" title="test suite for the pom_yang algorithm" alt="" coords="749,87,939,114"/>
+</map>

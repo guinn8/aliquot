@@ -1,28 +1,33 @@
 /**
- * @file sieve_rewrite.c
+ * @file moewsmoews_sieve.c
  * @author Anton Mosunov and Gavin Guinn (gavinguinn1@gmail.com)
- * @brief functions to sieve blocks of sigma
+ * @brief Functions to sieve blocks of sigma function
  * @date Originally Apr 18, 2014, modified 2021-12-27
  *
  * @copyright Public Domain (Please credit me; if you find this code useful I would love to hear about your work!)
  *
- * PERFORMANCE SUMMARY:
+ * PERFORMANCE SUMMARY
+ * --------------------
  * The parameter seg_len has will increase sieve runtime by upto a order-of-magnitude if set to low/high.
  * If seg_len is set to low the sieve will execute far more instructions than needed to complete the same outcome,
- * as it's performance is improves with larger values of seg_len. I believe^ the amount of instructions increases...
- * exponentially as seg_len shrinks, judging by the cachegrind instruction lookup counts. However if seg_len is set...
- * to high the sieve will start thrashing at the cache missing reads/writes in the intermediate sieving steps...
- * thus degrading performance. I believe^^ this effect is more pronounced at bounds lower than ~10^9 as seg_len's that...
- * result in a reasonable amount of operations also happen to require sieving buffers...
+ * as it's performance is improves with larger values of seg_len. I believe^ the amount of instructions increases
+ * exponentially as seg_len shrinks, judging by the cachegrind instruction lookup counts. However if seg_len is set
+ * to high the sieve will start thrashing at the cache missing reads/writes in the intermediate sieving steps
+ * thus degrading performance. I believe^^ this effect is more pronounced at bounds lower than ~10^9 as seg_len's that
+ * result in a reasonable amount of operations also happen to require sieving buffers
  * that fit (very approximately) into my 32mb LL cache.
  *
- * TODO: test ^ and ^^
+ * TODO
+ * -------
+ * test ^ and ^^
  *
- * PERFORMANCE:
+ * PERFORMANCE
+ * -----------
  * The performance of this sieve is highly variable on the value of seg_len, unfortunately not in a clearly tractable way.
  * It is clear that if seg_len is set to low (whatever that means) the sieve will do a lot of additional operations for the same result.
  * This selected cachegrind/time output from 2 pom_yang run is illustrative:
- *
+ * 
+ *```
  * ./cli --bound=100000000 --seg_len=400000 --num_locks=1000000 --preimage_count_bits=1 --num_thread=12
  *  ==*== I   refs:      19,091,262,194
  *  ==*==
@@ -40,12 +45,14 @@
  *  ==*== LLd misses:         8,850,772  (    5,407,998 rd   +   3,442,774 wr)
  *  ==*== D1  miss rate:            6.8% (          8.0%     +         1.7%  )
  * 28.27s user 0.04s system 1052% cpu 2.689 total
+ * ```
  *
  * Note that the seg_len=12500 is running an order of magnitude more instructions and far fewer references on the data cache,
  * these references are relatively inaccurate.
  *
  * The seg_len value can also degrade performace if it is set to high:
  *
+ * ```
  * ./cli --bound=100000000 --seg_len=4000000 --num_locks=$((10**6)) --preimage_count_bits=1 --num_thread=12
  *  ==*== I   refs:      13,701,814,468
  *  ==*==
@@ -54,23 +61,29 @@
  *  ==*== LLd misses:         6,388,217  (    2,678,555 rd   +   3,709,662 wr)
  *  ==*== D1  miss rate:            8.3% (         10.1%     +         1.7%  )
  * 12.94s user 0.36s system 744% cpu 1.786 total
+ * ```
  *
- * Comparing to the seg_len=400000 run we can observe that slightly less instructions are being executed but we are still in the...
+ * Comparing to the seg_len=400000 run we can observe that slightly less instructions are being executed but we are still in the
  * same order of magnitude. More interestingly we can notice this run made an order of magnitude fewer references to the data cache and..
- * those references were much less accurate, likely accounting for the performace degradation. The vast majority of these misses...
+ * those references were much less accurate, likely accounting for the performace degradation. The vast majority of these misses
  * originate from interactions with the sigma and numbers buffers.
  *
- * SEE: files in the cg directory for more details
+ * SEE
+ * ----
+ * Files in the cg directory for more details.
  *
- * ALGORITHM:
- * This is a rewrite of Anton Mosunov's implementation of the [Moews and Moews] sieving algorithm, prepared to utilized...
- * in the tabulation of non-aliquots, sect. 3 of [Chum et al.]. This implementation includes undocumented optimization on...
+ * ALGORITHM
+ * ---------
+ * This is a rewrite of Anton Mosunov's implementation of the [Moews and Moews] sieving algorithm, prepared to utilized
+ * in the tabulation of non-aliquots, sect. 3 of [Chum et al.]. This implementation includes undocumented optimization on
  * the original method of [Moews and Moews] that are essential for performance, I can't make any sense of why it works however.
  * The _meows_naive_sieve implements the algorithm as described in the paper, it is much slower.
  *
- * CITATIONS:
+ * CITATIONS
+ * ---------
  *  ->  [Moews and Moews] Moews, D. and Moews, P. C. (1991). A search for aliquot cycles below 10 10.
  *      Mathematics of Computation, 57(196):849.
+ * 
  *  ->  [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018).
  *      Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.
  */
@@ -80,6 +93,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "../inc/sumdiv_util.h"
 
@@ -107,10 +121,12 @@ static void _meows_naive_sieve(uint64_t N, uint64_t M, uint64_t *sigma, const ui
  * @param squared sigma(m) or odd sigma(m * m)
  */
 static void _moews_sieve_odd(sieve_worker_t *worker, uint64_t seg_start, const bool squared) {
+    clock_t start = clock();
     assert(EVEN(worker->cfg->seg_len));
     assert(EVEN(seg_start));
     worker->seg_start = seg_start;
     worker->squared = squared;
+
     const uint64_t max_prime = (uint64_t)sqrt(seg_start + worker->cfg->seg_len);
 
     for (size_t i = 0; i < worker->cfg->buf_len; i++) {
@@ -166,6 +182,7 @@ static void _moews_sieve_odd(sieve_worker_t *worker, uint64_t seg_start, const b
             }
         }
     }
+    printf("%ld cycles to sieve segment %ld\n", clock() - start, seg_start);
 }
 
 /* See header for documentation */
@@ -307,8 +324,8 @@ void _prime_sieve(uint32_t max_prime, uint32_t *sieved_primes) {
 /**
  * Summary of sieving algorithm from [Meows and Meows]
  *
- * Suppose that we wish to compute sigma(M), ... , sigma(M + N - X).
- * The elements q[j] are initialized to M + j and r[j] to 1, for j = 0, ... , N - 1.
+ * Suppose that we wish to compute sigma(M),  , sigma(M + N - X).
+ * The elements q[j] are initialized to M + j and r[j] to 1, for j = 0,  , N - 1.
  *
  * Then for each prime power p^e with p <= sqrt(M + N - 1) and p^e <= M + N - X,
  * and for each j with M + j divisible by p^e and not by p^(e+1),
@@ -326,7 +343,7 @@ void _prime_sieve(uint32_t max_prime, uint32_t *sieved_primes) {
  * @param sigma buffer to be filled with enumeration
  * @param primes buffer containing all primes <= M + N
  *
- * NOTE:    this is included primarily for documentary purposes, it's much slower and untested compared to the...
+ * NOTE:    this is included primarily for documentary purposes, it's much slower and untested compared to the
  *          production sieve
  */
 #pragma GCC diagnostic push

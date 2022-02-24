@@ -1,5 +1,5 @@
 /**
- * @file bf_kparent.h
+ * @file bruteforce_kparent.h
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief api to brute force number of preimages
  * @date 2022-02-11

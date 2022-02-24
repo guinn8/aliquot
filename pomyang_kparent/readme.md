@@ -1,4 +1,4 @@
-Pomerance and Yang Algorithm
+Pomerance-Yang Algorithm Readme
 =============================
 
 This project purpose it to implement the Pomerance-Yang algorithm efficiently, accurately, and scalable to high bounds. It includes a command line interface (cli) to interact with the algorithm dynamically and a test suite to help with accuracy. The documentation in the source files is extensive, pom_yang.c provides the best starting point.

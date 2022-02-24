@@ -1,5 +1,5 @@
 /**
- * @file pom_yang_test.c
+ * @file pomyang_test_main.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief test suite for the pom_yang algorithm
  * @date 2022-02-06

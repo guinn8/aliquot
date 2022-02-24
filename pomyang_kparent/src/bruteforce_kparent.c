@@ -1,5 +1,5 @@
 /**
- * @file bf_kparent.c
+ * @file bruteforce_kparent.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief   Uses a simple bruteforce method to compute number of preimages for even number upto bound.
  *          Useful as a backstop test to the pom_yang algorithm

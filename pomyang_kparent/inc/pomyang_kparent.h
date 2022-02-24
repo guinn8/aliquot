@@ -1,5 +1,5 @@
 /**
- * @file pom_yang.h
+ * @file pomyang_kparent.h
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief api for pom_yang algorithm operations
  * @date 2021-2-17
@@ -41,6 +41,19 @@ static char *est_heap_desc = "est_heap: estimates heap usage, useful for large b
 static char *quiet_desc = "quiet: quiets some logging.";
 #pragma GCC diagnostic pop
 
+/**
+ * @brief Configure the Pomerance-Yang algorithm
+ * 
+ * @param preimage_count_bits: input to the PackedArray data struct, determines the actual number of bits used 
+ *                            to count the number of preimages some number has. Can be 1, 2, 4, or 8.
+ * @param bound: determine counts of all even k-parent numbers under this bound. Must be even.
+ * @param seg_len: segment length for sieving blocks of sigma(n), the algorithms input.
+ * @param num_locks: the size of the mutex buffer used to protect the shared counter buffer during multi-threaded access.
+ * @param num_threads: how many threads to use.
+ * @param est_heap: estimates heap usage, useful for large bound runs.
+ * @param quiet: quiets some logging.
+ * 
+ */
 typedef struct {
     size_t preimage_count_bits;
     size_t bound;

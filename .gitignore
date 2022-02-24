@@ -7,3 +7,5 @@ debug_main
 test
 cli
 */bin/*
+
+*/docs/latex

@@ -1,0 +1,4 @@
+<map id="sieve_worker_t" name="sieve_worker_t">
+<area shape="rect" id="node1" title="worker which holds state about a single thread running the sieve" alt="" coords="5,95,125,121"/>
+<area shape="rect" id="node2" href="$structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads" alt="" coords="8,5,123,32"/>
+</map>

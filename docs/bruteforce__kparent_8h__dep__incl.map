@@ -1,5 +1,5 @@
-<map id="inc/bruteforce_kparent.h" name="inc/bruteforce_kparent.h">
-<area shape="rect" id="node1" title="api to brute force number of preimages" alt="" coords="109,5,290,32"/>
-<area shape="rect" id="node2" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="5,80,185,107"/>
-<area shape="rect" id="node3" href="$pomyang__test__main_8c.html" title="test suite for the pom_yang algorithm" alt="" coords="210,80,399,107"/>
+<map id="pomyang_kparent/inc/bruteforce_kparent.h" name="pomyang_kparent/inc/bruteforce_kparent.h">
+<area shape="rect" id="node1" title="api to brute force number of preimages" alt="" coords="100,5,263,47"/>
+<area shape="rect" id="node2" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node3" href="$pomyang__test__main_8c.html" title="test suite for the pom_yang algorithm" alt="" coords="192,95,363,136"/>
 </map>

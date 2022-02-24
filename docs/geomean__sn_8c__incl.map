@@ -1,15 +1,15 @@
-<map id="src/geomean_sn.c" name="src/geomean_sn.c">
-<area shape="rect" id="node1" title=" " alt="" coords="337,5,476,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,80,80,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="105,80,173,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="235,229,298,256"/>
-<area shape="rect" id="node5" title=" " alt="" coords="789,80,856,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="419,155,490,181"/>
-<area shape="rect" id="node7" href="$moewsmoews__sieve_8h.html" title="api to the Moews and Moews sieving algorithm" alt="" coords="509,80,715,107"/>
-<area shape="rect" id="node11" href="$pomyang__kparent_8h.html" title="api for pom_yang algorithm operations" alt="" coords="248,80,435,107"/>
-<area shape="rect" id="node13" href="$sumdiv__util_8h.html" title="api for sumdiv functions" alt="" coords="793,155,938,181"/>
-<area shape="rect" id="node8" title=" " alt="" coords="515,155,597,181"/>
-<area shape="rect" id="node9" title=" " alt="" coords="719,229,790,256"/>
-<area shape="rect" id="node10" title=" " alt="" coords="621,155,717,181"/>
-<area shape="rect" id="node12" href="$PackedArray_8h_source.html" title=" " alt="" coords="248,155,395,181"/>
+<map id="pomyang_kparent/src/geomean_sn.c" name="pomyang_kparent/src/geomean_sn.c">
+<area shape="rect" id="node1" title=" " alt="" coords="325,5,488,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,80,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="105,95,173,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="235,244,298,271"/>
+<area shape="rect" id="node5" title=" " alt="" coords="789,95,856,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="419,169,490,196"/>
+<area shape="rect" id="node7" href="$moewsmoews__sieve_8h.html" title="api to the Moews and Moews sieving algorithm" alt="" coords="509,95,715,121"/>
+<area shape="rect" id="node11" href="$pomyang__kparent_8h.html" title="api for pom_yang algorithm operations" alt="" coords="248,95,435,121"/>
+<area shape="rect" id="node13" href="$sumdiv__util_8h.html" title="api for sumdiv functions" alt="" coords="793,169,938,196"/>
+<area shape="rect" id="node8" title=" " alt="" coords="515,169,597,196"/>
+<area shape="rect" id="node9" title=" " alt="" coords="719,244,790,271"/>
+<area shape="rect" id="node10" title=" " alt="" coords="621,169,717,196"/>
+<area shape="rect" id="node12" href="$PackedArray_8h_source.html" title=" " alt="" coords="248,169,395,196"/>
 </map>

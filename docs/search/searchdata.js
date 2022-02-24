@@ -1,7 +1,7 @@
 var indexSectionsWithContent =
 {
-  0: "_bdglmps",
-  1: "_lps",
+  0: "_bdeglmps",
+  1: "_elps",
   2: "bgmps",
   3: "bdmps",
   4: "p"

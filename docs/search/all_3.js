@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['geomean_5fsn_2ec_6',['geomean_sn.c',['../geomean__sn_8c.html',1,'']]]
+  ['enumerate_5fstatus_5f_6',['enumerate_status_',['../structenumerate__status__.html',1,'']]],
+  ['enumerated_5frange_5ft_7',['enumerated_range_t',['../structenumerated__range__t.html',1,'']]]
 ];

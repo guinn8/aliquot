@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['lock_5finfo_5ft_35',['lock_info_t',['../structlock__info__t.html',1,'']]]
+  ['enumerate_5fstatus_5f_37',['enumerate_status_',['../structenumerate__status__.html',1,'']]],
+  ['enumerated_5frange_5ft_38',['enumerated_range_t',['../structenumerated__range__t.html',1,'']]]
 ];

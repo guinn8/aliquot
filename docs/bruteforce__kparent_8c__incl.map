@@ -1,9 +1,9 @@
-<map id="src/bruteforce_kparent.c" name="src/bruteforce_kparent.c">
-<area shape="rect" id="node1" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="217,5,397,32"/>
-<area shape="rect" id="node2" href="$bruteforce__kparent_8h.html" title="api to brute force number of preimages" alt="" coords="5,80,199,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="223,80,298,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="323,80,385,107"/>
-<area shape="rect" id="node7" href="$sumdiv__util_8h.html" title="api for sumdiv functions" alt="" coords="409,80,555,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="304,155,375,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="67,155,137,181"/>
+<map id="pomyang_kparent/src/bruteforce_kparent.c" name="pomyang_kparent/src/bruteforce_kparent.c">
+<area shape="rect" id="node1" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="226,5,389,47"/>
+<area shape="rect" id="node2" href="$bruteforce__kparent_8h.html" title="api to brute force number of preimages" alt="" coords="5,95,199,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="223,95,298,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="323,95,385,121"/>
+<area shape="rect" id="node7" href="$sumdiv__util_8h.html" title="api for sumdiv functions" alt="" coords="409,95,555,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="304,169,375,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="67,169,137,196"/>
 </map>

@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['sieve_5fconfig_5ft_35',['sieve_config_t',['../structsieve__config__t.html',1,'']]],
-  ['sieve_5fworker_5ft_36',['sieve_worker_t',['../structsieve__worker__t.html',1,'']]],
-  ['subclassexample_37',['SubclassExample',['../classMyLibrary_1_1SubclassExample.html',1,'MyLibrary']]],
-  ['sumdiv_5fs_38',['sumdiv_s',['../sumdiv__util_8h.html#ae0a7222a49adfc3c41a36f5e054ba7eb',1,'sumdiv_s(uint64_t n):&#160;sumdiv_util.c'],['../sumdiv__util_8c.html#ae0a7222a49adfc3c41a36f5e054ba7eb',1,'sumdiv_s(uint64_t n):&#160;sumdiv_util.c']]],
-  ['sumdiv_5fsigma_39',['sumdiv_sigma',['../sumdiv__util_8h.html#a59383eaec4ca51fbf39048f79a15fcdb',1,'sumdiv_sigma(uint64_t n):&#160;sumdiv_util.c'],['../sumdiv__util_8c.html#a59383eaec4ca51fbf39048f79a15fcdb',1,'sumdiv_sigma(uint64_t n):&#160;sumdiv_util.c']]],
-  ['sumdiv_5futil_2ec_40',['sumdiv_util.c',['../sumdiv__util_8c.html',1,'']]],
-  ['sumdiv_5futil_2eh_41',['sumdiv_util.h',['../sumdiv__util_8h.html',1,'']]]
+  ['pomerance_2dyang_20algorithm_20readme_27',['Pomerance-Yang Algorithm Readme',['../md_pomyang_kparent_pomyang_readme.html',1,'']]],
+  ['pomyang_5falgorithm_28',['pomyang_algorithm',['../pomyang__kparent_8h.html#a4204346361c7a37b7b3fa9389e19238a',1,'pomyang_algorithm(const pomyang_config *cfg):&#160;pomyang_kparent.c'],['../pomyang__kparent_8c.html#a4204346361c7a37b7b3fa9389e19238a',1,'pomyang_algorithm(const pomyang_config *cfg):&#160;pomyang_kparent.c']]],
+  ['pomyang_5fcli_5fmain_2ec_29',['pomyang_cli_main.c',['../pomyang__cli__main_8c.html',1,'']]],
+  ['pomyang_5fconfig_30',['pomyang_config',['../structpomyang__config.html',1,'']]],
+  ['pomyang_5fcount_5fkparent_31',['pomyang_count_kparent',['../pomyang__kparent_8h.html#ae48116046e3574091390dab702d39df1',1,'pomyang_count_kparent(const pomyang_config *cfg):&#160;pomyang_kparent.c'],['../pomyang__kparent_8c.html#ae48116046e3574091390dab702d39df1',1,'pomyang_count_kparent(const pomyang_config *cfg):&#160;pomyang_kparent.c']]],
+  ['pomyang_5fkparent_2ec_32',['pomyang_kparent.c',['../pomyang__kparent_8c.html',1,'']]],
+  ['pomyang_5fkparent_2eh_33',['pomyang_kparent.h',['../pomyang__kparent_8h.html',1,'']]],
+  ['pomyang_5fprofile_5fmain_2ec_34',['pomyang_profile_main.c',['../pomyang__profile__main_8c.html',1,'']]],
+  ['pomyang_5ftest_5fmain_2ec_35',['pomyang_test_main.c',['../pomyang__test__main_8c.html',1,'']]]
 ];

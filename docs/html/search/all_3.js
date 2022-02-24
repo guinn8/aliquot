@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['enumerate_5fstatus_5f_9',['enumerate_status_',['../structenumerate__status__.html',1,'']]],
-  ['enumerated_5frange_5ft_10',['enumerated_range_t',['../structenumerated__range__t.html',1,'']]],
-  ['example_11',['Example',['../classMyLibrary_1_1Example.html',1,'MyLibrary']]],
-  ['example_20page_12',['Example Page',['../page1.html',1,'']]]
+  ['deprecated_20list_7',['Deprecated List',['../deprecated.html',1,'']]],
+  ['destroy_5fworker_8',['destroy_worker',['../moewsmoews__sieve_8h.html#a17383cd28d0924852a1a52f99caa91e0',1,'destroy_worker(sieve_worker_t *worker):&#160;moewsmoews_sieve.c'],['../moewsmoews__sieve_8c.html#a17383cd28d0924852a1a52f99caa91e0',1,'destroy_worker(sieve_worker_t *worker):&#160;moewsmoews_sieve.c']]],
+  ['doxygen_20awesome_9',['Doxygen Awesome',['../md_docs_doxygen-awesome-css_README.html',1,'']]]
 ];

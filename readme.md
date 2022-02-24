@@ -9,3 +9,5 @@ pomyang_kparent counts the occurrence of k-parent numbers, by far the most devel
 additive_sieve is a sum-of-proper divisors sieve of my own development.
 huer_model computes a model for density of kparent numbers.
 plot_aliquot_families is a experiment in plotting aliquot families.
+
+[Accessible Presentation](https://raw.githubusercontent.com/guinn8/aliquot/master/pdf/kparent_density_basic_presentation.pdf)

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lock_5finfo_5ft_14',['lock_info_t',['../structlock__info__t.html',1,'']]]
+  ['geomean_5fsn_2ec_14',['geomean_sn.c',['../geomean__sn_8c.html',1,'']]]
 ];

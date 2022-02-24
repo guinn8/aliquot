@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Pomerance-Yang Algorithm: inc Directory Reference</title>
+<title>Aliquot Sequence Research: Pomerance-Yang Algorithm Readme</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -21,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Pomerance-Yang Algorithm
+   <div id="projectname">Aliquot Sequence Research
    &#160;<span id="projectnumber">2.0</span>
    </div>
    <div id="projectbrief">Compute properties of the sum-of-proper-divisors function.</div>
@@ -61,33 +62,22 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li>  </ul>
-</div>
 </div><!-- top -->
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">inc Directory Reference</div>  </div>
+<div class="title">Pomerance-Yang Algorithm Readme </div>  </div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:bruteforce__kparent_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bruteforce__kparent_8h.html">bruteforce_kparent.h</a> <a href="bruteforce__kparent_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:bruteforce__kparent_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">api to brute force number of preimages <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:moewsmoews__sieve_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8h.html">moewsmoews_sieve.h</a> <a href="moewsmoews__sieve_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:moewsmoews__sieve_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">api to the Moews and Moews sieving algorithm <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:pomyang__kparent_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8h.html">pomyang_kparent.h</a> <a href="pomyang__kparent_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:pomyang__kparent_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">api for pom_yang algorithm operations <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:sumdiv__util_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sumdiv__util_8h.html">sumdiv_util.h</a> <a href="sumdiv__util_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:sumdiv__util_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">api for sumdiv functions <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-</div><!-- contents -->
+<div class="textblock"><p>This project purpose it to implement the Pomerance-Yang algorithm efficiently, accurately, and scalable to high bounds. It includes a command line interface (cli) to interact with the algorithm dynamically and a test suite to help with accuracy. The documentation in the source files is extensive, pom_yang.c provides the best starting point.</p>
+<h1><a class="anchor" id="autotoc_md20"></a>
+Building and Running</h1>
+<p>The cli can be build and ran with:</p>
+<div class="fragment"><div class="line">make cli &amp;&amp; time ./cli --bound=$((10**8)) --seg_len=$((5 * $((10**5)))) --num_locks=$((10**7)) --preimage_count_bits=1 --num_thread=12</div>
+</div><!-- fragment --><p>The tests will take maybe a couple a minutes to complete, successful if the program doesn't assert out. The tests can be ran with:</p>
+<div class="fragment"><div class="line">make test &amp;&amp; ./test</div>
+</div><!-- fragment --><p>Tested on Ubuntu 20.04.3 LTS. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

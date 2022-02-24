@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pomerance_2dyang_20algorithm_20readme_87',['Pomerance-Yang Algorithm Readme',['../index.html',1,'']]]
+  ['example_20page_88',['Example Page',['../page1.html',1,'']]]
 ];

@@ -2,28 +2,28 @@ PDF_DIR=pdf
 COMPILER=pdflatex
 .PHONY: pdf
 
-all: 502_Proposal BasicPresentation interm_report AliquotParents TechPresentation Understanding_PollPom
+all: experiments_densities_kparent_proposal kparent_density_basic_presentation kparent_aliquot_interm_report pollack_pomerance_kparent kparent_density_technical_presentation pollack_pomerance_model_notes
 
-502_Proposal:
+experiments_densities_kparent_proposal:
 	cd tex/$@ && $(COMPILER) $@.tex
 	mv tex/$@/$@.pdf pdf
 
-BasicPresentation:
+kparent_density_basic_presentation:
 	cd tex/$@ && $(COMPILER) $@.tex
 	mv tex/$@/$@.pdf pdf
 
-interm_report:
+kparent_aliquot_interm_report:
 	cd tex/$@ && $(COMPILER) $@.tex
 	mv tex/$@/$@.pdf pdf
 	
-AliquotParents:
+pollack_pomerance_kparent:
 	cd tex/$@ && $(COMPILER) $@.tex
 	mv tex/$@/$@.pdf pdf
 
-TechPresentation:
+kparent_density_technical_presentation:
 	cd tex/$@ && $(COMPILER) $@.tex
 	mv tex/$@/$@.pdf pdf
 
-Understanding_PollPom:
+pollack_pomerance_model_notes:
 	cd tex/$@ && $(COMPILER) $@.tex
 	mv tex/$@/$@.pdf pdf

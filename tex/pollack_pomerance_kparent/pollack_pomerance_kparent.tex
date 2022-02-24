@@ -1,0 +1,413 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+
+%% Optional, but useful:
+\usepackage{enumerate}
+
+
+
+%% Add only when there are figures:
+\usepackage{graphicx}
+
+\usepackage{comment}
+
+\makeatletter
+\@namedef{subjclassname@2010}{%
+  \textup{2010} Mathematics Subject Classification}
+\makeatother
+
+\makeatletter
+\newcommand{\subalign}[1]{%
+  \vcenter{%
+    \Let@ \restore@math@cr \default@tag
+    \baselineskip\fontdimen10 \scriptfont\tw@
+    \advance\baselineskip\fontdimen12 \scriptfont\tw@
+    \lineskip\thr@@\fontdimen8 \scriptfont\thr@@
+    \lineskiplimit\lineskip
+    \ialign{\hfil$\m@th\scriptstyle##$&$\m@th\scriptstyle{}##$\hfil\crcr
+      #1\crcr   
+    }%
+  }%
+}
+\makeatother
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{conjecture}[thm]{Conjecture}
+
+\newtheorem{mainthm}[thm]{Main Theorem}
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{example}[thm]{Example}
+
+\newtheorem*{xrem}{Remark}
+\numberwithin{equation}{section}
+
+%%%%%%%%%%% For IMPAN journals:
+
+\frenchspacing
+
+\textwidth=13.5cm
+\textheight=23cm
+\parindent=16pt
+\oddsidemargin=-0.5cm
+\evensidemargin=-0.5cm
+\topmargin=-0.5cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%% Put your macros here:
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+\usepackage{pgfplots}
+\setlength{\parindent}{0pt}
+%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%% To ease editing, for IMPAN journals add:
+
+\baselineskip=17pt
+
+%%%%%%%%%%%
+
+\title{K-Parent Aliquot Numbers}
+
+%    Remove any unused author tags.
+%    author one information
+
+
+
+\date{}
+
+\maketitle
+
+\section{Motivation from Dr. Guy}
+\noindent Think of a number!! Say $36$\%, which is nice and divisible. It appears that about $36$\% of the even numbers are "orphans". \\
+
+\noindent Divide by 1. For about $36$\% of the (even) values of n there is just one positive integer m such that $s(m) = n$. These values of $n$ have just one "parent".\\
+
+\noindent Divide by 2.  About $18$\% of the even values of $n$ have exactly two parents.\\
+
+\noindent Divide by 3. About $6$\% of the even values of $n$ have three parents. \\
+
+\noindent Divide by 4. About $1.5$\% of the even values of $n$ have just 4 parents.\\
+
+\noindent This suggests that $1 / (e \cdot p!)$ of the even numbers have $p$ parents.\\
+
+\noindent Experiments suggests that these values are a bit large for small values of $p$ and a bit small for larger values of $p$. Can anything be proved?\\
+
+\section{Introduction}
+\textbf{This document is being prepared to optimize for clarity beyond all else. This is in expectation that the words will be reworked at some point. I am truly sorry about some of the formatting, however I decided that fighting Latex so late in the game was not worthwhile}\\
+
+Quick Definitions:
+\begin{enumerate}
+    \item A k-parent aliquot number is some natural number $n$ such that there are $k$ unique natural numbers $m$ such that $s(m) = n$. This is an generalization of the concept of aliquot orphans or untouchables, a 0-parent aliquot number is an aliquot orphan. 
+    \item For any natural number $n$ the sum of divisors of $n$ is defined $$\sigma(n) = \sum_{d|n} d$$
+    \item For any natural number $n$ the sum of proper divisors of $n$ is defined $$s(n) = \sigma(n) - n$$ 
+\end{enumerate}
+
+I don't know where this will fit in the paper but there is some subtly around what exactly we are counting here. All the previous work on this subject has focused on untouchable numbers, assuming a stronger variant of the Goldbach Conjecture it can be shown that all odd numbers, with the exception of $5$, must be in the image of $s(\cdot)$. In other words $5$ is the only odd aliquot orphan. \\ 
+
+Previous work on aliquot untouchables make use of this fact, if you wanted meaningful information on aliquot untouchables one only needs to consider the evens and remember the special case of $5$. However when considering k-parent aliquot numbers it is reasonable to consider both the evens and odds as elements of both sets are in the image of $s(\cdot)$. This provides for 2 distinct ways to study the subject of k-parent numbers:  
+\begin{enumerate}
+    \item Consider only even k-parent numbers. This approach follows somewhat naturally from the existing work of \cite{chum} and \cite{pomYang}. The Pomerance-Yang algorithm employed in both articles is used to determine pre-image attributes for only the even numbers between $[2, X]$. It is apparent but not explicitly stated that the special case of $5$ is accounted for after the even data has been collected. If one was to consider only even k-parent numbers then the counts of 0-parent numbers would be exactly one less than published counts of aliquot orphans given that the upper bound of the count is greater than or equal to $5$.
+    \item Consider both even and odd k-parent numbers. The Pomerance-Yang algorithm becomes less useful in this case as it does not enumerate the pre-images of odd numbers. I have not personally investigated this but \cite{riele} utilized an algorithm that computes all solutions to $s(n) \leq X$ with $n$ composite, this may be useful if this topic is to be studied. Given this approach the counts of 0-parent aliquot numbers would be exactly the same as \cite{pomYang} and \cite{chum}.
+\end{enumerate}
+
+My computational work has only followed approach (1) as it allows the use of the Pomerance-Yang algorithm, this approach also follows from the motivation provided by Dr. Guy for this project. It is also worth considering how exactly we are calculating the densities of k-parent aliquot numbers. If we are to take approach (1) then we are provided with 2 options to calculate the densities: \begin{enumerate}
+    \item Compute the densities of \textbf{even} k-parent aliquot numbers over \textbf{all natural numbers}. This calculation will give density results similar to \cite{chum} and \cite{pomYang} as both of those articles are calculating the density of \textbf{all} aliquot untouchables over \textbf{all naturals}. 
+    \item Compute the densities of \textbf{even} k-parent numbers over \textbf{even naturals}. This approach matches with the motivation provided by Dr. Guy, this calculation seems more natural than the latter approach as we are taking the density of specific types of even numbers over the even numbers. As every even number is also a k-parent aliquot number this approach would also have the sum of all k-parent densities converging to 1 as $k$ goes to infinity (CHECK THIS STATEMENT). However the same information is available both the former and latter approach as the density of k-parent numbers calculated in the latter method is simply twice the result in the former method (CHECK AND JUSTIFY).
+\end{enumerate} 
+
+\section{Pollack's and Pomerance's Heuristic Model for Non-Aliquots}
+This section will describe my understanding of how \cite{pollPom} constructed their heuristic model for the density of non-aliquot numbers. I will flavour this explanation with examples to aid in clarity. "The Authors" will refer to Pollack and Pomerance.
+\\
+
+The authors begin by constructing a series of disjoint subsets, first the variable $A_y$ is defined:
+$$A_y = \text{ lcm}[1, 2, ..., y]$$
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|} 
+ \hline
+ $y$ & 1 & 2  & 3 & 4  & 5 & 6 & 7 & 8 & 9 &10 \\ 
+ \hline
+ $A_y$ & 1 & 2 & 6 & 12  & 60 & 60 & 420 & 840 & 2520 & 2520\\ 
+
+ \hline
+\end{tabular}
+
+\end{center}
+
+
+ For a positive integer $a | A_y$ let:
+$$T_a = \{n : \text{gcd}(n, A_y) = a\}$$
+Let $A_y = 6$ then $a \in \{1,2,3,6\}$
+
+\begin{center}
+\begin{tabular}{ |c|c|} 
+ \hline
+ $a$ & $T_a$\\ 
+ \hline
+ 1 & \{1, 5, 7, 11, 13, 17, 19, ...\}\\ 
+ \hline
+ 2 & \{2, 4, 8, 14, 16, 20, 22, ...\}\\ 
+ \hline
+ 3 & \{3, 9, 15, 21, 27, 33, 39, ...  \}\\ 
+ \hline
+ 6 & \{6, 12, 18, 24, 30, 36, 42, ... \}\\ 
+ \hline
+
+\end{tabular}
+\end{center}
+
+A couple of things are worth noting about the sets $T_a$. First of all for some $A_y$ and for $c | A_y$ and $b | A_y$ with $c \neq b$ we can be sure that $T_c \cap T_b = \emptyset $. The gcd of $A_y$ and any other number is equal to only one value, since $T_a$ is defined by the result of that operation we can be certain that every number belongs to exactly only one set $T_a$. Also note that every set $T_a$ is infinite. I personally find these sets fascinating so I will drop some questions I have had about them here.
+\begin{enumerate}
+    \item For any value of $y$ is the union of every set $T_a = \mathbb{N}$. I'm almost certain that this is true but have not tried to prove it.
+    \item There is an interesting pattern that the elements in a set $T_a$ follow. Take $A_y = 6$ and $T_1$, treat the set $T_1$ as a C style array. $T_1[0] = 1$ if the index is odd $T_1[2n+1] = T_1[2n] + 4$ and if the index is even $T_1[2n] = T_1[2n-1]+2$. There are similar but different patterns for every value of $a$. Is there anything intelligent to be said about why this happens?
+    \item Apparently the set $T_1$ with $A_y = 6$ is quite good at approximating the first primes.  
+\end{enumerate}
+
+It is also useful to bound the set: $$T_a(x) = T_a \cap [1,x]$$
+
+We have a series of disjoint subsets $T_a$, next we determine what proportion of each set are orphans. The authors setup some assumptions to use statistical tools to handle this problem:
+\begin{itemize}
+    \item Assume that $s(\cdot)$ maps $T_a$ to $T_a$ for each $a | A_y$ (The authors state this is asymptotically true if $n > e^{e^y}$ and $y \to \infty$)
+    \item Assume that for $n \in T_a $ that we have $\sigma(n)/n \approx \sigma(a)/a $ (The authors state this is asymptotically true up to sets of vanishing density as $y \to \infty$)
+    \item Assume that $s(\cdot)$ is a random map
+\end{itemize}
+
+I have no background in statistics but I believe that the assumption that $s(\cdot)$ is a random map allows the use of the classic "balls and bins" statistics problem to estimate the density of non-aliquots  \cite{balls}; \cite{riele} also talks about this reasoning on page 68. In this model we are considering the result of the sum-of-proper-divisors as 'thrown balls' and some subset of the natural numbers as the "bins". The number of "balls" that land in a specific "bin" represent the number of pre-images that number has, if a "bin" is empty then that number is an aliquot orphan.\\
+\\
+Say we have $n$ bins and that we toss $m$ balls independently and randomly into those bins. The probability that the $i^{\textit{'th}}$ bin is empty is:$$ \mathbb{P}[\text{bin } i \text{ empty}] = (1- \frac{1}{n})^m$$
+
+To get the count of empty bins we can simply multiply the above probability by $n$:$$ \# [\text{empty bins}] = n(1- \frac{1}{n})^m$$\\
+
+We can apply this statistical model to the disjoint subsets $T_a$ that we constructed earlier. Let's estimate the proportions of non-aliquots in some specific $T_a(x)$, naturally:
+$$\text{\# bins} = |T_a(x)|$$
+
+Next we need an analog for the number of balls, a set $B$ such that $m \in B$ if and only if $s(m) \in T_a(x)$. Previously we assumed that $s(\cdot)$ maps $T_a$ back into $T_a$ so we know that $B \subset T_a$, we need to find a range of numbers in $T_a$ such that $s(\cdot)$ map these numbers into $T_a(x)$.\\
+
+Earlier we assumed that for $n \in T_a $ that we have $\sigma(n)/n \approx \sigma(a)/a $. This means that every element in a set $T_a$ shares roughly the same abundance or deficiency, we are able to choose some number $M$ such that $\forall n \in T_a \textit{ st } n \leq M$ we can be sure that $s(n)$ will map into $T_a(x)$. As such we can choose an $M$ as we know $\forall e \in T_a$ such that $e < M$ we are sure that $s(e) < s(M)$ because of the shared abundance or deficiency; $s(\cdot)$ cannot map elements in $T_a$ into a new ordering. We can choose such an $M$ in by multiplying $x$ by $\frac{a}{s(a)}$, that ratio represents deficient numbers $a$ with values greater than 1 and abundant numbers with values less than 1. When you multiply $\frac{a}{s(a)}$ by $x$ the result is the largest number such that all elements in $T_a$ will map into $T_a(x)$. We know all values in $T_a$ share this ratio by assumption as:
+$$\frac{a}{s(a)} = \frac{1}{(\sigma(a)/a)-1}$$
+
+For instance let $a = 2$ and $x=100$ then: $$100\left( \frac{2}{s(2)}\right) = 200$$
+
+So in this case $s(m)$ will map into $T_2(100)$ if and only if $m \in T_2(200)$.\\
+
+We now have all the ingredients needed to apply "ball and bins" probability to counting non-aliquots. For any specific set $T_a$ we have $n = |T_a(x)|$ 'bins' and $m = |T_a(x \cdot (a/s(a)) |$ 'balls'. So we have:$$\left(1-\frac{1}{n}\right)^m = \left(1-\frac{1}{|T_a(x)|}\right)^{|T_a(x\cdot a/s(a))|} $$ for the probability of any element in $T_a(x)$ being non-aliquot. The authors observe that: 
+
+$$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$
+
+With that asymptotic equivalence we can substitute in:   
+$$ \left(1-\frac{1}{|T_a(x)|}\right)^{|T_a(x\cdot a/s(a))|} = \left(1-\frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{(\phi(A_y) \cdot x)/( A_y \cdot s(a))}$$
+
+We are interested in how this probability behaves when $x$ goes to infinity, not for any particular value of $x$: \begin{align*}
+    &\lim_{x \to \infty}\left(1-\frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{(\phi(A_y) \cdot x)/( A_y \cdot s(a))}\\
+    &= e^{-a/s(a)}
+\end{align*}
+This is a lot less mysterious if we consider that: $$\lim_{x \to \infty} (1- \frac{1}{x})^x = e$$
+Working heuristically, since:  $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$ So we treat $\phi(A_y)/ (a \cdot A_y) $ as the probability that any natural number is in $T_a$, see \cite{dens} for a similar treatment. Supposing that the probability that a number is in $T_a$ and that the probability that a number is non-aliquot are independent events we can multiply:
+$$\mathbb{P}[\text{$T_a$ and non-aliquot}]= \frac{\phi(A_y)}{ A_y \cdot a} \cdot  e^{-a/s(a)}$$
+To get the probability that some number is both in $T_a$ and non-aliquot.\\
+
+Since each set $T_a$ is disjoint we can apply the additive property of natural density to find the density of non-aliquot numbers over the positive integers: 
+\begin{align*}
+     \Delta &= \lim_{y \to \infty}  \sum_{\subalign{a&|A_y\\2&|a}} \frac{\phi(A_y)}{a \cdot A_y} \cdot e^{-a/s(a)}\\ \\
+     &= \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\subalign{a&|A_y \\ 2 &| a}} \frac{1}{a} e^{-a/s(a)}
+\end{align*}
+We restrict $a$ to even values as $a$'s parity determines the parity of the entire set  $T_a$ and we know that the density of odd aliquot orphans quickly vanishes
+
+\section{Generalization}
+Luckily people interested in statistics have done the work for us, say we have $n$ 'bins', $m$ 'balls', and want to know the probability of a specific bin has exactly $k$ balls.  $$\mathbb{P}[k \text{ balls in bin}] = {m \choose k } \frac{1}{n^k} (1- \frac{1}{n})^{m-k}$$
+This gives a fairly simple strategy to generalize the Pollack/Pomerance heuristic model, simply swap out the probability of getting 0-balls in a bin for the general equation. Plugging in the same values of:
+$$n = \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$
+And:
+$$m = \frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}$$
+We get the following monster:
+ $$\mathbb{P}[k \text{ parents}] =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}$$
+ This expression cleans up quite nicely (see section Probability Simplification), the probability of some $n \in T_a$ having $k$ parents:
+ $$\mathbb{P}[k \text{ parents}] = \frac{a^{k}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
+ We then simply slap this probability expression into the Pollack and Pomerance result giving the density of even $k$ parent aliquot numbers over all naturals:
+ $$\Delta_k = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\subalign{a&|A_y \\ 2 &| a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
+ The authors continue to establish an easier to compute expression for $\Delta$: \begin{align*}
+       \Delta &= \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\substack{a | A_y \\ 2 | a}} \frac{1}{a} e^{-a/s(a)} &(\text{3.1})\\ \\
+       &= \lim_{y \to \infty} \frac{1}{\log y} \sum_{\substack{a\leq y \\ 2 | a}} \frac{1}{a} e^{-a/s(a)}&(\text{3.4})\\
+\end{align*} 
+
+This suggests that the density of $k$ parent numbers can be simplified to:    $$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
+   
+\section{Open Work}
+\begin{enumerate}
+    \item Prove: \begin{align*}
+       \Delta_k &= \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\substack{a | A_y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}\\
+       &= \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}
+   \end{align*}
+   
+   \item Given that: $$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$ 
+   Estimates the density of \textbf{even} $k$ parent numbers over all naturals, does:$$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{a\leq y} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$ Estimate the density of \textbf{all} $k$-parent numbers over all naturals? (note that the condition $2|a$ is removed from the sum)
+\end{enumerate}
+
+\section{The Parity Preserving Property of $T_a$}
+A useful property of how these sets $T_a$ are constructed is that the parity of $a$ determines the parity of everything in the set; its worth quickly proving this for later use.\\\\
+    \textbf{Claim:} If $a$ is even then $n$ must also be even.\\
+   \textbf{Proof:} Assume $a$ is even, then: 
+    $$\text{gcd}(n, A_y) = a = 2b$$
+    So  $2b|n$ which proves the claim.\\
+    
+    \textbf{Claim:} If $a$ is odd then $n$ is also odd\\
+    \textbf{Proof:} Assume $a$ is odd, also noting that for $y \geq 2$ that $2|A_y$, so we have: 
+    \begin{align*}
+        \text{gcd}(n, A_y) &= a\\
+        \text{gcd}(n, 2c) &= 2b+1
+    \end{align*}
+
+    For contradiction assume that $n$ is even, then:
+     $$\text{gcd}(2d, 2c) = 2b+1$$
+    But $\text{gcd}(kr, km) = k\cdot \text{gcd}(r, m)$  which gives: 
+    $$2 \cdot \text{gcd}(d, c) = 2b+1$$
+    This contradiction implies that $n$ must be odd, establishing the claim
+
+\section{The Image of $s(\cdot)$}
+Let $p$ and $q$ be distinct primes. By the fundamental theorem of arithmetic the only divisors of $p \cdot q$ are in $\{1\text{, } p\text{, } q \text{, } pq\}$, so $s(pq) = 1 + p + q$.
+A strengthened form of the Goldbach conjecture states that every even number greater than 8 can be expressed as the sum of 2 distinct primes.
+Assuming this $\forall m \geq 4$ there exists unique primes $p$ and $q$ such that $2m = p + q$. $$s(pq) = 1 + p + q = 2m +1 $$
+So every odd number greater than 8 is in the image of $s(\cdot)$,  \textbf{almost all odd numbers cannot be aliquot orphans}
+
+\section{Probability Simplification}
+\subsection*{Prove that:}\begin{align*}
+      \mathbb{P}[k \text{ parents}] &=  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}\\
+       &= \frac{a^{k}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}
+   \end{align*} 
+   
+\subsection*{Proof:} \begin{align*}
+     \mathbb{P}[k \text{ parents}] &=  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}\\
+     &=  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k \cdot \lim_{x \to \infty}\left(1- \frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}\\
+     &=  \lim_{x \to \infty}\mathbb{A}  \cdot \lim_{x \to \infty} \mathbb{B}
+\end{align*}
+   
+   
+\subsection*{Part $\mathbb{A}$:}\begin{align*}
+     \lim_{x \to \infty}\mathbb{A} &= \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k \\\\
+     &= \lim_{x \to \infty} \frac{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}\right)!}{k!\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - k \right)!} \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k & \text{(Def. Binomial Coefficient)}\\\\
+     &= \frac{1}{k!}\lim_{x \to \infty} \frac{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}\right)!}{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - k \right)!} \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k& \text{(Constant coefficient limit law)}\\\\
+     &= \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - i \right ]\left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k & \text{(See note [1])}\\\\
+     &= \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - i\right)\left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right) \right]& \text{(See note [2])}\\\\
+     &= \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\frac{\phi(A_y) \cdot A_y  \cdot x \cdot a}{ \phi(A_y) \cdot A_y \cdot   x \cdot s(a)} - \frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x}  \right]\\\\
+     &= \frac{1}{k!} \prod_{i = 0}^{k-1} \left[\lim_{x \to \infty} \left(   \frac{a}{ s(a)} - \frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x} \right) \right]& \text{(Distribution over product limit law)}\\\\
+      &= \frac{1}{k!} \prod_{i = 0}^{k-1} \left[  \lim_{x \to \infty} \left(   \frac{a}{ s(a)}\right) -  \lim_{x \to \infty}\left(\frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x} \right) \right] & \text{(Distribution over difference limit law)}\\\\
+      &= \frac{1}{k!} \prod_{i = 0}^{k-1} \left[     \frac{a}{ s(a)} \right]\\\\
+      &=\frac{a^k}{k! \cdot s(a)^k} & \left( \prod_{i = 0}^{k-1}c = c^k \right)
+\end{align*}
+
+
+\subsection*{Part $\mathbb{B}$:}
+This is only a cop-out for now but according to Wolfram-Alpha\\
+\begin{align*}
+    \lim_{x \to \infty} \mathbb{B} &= \lim_{x \to \infty}\left(1- \frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}\\\\
+    &= e^{-a/s(a)}
+\end{align*}
+
+\subsection*{Putting it together:} \begin{align*}
+    \mathbb{P}[k \text{ parents}] &=  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}\\
+    &= \lim_{x \to \infty}\mathbb{A}  \cdot \lim_{x \to \infty} \mathbb{B}\\
+    &=\frac{a^k}{k! \cdot s(a)^k } \cdot e^{-a/s(a)}
+\end{align*}
+
+\subsubsection*{Note [1]}
+\begin{align*}
+    \frac{x!}{(x-k)!} &= \frac{x(x-1)(x-2) \text{ } ...\text{ } (x-(k-1))(x-k)!  }{(x-k)!} & \text{(Def. factorial)}\\\\
+    &= x(x-1)(x-2) \text{ } ...\text{ } (x-(k-1))\\\\
+    &= \prod_{i = 0}^{k-1}(x-i)
+\end{align*}
+\subsubsection*{Note [2]}\begin{align*}
+    \prod_{i=0}^{k-1}(x-i) \cdot y^k &= \overbrace {(x)(x-1)(x-2) \text{ } ... \text{ } (x-k)}^{k \text{ terms}} \text{ } \cdot \text{ }y^k\\
+    &= y(x) \cdot  y(x-1) \cdot y(x-2) \text{ } ... \text{ } y(x-k)\\
+    &= \prod_{i=0}^{k-1} y(x-i)
+\end{align*}
+
+\section{The Absolute Rabbit Hole of Proving Asymptotic Equivalence }
+This is my attempt to establish a proof that:  $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$ this attempt completely failed, most of the good ideas from this section originate with Mark Bauer.\\
+
+The authors observe that:
+    $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$
+    Breaking this into terms we can make some observations about why this relation holds:
+    $$\phi(A_y) = |\{n \in \mathbb{Z} \text{ } | \text{ gcd}(A_y,n) = 1 \text{ and } 1 \leq n \leq A_y \}|$$
+    Euler's totient function counts the amount of numbers co-prime to its input up-to that input
+    $$ \frac{\phi(A_y)}{ A_y }$$
+    This is the ratio of numbers that are co-prime with $A_y$ upto $A_y$\\\\
+    The core of the argument comes from the fact that: $$\text{gcd}(n, A_y) = 1 \implies \text{gcd}(an, A_y) = a  $$
+\textbf{Proof:}\linebreak  
+Assume that $\text{gcd}(n, A_y) = 1$, remember $a|A_y$ \begin{align*}
+    \text{gcd}(an, A_y) &=  \text{gcd}(an, am) & \text{[$m>0$ and $m|A_y$]}\\
+    &= a \cdot  \text{gcd}(n, m) & \text{[gcd$(ax,ay)$ = $a \cdot \text{gcd}(x,y)$]}
+\end{align*}
+
+So to get the result all we need to show is $\text{gcd}(n, m) = 1$ we can use another gcd property to establish this: $$\text{gcd}(x, yz) = 1 \iff \text{gcd}(x, y) = 1 \text{ and } \text{gcd}(x, z) = 1$$
+
+Plugging values into the bi-conditional:
+$$\text{gcd}(n, A_y) = \text{gcd}(n, am) = 1 \iff \text{gcd}(n, a) = 1 \text{ and } \text{gcd}(n, m) = 1$$
+
+By assumption we know $\text{gcd}(n, am) = 1$ it follows that: $$\text{gcd}(n, a) = 1 \text{ and } \text{gcd}(n, m) = 1$$ 
+
+So $a \cdot  \text{gcd}(n, m) = a$ which is sufficient to establish the implication:
+$$\text{gcd}(n, A_y) = 1 \implies \text{gcd}(an, A_y) = a$$
+
+While we have that: $$\text{gcd}(n, A_y) = 1 \implies \text{gcd}(an, A_y) = a$$
+    It is not true that: $$ \text{gcd}(an, A_y) = a  \implies \text{gcd}(n, A_y) = 1$$
+    As a consequence of this we know that every $n$ such that $n \leq A_y$ and $gcd(n, A_y) = 1$ must correspond to a member of the set $T_a(A_y \cdot a)$. \linebreak \linebreak  However there exists elements in $T_a$ that do not correspond to the totatives of $A_y$. The table on the  outlines some examples of this case in \textcolor{blue}{blue}.
+    
+\begin{center}
+\begin{table}[]
+    \centering
+    \begin{tabular}{| c | c | l || c | c | l|}
+\hline
+ $n$ & $T_3$ & Type & $n$ & $T_3$ & Type \\
+ \hline
+1                       & 3                     & $3 \cdot 1$           & 31                      & 93                      & $3 \cdot 31$\\
+\textcolor{blue}{NA}    & \textcolor{blue}{9}   & $3 \cdot 3^1$         & \textcolor{blue}{NA}    & \textcolor{blue}{99}    & $3 \cdot (3 \cdot 11)$\\
+7                       & 21                    & $3 \cdot 7$           & 37                      & 111                     & $3 \cdot 37$\\
+\textcolor{blue}{NA}    & \textcolor{blue}{27}  & $3 \cdot 3^2$         & \textcolor{blue}{NA}    & \textcolor{blue}{117}   & $3 \cdot (3 \cdot 13)$\\
+11                      & 33                    & $3 \cdot 11$          & 41                      & 123                     & $3 \cdot 41$\\
+13                      & 39                    & $3 \cdot 13$          & 43                      & 129                     & $3 \cdot 43$\\
+17                      & 51                    & $3 \cdot 17$          & 47                      & 141                     & $3 \cdot 47$\\
+19                      & 57                    & $3 \cdot 19$          & 49                      & 147                     & $3 \cdot 49$\\
+\textcolor{blue}{NA}    & \textcolor{blue}{63}  & $3 \cdot (3 \cdot 7)$ & \textcolor{blue}{NA}    & \textcolor{blue}{153}   & $3 \cdot (3 \cdot 17)$\\
+23                      & 69                    & $3 \cdot 23$          & 53                      & 159                     & $3 \cdot 53$\\
+\textcolor{blue}{NA}    & \textcolor{blue}{81}  & $3 \cdot 3^3$          & \textcolor{blue}{NA}    & \textcolor{blue}{171}   & $3 \cdot (3 \cdot 19)$\\
+29                      & 87                    & $3 \cdot 31$          & 59                      & 177                     & $3 \cdot 59$\\
+
+
+\hline
+\end{tabular}
+\end{table}
+\begin{itemize}
+    \item $A_y = \text{lcm}(1,2,3,4,5) = 60$ 
+    \item $n \text{ s.t. gcd}(n, A_y) = 1$ 
+    \item $T_3 = \{n \text{ }| \text{ }\text{gcd}(n, A_y) = 3\}$
+\end{itemize}
+\end{center}
+
+So where does this leave us in proving:
+    $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$
+    I am not precisely sure, we are to show that:
+    $$\lim_{x \to \infty} \frac{|T_a(x)|}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)} =1$$
+    And we know that: $$\frac{\phi(A_y) \cdot A_y \cdot a}{ A_y \cdot a} \neq |T_a(A_y \cdot a)|$$
+    As: $$\frac{\phi(60) \cdot 180}{ 60 \cdot 3} = 16 \neq  24 = |T_3(180)|$$
+    
+\textbf{So that leaves the proof unestablished with a bunch of unanswered questions, better luck next time}
+
+\bibliographystyle{amsplain}
+\bibliography{aliquotParents} 
+\end{document}

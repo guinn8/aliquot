@@ -1,4 +1,0 @@
-\beamer@sectionintoc {1}{Aliquot Sequences}{3}{0}{1}
-\beamer@sectionintoc {2}{Densities $k$ Parent Aliquot Numbers }{34}{0}{2}
-\beamer@sectionintoc {3}{Further Work}{41}{0}{3}
-\beamer@sectionintoc {4}{References}{42}{0}{4}

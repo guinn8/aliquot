@@ -75,10 +75,28 @@ $(function() {
 <div class="line"> / /_ / /| (_) | |______/ /   _| |_| | | | | | | | | | | |_| |_| |_|  </div>
 <div class="line">|____/_/  \___/        /_/   |_____|_| |_|_| |_|_| |_|_|\__|\__, (_)  </div>
 <div class="line">                                                             __/ |    </div>
-<div class="line">                                                            |___/ </div>
+<div class="line">                                                            |___/  </div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
 Introduction</h1>
-<p>This repo contains my project in computational number-theory, studying <a href="https://en.wikipedia.org/wiki/Aliquot_sequence">aliquot sequences</a> and properties of the <a href="https://en.wikipedia.org/wiki/Divisor_function">sum-of-proper-divisors</a> function. The following problem statement from the former <a href="https://en.wikipedia.org/wiki/Richard_K._Guy">Dr. Richard Guy</a> motivates this work:</p>
+<p>This repo contains my project in computational number-theory, studying <a href="https://en.wikipedia.org/wiki/Aliquot_sequence">aliquot sequences</a> and properties of the <a href="https://en.wikipedia.org/wiki/Divisor_function">sum-of-proper-divisors</a> function.</p>
+<p>Aliquot sequences are iterations of the sum-of-proper-divisors function, for example:</p>
+<div class="fragment"><div class="line">s(12) = 1 + 2 + 3 + 4 + 6</div>
+<div class="line">s(16) = 1 + 2 + 4 + 8</div>
+<div class="line">s(15) = 1 + 3 + 5</div>
+<div class="line">s(9) = 1 + 3</div>
+<div class="line">s(4) = 1 + 2</div>
+<div class="line">s(3) = 1</div>
+</div><!-- fragment --><p>But not all sequences are so timid, <a href="http://factordb.com/sequences.php?se=1&amp;aq=276&amp;action=last2">for example</a>:</p>
+<div class="fragment"><div class="line">s(276) -&gt; s(396) -&gt; ...over 2000 iterations... -&gt; s(646 × 10^212)</div>
+</div><!-- fragment --><p>This sequence certainly seems to be tending towards infinity, in 1888 <em>Catalan-Dickson</em> conjectured:</p>
+<blockquote class="doxtable">
+<p>All aliquot sequences are bounded and thus must terminate or enter a cycle. </p>
+</blockquote>
+<p>In 1965 Guy-Selfridge countered this conjecture:</p>
+<blockquote class="doxtable">
+<p>The Catalan-Dickson conjecture is false, perhaps most aliquot sequences are unbounded. </p>
+</blockquote>
+<p>The following problem statement from the former <a href="https://en.wikipedia.org/wiki/Richard_K._Guy">Dr. Richard Guy</a> motivates this work:</p>
 <blockquote class="doxtable">
 <p>Think of a number!! Say 36%, which is nice and divisible. It appears that about 36% of the even numbers are ”orphans”.</p>
 <p>Divide by 1. For about 36% of the (even) values of n there is just one positive integer m such that s(m) = n. These values of n have just one ”parent”.</p>
@@ -89,7 +107,8 @@ Introduction</h1>
 <p>Can anything be proved? </p>
 </blockquote>
 <p><b>Definition:</b> n is a k-parent aliquot number if <em>s^{-1}(n)</em> has k solutions.</p>
-<p>The</p>
+<p>[This presentation]</p>
+<p><a href="https://guinn8.github.io/aliquot/html/huer__model_8c.html">huer_model.c</a> computes</p>
 <p>Documentation can be found <a href="https://guinn8.github.io/aliquot/html/index.html">here</a> or <code>docs/index.html</code></p>
 <p>This repo contains several project, most related to sieve the sum-of-proper divisors function. More details can be found in detailed src documentation. PDF's are my writings on the subject of k-parent aliquot numbers.</p>
 <p>pomyang_kparent counts the occurrence of k-parent numbers, by far the most developed. additive_sieve is a sum-of-proper divisors sieve of my own development. huer_model computes a model for density of kparent numbers. plot_aliquot_families is a experiment in plotting aliquot families.</p>

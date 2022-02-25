@@ -1,5 +1,5 @@
 /**
- * @file sn_test.c
+ * @file sieve_sn_cli.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief 
  * @date 2021-11-28
@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-#include "sn.h"
+#include "../additive_sieve/sieve_sn.h"
 
 int main(int argc, char **argv) {
     if (argc != 3) {

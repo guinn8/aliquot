@@ -94,6 +94,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <time.h>
+#include <omp.h>
 
 #include "../inc/sumdiv_util.h"
 
@@ -112,6 +113,10 @@
 static void _moews_sieve_odd(sieve_worker_t *worker, uint64_t seg_start, bool squared);
 static void _prime_sieve(uint32_t max_prime, uint32_t *sieved_primes);
 static void _meows_naive_sieve(uint64_t N, uint64_t M, uint64_t *sigma, const uint32_t *primes);
+
+static uint64_t total_sieving_time = 0;
+static uint64_t num_segments = 0;
+static time_t start_time;
 
 /**
  * @brief runs sieve for odd sigma(m) or odd sigma(m * m)
@@ -182,11 +187,21 @@ static void _moews_sieve_odd(sieve_worker_t *worker, uint64_t seg_start, const b
             }
         }
     }
-    printf("%ld cycles to sieve segment %ld\n", clock() - start, seg_start);
+
+    clock_t total = clock() - start;
+    #pragma omp atomic
+    total_sieving_time += total;
+    #pragma omp atomic
+    num_segments++;
+
+    printf("\rtotal_time = %lds, num_segments = %ld, average_sieve_time %.02fs.\r", time(NULL) - start_time, num_segments,
+    ((float)total_sieving_time/CLOCKS_PER_SEC)/(float)num_segments);
 }
 
 /* See header for documentation */
 sieve_config_t *moews_init_sieve(size_t bound, size_t seg_len) {
+    start_time = time(NULL);
+    printf("RUNNING STATS\n");
     sieve_config_t *cfg = malloc(sizeof(sieve_config_t));
 
     const uint64_t max_prime = (uint64_t)sqrt(2 * bound);

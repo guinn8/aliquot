@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['virtualfunc_83',['virtualfunc',['../classMyLibrary_1_1SubclassExample.html#a6c1b7e5c6e56d31a169ddd42e8992300',1,'MyLibrary::SubclassExample']]]
+  ['weighted_5fgeomean_111',['weighted_geomean',['../geomean__sn_8c.html#aed40a6407439d6b6f54375f35dee48fb',1,'geomean_sn.c']]]
 ];

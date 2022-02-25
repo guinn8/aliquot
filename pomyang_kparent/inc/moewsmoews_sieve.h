@@ -5,25 +5,34 @@
  * @date Originally Apr 18, 2014, modified 2021-12-27
  *
  * @copyright Public Domain (Please credit me; if you find this code useful I would love to hear about your work!)
- *
  */
 
-#ifndef _POM_YANG_INC_MOEWS_MOEWS_SIEVE_H_
-#define _POM_YANG_INC_MOEWS_MOEWS_SIEVE_H_
+#ifndef POMYANG_KPARENT_INC_MOEWSMOEWS_SIEVE_H_
+#define POMYANG_KPARENT_INC_MOEWSMOEWS_SIEVE_H_
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
-/**
- * @brief configuration and computed values needed to operate sieve, only 1 needed for multiple threads
- *
- * @param bound sieve all odd sigma upto to bound
- * @param seg_len size of range to sieve in a step
- * @param buf_len half seg_len as we are only sieving evens
- * @param primes_len length of primes buffer
- * @param primes buffer of primes needed to operate sieve
+/** 
+ * @brief Configuration and computed values needed to operate sieve, only 1 needed for multiple threads
+ * @struct sieve_config_t
+ * 
+ * @var sieve_config_t::bound 
+ * Sieve all odd sigma(n) upto to bound.
+ * 
+ * @var sieve_config_t::seg_len
+ * Size of range to sieve in a step.
+ * 
+ * @var sieve_config_t::buf_len
+ * Computed to be seg_len / 2 as we are producing sigma(n) for odd n.
+ * 
+ * @var sieve_config_t::primes_len
+ * Length of primes buffer.
+ * 
+ * @var sieve_config_t::primes
+ * Buffer of primes needed to operate sieve.
  */
 typedef struct {
     size_t bound;
@@ -34,15 +43,30 @@ typedef struct {
 } sieve_config_t;
 
 /**
- * @brief worker which holds state about a single thread running the sieve
+ * @brief Worker which holds state about a single thread running the sieve.
+ * @struct sieve_worker_t
  *
- * @param cfg initalized sieve_config_t
- * @param squared was the last sieve block sigma(m * m)
- * @param seg_start start of the segment to be sieved
- * @param sigma_buf buffer to be filled will odd sigma in range (seg_start, seg_start + seg_len)
- * @param q_buf buffer used interally by the sieve
- * @param is_prime_buf <after running moews_sieve_odd_standard> this buffer store whether odd numbers...
- *                     in range (seg_start, seg_start + seg_len) are prime
+ * @var sieve_worker_t::cfg
+ * Initalized sieve_config_t struct.
+ * 
+ * @var sieve_worker_t::squared
+ * Was the last sieve block run with moews_sieve_odd_squared()?
+ * 
+ * @var sieve_worker_t::seg_start
+ * Start of the segment to be sieved.
+ * 
+ * @var sieve_worker_t::sigma_buf
+ * Buffer to be filled will sigma(n) for odd n in range (seg_start, seg_start + seg_len).
+ * 
+ * @var sieve_worker_t::last_sieve_standard
+ * Start of the last standard sieving call, -1 if has not been run.
+ * 
+ * @var sieve_worker_t::q_buf
+ * Buffer used internally by sieve.
+ * 
+ * @var sieve_worker_t::is_prime_buf
+ * This buffer stores whether odd numbers in range (seg_start, seg_start + seg_len) are prime.
+ * Function moews_sieve_odd_standard() must have been run previously.
  */
 typedef struct {
     const sieve_config_t *cfg;
@@ -138,4 +162,4 @@ bool moews_check_prime(const sieve_worker_t *worker, uint64_t m);
  */
 size_t moews_estimate_heap_usage(size_t bound, size_t seg_len, size_t num_workers);
 
-#endif  // _POM_YANG_INC_MOEWS_MOEWS_SIEVE_H_
+#endif  // POMYANG_KPARENT_INC_MOEWSMOEWS_SIEVE_H_

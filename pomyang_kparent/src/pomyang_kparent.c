@@ -86,25 +86,7 @@
 #include <time.h>
 
 #include "../inc/moewsmoews_sieve.h"
-
-#define EVEN(x) (0 == (x) % 2)
-#define SQUARE(x) ((x) * (x))
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define DIVIDES(x, y) (0 == y % x)
-#define TWO_THIRDS .6666666666666666666666
-#define LOG(shush, fmt, )                          \
-    do {                                              \
-        if (!shush) {                                 \
-            fprintf(stderr, "[%s:%d] " fmt, __FILE__, \
-                    __LINE__, __VA_ARGS__);           \
-        }                                             \
-    } while (0)
-
-#ifdef DEBUG_ASSERT_ON
-#define DEBUG_ASSERT(x) x
-#else
-#define DEBUG_ASSERT(x)
-#endif
+#include "../inc/math_macros.h"
 
 static inline void _record_image(uint64_t x, PackedArray *f);
 static uint64_t *_tabulate_kparent(const PackedArray *f);
@@ -130,7 +112,6 @@ PackedArray *pomyang_algorithm(const pomyang_config *cfg) {
     PackedArray *f = PackedArray_create(cfg->preimage_count_bits, cfg->bound / 2, cfg->num_locks);
 #pragma omp parallel shared(f)
     {
-        double thread_start = omp_get_wtime();
         sieve_worker_t *worker = moews_init_worker(sieve_cfg);
 
 #pragma omp for schedule(static, 1)
@@ -166,9 +147,9 @@ PackedArray *pomyang_algorithm(const pomyang_config *cfg) {
         }
 
         destroy_worker(worker);
-        LOG(quiet, "thread %d completed in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
+        // LOG(quiet, "thread %d completed in %.2fs\n", omp_get_thread_num(), omp_get_wtime() - thread_start);
     }
-
+    printf("\n");
     moews_destroy_sieve(sieve_cfg);
     return f;
 }
@@ -234,6 +215,7 @@ static inline void _record_image(uint64_t sumdiv_m, PackedArray *f) {
  * @return uint64_t* buffer of length (UINT8_MAX + 1) with occurrence counts, must be free'd by caller 
  */
 uint64_t *_tabulate_kparent(const PackedArray *f) {
+    printf("\nTABULATION\n");
     double time_tabulate = omp_get_wtime();
     uint64_t *count = calloc(sizeof(uint64_t), UINT8_MAX + 1);  // we can have num_preimages == UINT8_MAX
     for (size_t i = 0; i < f->count; i++) {
@@ -241,10 +223,10 @@ uint64_t *_tabulate_kparent(const PackedArray *f) {
         count[num_preimages]++;
     }
 
-    LOG(quiet, "Tabulation completed in %.2fs\n", omp_get_wtime() - time_tabulate);
-    LOG(0, "Count of odd k-parent numbers under %ld\n", f->count * 2);
+    printf("Time: %0.2fs\n", omp_get_wtime() - time_tabulate);
+    printf("Odd k-parent count under %ld:\n", f->count * 2);
     for (size_t i = 0; i < 8; i++) {
-        LOG(0, "%ld: %ld\n", i, count[i]);
+        printf("%ld: %ld\n", i, count[i]);
     }
 
     return count;
@@ -257,7 +239,7 @@ uint64_t *_tabulate_kparent(const PackedArray *f) {
  * @param odd_comp_bound computed bound relevant to pomyang algorithm
  */
 void _print_config(const pomyang_config *cfg, double odd_comp_bound) {
-    printf("\nPomerance-Yang Config\n");
+    printf("\nPOMYANG CONFIG\n");
     printf("-> Using %ld bits per number, count between 0-%d preimages\n", cfg->preimage_count_bits, (1 << cfg->preimage_count_bits) - 1);
     printf("-> Bound = %ld\n", cfg->bound);
     printf("-> Segment Length = %ld\n", cfg->seg_len);

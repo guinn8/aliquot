@@ -69,7 +69,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">pomyang_kparent.c File Reference</div>  </div>
@@ -88,63 +87,42 @@ $(function() {
 <code>#include &lt;alloca.h&gt;</code><br />
 <code>#include &lt;time.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="moewsmoews__sieve_8h_source.html">../inc/moewsmoews_sieve.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="math__macros_8h_source.html">../inc/math_macros.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for pomyang_kparent.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="pomyang__kparent_8c__incl.png" border="0" usemap="#pomyang__kparent_2src_2pomyang__kparent_8c" alt=""/></div>
 <map name="pomyang__kparent_2src_2pomyang__kparent_8c" id="pomyang__kparent_2src_2pomyang__kparent_8c">
-<area shape="rect" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="667,5,829,47"/>
-<area shape="rect" href="pomyang__kparent_8h.html" title="api for pom_yang algorithm operations" alt="" coords="308,95,495,121"/>
-<area shape="rect" title=" " alt="" coords="445,244,507,271"/>
-<area shape="rect" title=" " alt="" coords="569,95,644,121"/>
-<area shape="rect" title=" " alt="" coords="669,95,737,121"/>
-<area shape="rect" title=" " alt="" coords="761,95,828,121"/>
-<area shape="rect" title=" " alt="" coords="852,95,927,121"/>
-<area shape="rect" title=" " alt="" coords="951,95,1022,121"/>
-<area shape="rect" title=" " alt="" coords="1046,95,1119,121"/>
-<area shape="rect" title=" " alt="" coords="1144,95,1208,121"/>
-<area shape="rect" href="moewsmoews__sieve_8h.html" title="api to the Moews and Moews sieving algorithm" alt="" coords="79,95,284,121"/>
-<area shape="rect" title=" " alt="" coords="145,169,228,196"/>
-<area shape="rect" title=" " alt="" coords="253,169,323,196"/>
-<area shape="rect" href="PackedArray_8h_source.html" title=" " alt="" coords="348,169,495,196"/>
-<area shape="rect" title=" " alt="" coords="179,244,250,271"/>
-<area shape="rect" title=" " alt="" coords="25,169,121,196"/>
+<area shape="rect" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="806,5,969,47"/>
+<area shape="rect" href="pomyang__kparent_8h.html" title="api for pom_yang algorithm operations" alt="" coords="329,95,515,121"/>
+<area shape="rect" title=" " alt="" coords="521,244,584,271"/>
+<area shape="rect" href="math__macros_8h.html" title=" " alt="" coords="520,169,679,196"/>
+<area shape="rect" title=" " alt="" coords="754,95,829,121"/>
+<area shape="rect" title=" " alt="" coords="853,95,921,121"/>
+<area shape="rect" title=" " alt="" coords="946,95,1013,121"/>
+<area shape="rect" title=" " alt="" coords="1037,95,1111,121"/>
+<area shape="rect" title=" " alt="" coords="1136,95,1207,121"/>
+<area shape="rect" title=" " alt="" coords="1231,95,1304,121"/>
+<area shape="rect" title=" " alt="" coords="1329,95,1393,121"/>
+<area shape="rect" href="moewsmoews__sieve_8h.html" title="api to the Moews and Moews sieving algorithm" alt="" coords="79,95,285,121"/>
+<area shape="rect" title=" " alt="" coords="242,169,325,196"/>
+<area shape="rect" title=" " alt="" coords="147,169,217,196"/>
+<area shape="rect" href="PackedArray_8h_source.html" title=" " alt="" coords="349,169,495,196"/>
+<area shape="rect" title=" " alt="" coords="256,244,327,271"/>
+<area shape="rect" title=" " alt="" coords="26,169,122,196"/>
 </map>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:aa9da0f649266ce2adf75a3356621dd36"><td class="memItemLeft" align="right" valign="top"><a id="aa9da0f649266ce2adf75a3356621dd36"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVEN</b>(x)&#160;&#160;&#160;(0 == (x) % 2)</td></tr>
-<tr class="separator:aa9da0f649266ce2adf75a3356621dd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1cf70a99e21bc2032e8867c6cafbb43"><td class="memItemLeft" align="right" valign="top"><a id="aa1cf70a99e21bc2032e8867c6cafbb43"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SQUARE</b>(x)&#160;&#160;&#160;((x) * (x))</td></tr>
-<tr class="separator:aa1cf70a99e21bc2032e8867c6cafbb43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74e75242132eaabbc1c512488a135926"><td class="memItemLeft" align="right" valign="top"><a id="a74e75242132eaabbc1c512488a135926"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MIN</b>(x,  y)&#160;&#160;&#160;(((x) &lt; (y)) ? (x) : (y))</td></tr>
-<tr class="separator:a74e75242132eaabbc1c512488a135926"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81c7dd2d351f0f833cef23366cf8c768"><td class="memItemLeft" align="right" valign="top"><a id="a81c7dd2d351f0f833cef23366cf8c768"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DIVIDES</b>(x,  y)&#160;&#160;&#160;(0 == y % x)</td></tr>
-<tr class="separator:a81c7dd2d351f0f833cef23366cf8c768"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a48fcbec39129b7662b675bbe8bfd14"><td class="memItemLeft" align="right" valign="top"><a id="a3a48fcbec39129b7662b675bbe8bfd14"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TWO_THIRDS</b>&#160;&#160;&#160;.6666666666666666666666</td></tr>
-<tr class="separator:a3a48fcbec39129b7662b675bbe8bfd14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16fc3082bc7a31e87b3cc177344a9348"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>LOG</b>(shush,  fmt, )</td></tr>
-<tr class="separator:a16fc3082bc7a31e87b3cc177344a9348"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff8d3f9908bd5c90304b2adccda33ebe"><td class="memItemLeft" align="right" valign="top"><a id="aff8d3f9908bd5c90304b2adccda33ebe"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_ASSERT</b>(x)</td></tr>
-<tr class="separator:aff8d3f9908bd5c90304b2adccda33ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4204346361c7a37b7b3fa9389e19238a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct__PackedArray.html">PackedArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8c.html#a4204346361c7a37b7b3fa9389e19238a">pomyang_algorithm</a> (const <a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg)</td></tr>
-<tr class="memdesc:a4204346361c7a37b7b3fa9389e19238a"><td class="mdescLeft">&#160;</td><td class="mdescRight">runs the Pomerance-Yang algorithm.  <a href="pomyang__kparent_8c.html#a4204346361c7a37b7b3fa9389e19238a">More...</a><br /></td></tr>
+<tr class="memitem:a4204346361c7a37b7b3fa9389e19238a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPackedArray.html">PackedArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8c.html#a4204346361c7a37b7b3fa9389e19238a">pomyang_algorithm</a> (const <a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg)</td></tr>
+<tr class="memdesc:a4204346361c7a37b7b3fa9389e19238a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the Pomerance-Yang algorithm.  <a href="pomyang__kparent_8c.html#a4204346361c7a37b7b3fa9389e19238a">More...</a><br /></td></tr>
 <tr class="separator:a4204346361c7a37b7b3fa9389e19238a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae48116046e3574091390dab702d39df1"><td class="memItemLeft" align="right" valign="top">uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8c.html#ae48116046e3574091390dab702d39df1">pomyang_count_kparent</a> (const <a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg)</td></tr>
 <tr class="memdesc:ae48116046e3574091390dab702d39df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">runs the Pomerance-Yang algorithm and counts occurrence of kparent numbers.  <a href="pomyang__kparent_8c.html#ae48116046e3574091390dab702d39df1">More...</a><br /></td></tr>
 <tr class="separator:ae48116046e3574091390dab702d39df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275e930ae309e5d28fee1bfc5ea445fd"><td class="memItemLeft" align="right" valign="top"><a id="a275e930ae309e5d28fee1bfc5ea445fd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg, const char *filename, uint64_t *count, float runtime)</td></tr>
+<tr class="memitem:a275e930ae309e5d28fee1bfc5ea445fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8c.html#a275e930ae309e5d28fee1bfc5ea445fd">print_to_file</a> (<a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg, const char *filename, uint64_t *count, float runtime)</td></tr>
+<tr class="memdesc:a275e930ae309e5d28fee1bfc5ea445fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints Pomerance-Yang algorithm configuration.  <a href="pomyang__kparent_8c.html#a275e930ae309e5d28fee1bfc5ea445fd">More...</a><br /></td></tr>
 <tr class="separator:a275e930ae309e5d28fee1bfc5ea445fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -152,20 +130,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a
 <dl class="section author"><dt>Author</dt><dd>Gavin Guinn (<a href="#" onclick="location.href='mai'+'lto:'+'gav'+'in'+'gui'+'nn'+'1@g'+'ma'+'il.'+'co'+'m'; return false;">gavin<span style="display: none;">.nosp@m.</span>guin<span style="display: none;">.nosp@m.</span>n1@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2021-2-17</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Public Domain (Please credit me; if you find this code useful I would love to hear about your work!)</dd></dl>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 NOTE</h2>
 <p><b>The counts of non-aliquots reported by this program will be exactly one less than the published figures!</b> This algorithm enumerates all <em>even</em> k-parent numbers, odd k-parent numbers exist but they are not considered. The user is expected to adjust the count to consider <em>5</em> which is the only odd aliquot (see sect. 3, [Chum et al.]). It may seem odd to only count even k-parent numbers while odd k-parents also exist, this program must be seen in the context of using heuristics to approach the Guy-Selfridge conjecture, see [Guy and Selfridge] and [Chum et al.] for details.</p>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 ALGORITHMS</h2>
 <p>This is a rewrite of Anton Mosunov's implementation of the tabulation of untouchable numbers, section 3 of [Chum et al.]. As described in the paper this program is capable of counting of aliquot untouchables and more generally counting numbers with k preimages under the sum-of-proper-divisors (<code>sumdiv</code> / <code>s(n)</code>) function, these numbers are referred to as k-parent. The algorithm employed in [Chum et al.] was originally developed in a paper of [Pomerance and Yang] where the author's describe a family of algorithms for enumerating preimages, the algorithm for s(n) will be referred to as the Pomerance-Yang (<code>pomyang</code>) algorithm. The <code>pomyang</code> algorithm takes the sum-of-divisors (sigma) for all odd numbers in the range (1, <code>bound</code>) as input, to produce these values a technique of [Moews and Moews] for sieving ranges of sigma is used to efficiently generate these values.</p>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 TECHNIQUE</h2>
-<p>The techniques used in this implementation broadly differ from those described in [Chum et al.], notably no disc operations are used. The sum-of-divisors (sigma) for all odd numbers in the range (1, <code>bound</code>) are sieved on-the-fly rather than ^pre-computed and stored. A buffer is required to hold the counts of preimages for all even numbers less than <code>bound</code>, this can require huge amounts of memory (using 8 bit counter takes <code>~500gb</code> at <code>bound</code> of 2^40). When enumerating non-aliquots only 1-bit per number is required, however <code>sizeof(bool) == sizeof(uint8_t)</code> as a byte is the smallest addressable unit of memory. A PackedArray data structure is used to create a buffer that can store 1, 2, or 4 bits of information in exactly that much memory, vasty decreasing memory requirements. Threads must share this buffer when running the otherwise embarrassingly parallel pomyang algorithm, this is accomplished by allocating an array of locks to protect portions of the resource. Locking the entire buffer whenever a thread wants to record a image bottlenecks the whole process.</p>
+<p>The techniques used in this implementation broadly differ from those described in [Chum et al.], notably no disc operations are used. The sum-of-divisors (sigma) for all odd numbers in the range (1, <code>bound</code>) are sieved on-the-fly rather than ^pre-computed and stored. A buffer is required to hold the counts of preimages for all even numbers less than <code>bound</code>, this can require huge amounts of memory (using 8 bit counter takes <code>~500gb</code> at <code>bound</code> of 2^40). When enumerating non-aliquots only 1-bit per number is required, however <code>sizeof(bool) == sizeof(uint8_t)</code> as a byte is the smallest addressable unit of memory. A <a class="el" href="structPackedArray.html" title="PackedArray handle.">PackedArray</a> data structure is used to create a buffer that can store 1, 2, or 4 bits of information in exactly that much memory, vasty decreasing memory requirements. Threads must share this buffer when running the otherwise embarrassingly parallel pomyang algorithm, this is accomplished by allocating an array of locks to protect portions of the resource. Locking the entire buffer whenever a thread wants to record a image bottlenecks the whole process.</p>
 <p>^ [Chum et al.] indicates only sieving odd sigma upto <code>bound</code> / 2 but odd sigma upto <code>bound</code> is certainly a required input for the Pomerance-Yang algorithm</p>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 PERFORMANCE</h2>
 <p>The parameter num_locks should be set to the highest value possible given memory constraits to optimize for speed. The parameter seg_len has a far more ambiguous effect on performance, if set either to low or high it can seriously impact performance see moews_moews_sieve.c for a more detailed analysis.</p>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 CITATIONS</h2>
 <ul>
 <li>[Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018). Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.</li>
@@ -173,7 +151,7 @@ CITATIONS</h2>
 <li>[Moews and Moews] Moews, D. and Moews, P. C. (1991). A search for aliquot cycles below 10 10. Mathematics of Computation, 57(196):849.</li>
 <li>[Guy and Selfridge] Guy, R. K. and Selfridge, J. L. (1975). What drives an aliquot sequence? Mathematics of Computation, 29(129):101–101.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 NOTATION</h2>
 <ul>
 <li>sumdiv / s(n) == sum-of-proper-divisors</li>
@@ -181,42 +159,7 @@ NOTATION</h2>
 <li>kparent == number with k preimages under s(n)</li>
 </ul>
 <p>TODO: Finish collecting data to 2^40 TODO: Revisit heuristic model computation code TODO: Move all relevant .tex files into this repo and find a vsCode tex workflow </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a16fc3082bc7a31e87b3cc177344a9348"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16fc3082bc7a31e87b3cc177344a9348">&#9670;&nbsp;</a></span>LOG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LOG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">shush, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">fmt&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                              \</div>
-<div class="line">        if (!shush) {                                 \</div>
-<div class="line">            fprintf(stderr, <span class="stringliteral">&quot;[%s:%d] &quot;</span> fmt, __FILE__, \</div>
-<div class="line">                    __LINE__, __VA_ARGS__);           \</div>
-<div class="line">        }                                             \</div>
-<div class="line">    } <span class="keywordflow">while</span> (0)</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a4204346361c7a37b7b3fa9389e19238a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4204346361c7a37b7b3fa9389e19238a">&#9670;&nbsp;</a></span>pomyang_algorithm()</h2>
 
@@ -224,7 +167,7 @@ NOTATION</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct__PackedArray.html">PackedArray</a>* pomyang_algorithm </td>
+          <td class="memname"><a class="el" href="structPackedArray.html">PackedArray</a>* pomyang_algorithm </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structpomyang__config.html">pomyang_config</a> *&#160;</td>
           <td class="paramname"><em>cfg</em></td><td>)</td>
@@ -233,7 +176,7 @@ NOTATION</h2>
       </table>
 </div><div class="memdoc">
 
-<p>runs the Pomerance-Yang algorithm. </p>
+<p>Runs the Pomerance-Yang algorithm. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cfg</td><td>See struct defintion </td></tr>
@@ -268,6 +211,57 @@ NOTATION</h2>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint64_t* buffer of length (UINT8_MAX + 1) with occurrence counts, must be free'd by caller </dd></dl>
+
+</div>
+</div>
+<a id="a275e930ae309e5d28fee1bfc5ea445fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275e930ae309e5d28fee1bfc5ea445fd">&#9670;&nbsp;</a></span>print_to_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_to_file </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpomyang__config.html">pomyang_config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>runtime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints Pomerance-Yang algorithm configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfg</td><td>Pointer to config struct. </td></tr>
+    <tr><td class="paramname">filename</td><td>Name of file to write. </td></tr>
+    <tr><td class="paramname">count</td><td>Array of k-parent counts. </td></tr>
+    <tr><td class="paramname">runtime</td><td>CPU seconds used. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

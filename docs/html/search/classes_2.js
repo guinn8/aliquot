@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['lock_5finfo_5ft_49',['lock_info_t',['../structlock__info__t.html',1,'']]]
+  ['sieve_5fconfig_5ft_79',['sieve_config_t',['../structsieve__config__t.html',1,'']]],
+  ['sieve_5fworker_5ft_80',['sieve_worker_t',['../structsieve__worker__t.html',1,'']]]
 ];

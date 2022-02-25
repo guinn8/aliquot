@@ -1,12 +1,13 @@
-#ifndef PACKEDARRAY_H
-#define PACKEDARRAY_H
+/** @copyright see source */
+#ifndef POMYANG_KPARENT_INC_PACKEDARRAY_H_
+#define POMYANG_KPARENT_INC_PACKEDARRAY_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
 #include <omp.h>
+#include <stdint.h>
 
 /*
 
@@ -32,28 +33,51 @@ PackedArray general in memory representation:
 
 */
 
+/**
+ * @brief Protects buffer underlying PackedArray with an array of mutexs.
+ * @struct lock_info_t
+ *
+ * @var lock_info_t::num_locks
+ * Number of mutexes protecting buffer undlying the PackedArray from concorent access.
+ *
+ * @var lock_info_t::lock_interval
+ * Computed value used internally.
+ *
+ * @var lock_info_t::locks
+ * Calloc'ed buffer of locks.
+ */
 typedef struct {
-  uint32_t num_locks;
-  uint32_t lock_interval;
-  omp_lock_t *locks;
+    uint32_t num_locks;
+    uint32_t lock_interval;
+    omp_lock_t* locks;
 } lock_info_t;
-struct _PackedArray
-{
-  uint32_t bitsPerItem;
-  uint64_t count;
-  lock_info_t lock_info;
 
-  uint32_t padding[2];
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 4200)
-#endif // #ifdef _MSC_VER
-  uint32_t buffer[];
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // #ifdef _MSC_VER
-};
-typedef struct _PackedArray PackedArray;
+/**
+ * @brief PackedArray handle.
+ * @struct PackedArray
+ *
+ * @var PackedArray::bitsPerItem
+ * Bits to be used per number stored in the PackedArray.
+ *
+ * @var PackedArray::count
+ * Length of PackedArray.
+ *
+ * @var PackedArray::lock_info
+ * Mutex array handle.
+ *
+ * @var PackedArray::padding
+ * ?
+ *
+ * @var PackedArray::buffer
+ * Buffer underlying PackedArray.
+ */
+typedef struct {
+    uint32_t bitsPerItem;
+    uint64_t count;
+    lock_info_t lock_info;
+    uint32_t padding[2];
+    uint32_t buffer[];
+} PackedArray;
 
 // creation / destruction
 PackedArray* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);
@@ -78,4 +102,4 @@ void PackedArray_lock_offset(PackedArray* a, const uint64_t offset);
 }
 #endif
 
-#endif // #ifndef PACKEDARRAY_H
+#endif  // POMYANG_KPARENT_INC_PACKEDARRAY_H_

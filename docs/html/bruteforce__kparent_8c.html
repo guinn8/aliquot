@@ -69,7 +69,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">bruteforce_kparent.c File Reference</div>  </div>
@@ -82,33 +81,23 @@ $(function() {
 <code>#include &lt;assert.h&gt;</code><br />
 <code>#include &lt;omp.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="sumdiv__util_8h_source.html">../inc/sumdiv_util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="math__macros_8h_source.html">../inc/math_macros.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bruteforce_kparent.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="bruteforce__kparent_8c__incl.png" border="0" usemap="#pomyang__kparent_2src_2bruteforce__kparent_8c" alt=""/></div>
 <map name="pomyang__kparent_2src_2bruteforce__kparent_8c" id="pomyang__kparent_2src_2bruteforce__kparent_8c">
-<area shape="rect" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="226,5,389,47"/>
+<area shape="rect" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="273,5,435,47"/>
 <area shape="rect" href="bruteforce__kparent_8h.html" title="api to brute force number of preimages" alt="" coords="5,95,199,121"/>
 <area shape="rect" title=" " alt="" coords="223,95,298,121"/>
 <area shape="rect" title=" " alt="" coords="323,95,385,121"/>
 <area shape="rect" href="sumdiv__util_8h.html" title="api for sumdiv functions" alt="" coords="409,95,555,121"/>
+<area shape="rect" href="math__macros_8h.html" title=" " alt="" coords="579,95,737,121"/>
 <area shape="rect" title=" " alt="" coords="304,169,375,196"/>
 <area shape="rect" title=" " alt="" coords="67,169,137,196"/>
 </map>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:aa9da0f649266ce2adf75a3356621dd36"><td class="memItemLeft" align="right" valign="top"><a id="aa9da0f649266ce2adf75a3356621dd36"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVEN</b>(x)&#160;&#160;&#160;(0 == (x) % 2)</td></tr>
-<tr class="separator:aa9da0f649266ce2adf75a3356621dd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6481d83e0fa7358fa921288969cf0a0"><td class="memItemLeft" align="right" valign="top"><a id="ac6481d83e0fa7358fa921288969cf0a0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>F_OFFSET</b>(x)&#160;&#160;&#160;((x / 2) - 1)</td></tr>
-<tr class="separator:ac6481d83e0fa7358fa921288969cf0a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8830bde16e4b675d031c73c229614750"><td class="memItemLeft" align="right" valign="top"><a id="a8830bde16e4b675d031c73c229614750"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>F_DE_OFFSET</b>(x)&#160;&#160;&#160;((x + 1) * 2)</td></tr>
-<tr class="separator:a8830bde16e4b675d031c73c229614750"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a898ead632248db00afb6b656912f42c0"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bruteforce__kparent_8c.html#a898ead632248db00afb6b656912f42c0">bf_kparent</a> (size_t bound)</td></tr>

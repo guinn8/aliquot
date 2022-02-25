@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef _POM_YANG_INC_BRUTEFORCE_KPARENT_H_
-#define _POM_YANG_INC_BRUTEFORCE_KPARENT_H_
+#ifndef POMYANG_KPARENT_INC_BRUTEFORCE_KPARENT_H_
+#define POMYANG_KPARENT_INC_BRUTEFORCE_KPARENT_H_
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -30,4 +30,4 @@ uint8_t *bf_kparent(size_t bound);
  */
 uint64_t *bf_kparent_counts(size_t bound);
 
-#endif  // _POM_YANG_INC_BRUTEFORCE_KPARENT_H_
+#endif  // POMYANG_KPARENT_INC_BRUTEFORCE_KPARENT_H_

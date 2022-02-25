@@ -106,56 +106,53 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structlock__info__t.html">   35</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  uint32_t num_locks;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  uint32_t lock_interval;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  omp_lock_t *locks;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} <a class="code" href="structlock__info__t.html">lock_info_t</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="struct__PackedArray.html">   40</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct__PackedArray.html">_PackedArray</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  uint32_t bitsPerItem;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  uint64_t count;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="structlock__info__t.html">lock_info_t</a> lock_info;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  uint32_t padding[2];</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#ifdef _MSC_VER</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#pragma warning(push)</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#pragma warning(disable: 4200)</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif // #ifdef _MSC_VER</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  uint32_t buffer[];</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#ifdef _MSC_VER</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#pragma warning(pop)</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif // #ifdef _MSC_VER</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct__PackedArray.html">_PackedArray</a> <a class="code" href="struct__PackedArray.html">PackedArray</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// creation / destruction</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<a class="code" href="struct__PackedArray.html">PackedArray</a>* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">void</span> PackedArray_destroy(<a class="code" href="struct__PackedArray.html">PackedArray</a>* a);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;uint64_t PackedArray_estimate_heap(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// packing / unpacking</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// offset is expressed in number of elements</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">void</span> PackedArray_pack(<a class="code" href="struct__PackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset, <span class="keyword">const</span> uint32_t* in, uint64_t count);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordtype">void</span> PackedArray_unpack(<span class="keyword">const</span> <a class="code" href="struct__PackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset, uint32_t* out, uint64_t count);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// single item access</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">void</span> PackedArray_set(<a class="code" href="struct__PackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset, <span class="keyword">const</span> uint32_t in);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;uint32_t PackedArray_get(<span class="keyword">const</span> <a class="code" href="struct__PackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// helpers</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;uint32_t PackedArray_bufferSize(<span class="keyword">const</span> <a class="code" href="struct__PackedArray.html">PackedArray</a>* a);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;uint32_t PackedArray_computeBitsPerItem(<span class="keyword">const</span> uint32_t* in, uint64_t count);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">void</span> PackedArray_unlock_offset(<a class="code" href="struct__PackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">void</span> PackedArray_lock_offset(<a class="code" href="struct__PackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structlock__info__t.html">   48</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structlock__info__t.html#a116bf7f7e026e119ce0ca43523ee99b1">   49</a></span>&#160;  uint32_t <a class="code" href="structlock__info__t.html#a116bf7f7e026e119ce0ca43523ee99b1">num_locks</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structlock__info__t.html#a856e5c9aa9e96d4ec44a2cef09ad4331">   50</a></span>&#160;  uint32_t <a class="code" href="structlock__info__t.html#a856e5c9aa9e96d4ec44a2cef09ad4331">lock_interval</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structlock__info__t.html#a9d40e247145fe1eae9858cf0a0389c91">   51</a></span>&#160;  omp_lock_t *<a class="code" href="structlock__info__t.html#a9d40e247145fe1eae9858cf0a0389c91">locks</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;} <a class="code" href="structlock__info__t.html">lock_info_t</a>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="structPackedArray.html">   73</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structPackedArray.html#ae2f878dd5549580ec53f215c68fa3101">   74</a></span>&#160;  uint32_t <a class="code" href="structPackedArray.html#ae2f878dd5549580ec53f215c68fa3101">bitsPerItem</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structPackedArray.html#a11b1f3bee0dddda2b1b7cfe9be9414cd">   75</a></span>&#160;  uint64_t <a class="code" href="structPackedArray.html#a11b1f3bee0dddda2b1b7cfe9be9414cd">count</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structPackedArray.html#a2c2a2584aceadfa528a55ad53b36e265">   76</a></span>&#160;  <a class="code" href="structlock__info__t.html">lock_info_t</a> <a class="code" href="structPackedArray.html#a2c2a2584aceadfa528a55ad53b36e265">lock_info</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structPackedArray.html#a1aba1b12e23416094e94eff4379bc72d">   77</a></span>&#160;  uint32_t padding[2];</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structPackedArray.html#a8068e41e5281cb7d9172f2c7172db57a">   78</a></span>&#160;  uint32_t buffer[];</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}<a class="code" href="structPackedArray.html">PackedArray</a>;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif // #ifndef PACKEDARRAY_H</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">// creation / destruction</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<a class="code" href="structPackedArray.html">PackedArray</a>* PackedArray_create(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">void</span> PackedArray_destroy(<a class="code" href="structPackedArray.html">PackedArray</a>* a);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;uint64_t PackedArray_estimate_heap(uint32_t bitsPerItem, uint64_t count, uint32_t num_locks);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// packing / unpacking</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">// offset is expressed in number of elements</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">void</span> PackedArray_pack(<a class="code" href="structPackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset, <span class="keyword">const</span> uint32_t* in, uint64_t count);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">void</span> PackedArray_unpack(<span class="keyword">const</span> <a class="code" href="structPackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset, uint32_t* out, uint64_t count);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">// single item access</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">void</span> PackedArray_set(<a class="code" href="structPackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset, <span class="keyword">const</span> uint32_t in);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;uint32_t PackedArray_get(<span class="keyword">const</span> <a class="code" href="structPackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// helpers</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;uint32_t PackedArray_bufferSize(<span class="keyword">const</span> <a class="code" href="structPackedArray.html">PackedArray</a>* a);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;uint32_t PackedArray_computeBitsPerItem(<span class="keyword">const</span> uint32_t* in, uint64_t count);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keywordtype">void</span> PackedArray_unlock_offset(<a class="code" href="structPackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keywordtype">void</span> PackedArray_lock_offset(<a class="code" href="structPackedArray.html">PackedArray</a>* a, <span class="keyword">const</span> uint64_t offset);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif // #ifndef PACKEDARRAY_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astruct__PackedArray_html"><div class="ttname"><a href="struct__PackedArray.html">_PackedArray</a></div><div class="ttdef"><b>Definition:</b> PackedArray.h:40</div></div>
-<div class="ttc" id="astructlock__info__t_html"><div class="ttname"><a href="structlock__info__t.html">lock_info_t</a></div><div class="ttdef"><b>Definition:</b> PackedArray.h:35</div></div>
+<div class="ttc" id="astructlock__info__t_html_a9d40e247145fe1eae9858cf0a0389c91"><div class="ttname"><a href="structlock__info__t.html#a9d40e247145fe1eae9858cf0a0389c91">lock_info_t::locks</a></div><div class="ttdeci">omp_lock_t * locks</div><div class="ttdef"><b>Definition:</b> PackedArray.h:51</div></div>
+<div class="ttc" id="astructPackedArray_html_a2c2a2584aceadfa528a55ad53b36e265"><div class="ttname"><a href="structPackedArray.html#a2c2a2584aceadfa528a55ad53b36e265">PackedArray::lock_info</a></div><div class="ttdeci">lock_info_t lock_info</div><div class="ttdef"><b>Definition:</b> PackedArray.h:76</div></div>
+<div class="ttc" id="astructPackedArray_html"><div class="ttname"><a href="structPackedArray.html">PackedArray</a></div><div class="ttdoc">PackedArray handle.</div><div class="ttdef"><b>Definition:</b> PackedArray.h:73</div></div>
+<div class="ttc" id="astructlock__info__t_html"><div class="ttname"><a href="structlock__info__t.html">lock_info_t</a></div><div class="ttdoc">Protects buffer underlying PackedArray with an array of mutexs.</div><div class="ttdef"><b>Definition:</b> PackedArray.h:48</div></div>
+<div class="ttc" id="astructlock__info__t_html_a856e5c9aa9e96d4ec44a2cef09ad4331"><div class="ttname"><a href="structlock__info__t.html#a856e5c9aa9e96d4ec44a2cef09ad4331">lock_info_t::lock_interval</a></div><div class="ttdeci">uint32_t lock_interval</div><div class="ttdef"><b>Definition:</b> PackedArray.h:50</div></div>
+<div class="ttc" id="astructPackedArray_html_a11b1f3bee0dddda2b1b7cfe9be9414cd"><div class="ttname"><a href="structPackedArray.html#a11b1f3bee0dddda2b1b7cfe9be9414cd">PackedArray::count</a></div><div class="ttdeci">uint64_t count</div><div class="ttdef"><b>Definition:</b> PackedArray.h:75</div></div>
+<div class="ttc" id="astructlock__info__t_html_a116bf7f7e026e119ce0ca43523ee99b1"><div class="ttname"><a href="structlock__info__t.html#a116bf7f7e026e119ce0ca43523ee99b1">lock_info_t::num_locks</a></div><div class="ttdeci">uint32_t num_locks</div><div class="ttdef"><b>Definition:</b> PackedArray.h:49</div></div>
+<div class="ttc" id="astructPackedArray_html_ae2f878dd5549580ec53f215c68fa3101"><div class="ttname"><a href="structPackedArray.html#ae2f878dd5549580ec53f215c68fa3101">PackedArray::bitsPerItem</a></div><div class="ttdeci">uint32_t bitsPerItem</div><div class="ttdef"><b>Definition:</b> PackedArray.h:74</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

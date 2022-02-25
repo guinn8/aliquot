@@ -11,7 +11,10 @@
 
 #include "../inc/sumdiv_util.h"
 
+/** @brief Number wheel used to check divisors.*/
 const int initWheel[3] = {2, 3, 5};
+
+/** @brief ?*/
 const int inc[8] = {4, 2, 4, 2, 4, 6, 2, 6};
 
 /**

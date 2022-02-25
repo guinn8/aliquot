@@ -100,7 +100,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="moewsmoews__sieve_8h__dep__incl.png" border="0" usemap="#pomyang__kparent_2inc_2moewsmoews__sieve_8hdep" alt=""/></div>
 <map name="pomyang__kparent_2inc_2moewsmoews__sieve_8hdep" id="pomyang__kparent_2inc_2moewsmoews__sieve_8hdep">
 <area shape="rect" title="api to the Moews and Moews sieving algorithm" alt="" coords="186,5,361,47"/>
-<area shape="rect" href="geomean__sn_8c.html" title=" " alt="" coords="5,95,168,136"/>
+<area shape="rect" href="geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="5,95,168,136"/>
 <area shape="rect" href="pomyang__cli__main_8c.html" title="command line interface to interact with the pom_yang algorithm" alt="" coords="192,95,355,136"/>
 <area shape="rect" href="pomyang__kparent_8c.html" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="379,95,541,136"/>
 </map>
@@ -111,10 +111,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__config__t.html">sieve_config_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">configuration and computed values needed to operate sieve, only 1 needed for multiple threads  <a href="structsieve__config__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.  <a href="structsieve__config__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html">sieve_worker_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">worker which holds state about a single thread running the sieve  <a href="structsieve__worker__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Worker which holds state about a single thread running the sieve.  <a href="structsieve__worker__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -132,16 +132,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:a8e5d02e44e8f82167a96e2a774319618"><td class="mdescLeft">&#160;</td><td class="mdescRight">lookup sigma(m * m) from m in a sieved block  <a href="moewsmoews__sieve_8h.html#a8e5d02e44e8f82167a96e2a774319618">More...</a><br /></td></tr>
 <tr class="separator:a8e5d02e44e8f82167a96e2a774319618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad072e5474e4673d2b63ae77978a6f354"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsieve__config__t.html">sieve_config_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8h.html#ad072e5474e4673d2b63ae77978a6f354">moews_init_sieve</a> (size_t bound, size_t seg_len)</td></tr>
-<tr class="memdesc:ad072e5474e4673d2b63ae77978a6f354"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> which is shared by a pool of workers  <a href="moewsmoews__sieve_8h.html#ad072e5474e4673d2b63ae77978a6f354">More...</a><br /></td></tr>
+<tr class="memdesc:ad072e5474e4673d2b63ae77978a6f354"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> which is shared by a pool of workers  <a href="moewsmoews__sieve_8h.html#ad072e5474e4673d2b63ae77978a6f354">More...</a><br /></td></tr>
 <tr class="separator:ad072e5474e4673d2b63ae77978a6f354"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51febebc5355cfca31c58108a6ec5f2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8h.html#a51febebc5355cfca31c58108a6ec5f2c">moews_destroy_sieve</a> (<a class="el" href="structsieve__config__t.html">sieve_config_t</a> *cfg)</td></tr>
-<tr class="memdesc:a51febebc5355cfca31c58108a6ec5f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a>  <a href="moewsmoews__sieve_8h.html#a51febebc5355cfca31c58108a6ec5f2c">More...</a><br /></td></tr>
+<tr class="memdesc:a51febebc5355cfca31c58108a6ec5f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a>  <a href="moewsmoews__sieve_8h.html#a51febebc5355cfca31c58108a6ec5f2c">More...</a><br /></td></tr>
 <tr class="separator:a51febebc5355cfca31c58108a6ec5f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab33ee37f9625b5e2abe481351eb783b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsieve__worker__t.html">sieve_worker_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8h.html#ab33ee37f9625b5e2abe481351eb783b7">moews_init_worker</a> (const <a class="el" href="structsieve__config__t.html">sieve_config_t</a> *cfg)</td></tr>
 <tr class="memdesc:ab33ee37f9625b5e2abe481351eb783b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a worker object which can be used to run the sieve  <a href="moewsmoews__sieve_8h.html#ab33ee37f9625b5e2abe481351eb783b7">More...</a><br /></td></tr>
 <tr class="separator:ab33ee37f9625b5e2abe481351eb783b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17383cd28d0924852a1a52f99caa91e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8h.html#a17383cd28d0924852a1a52f99caa91e0">destroy_worker</a> (<a class="el" href="structsieve__worker__t.html">sieve_worker_t</a> *worker)</td></tr>
-<tr class="memdesc:a17383cd28d0924852a1a52f99caa91e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__worker__t.html" title="worker which holds state about a single thread running the sieve">sieve_worker_t</a>  <a href="moewsmoews__sieve_8h.html#a17383cd28d0924852a1a52f99caa91e0">More...</a><br /></td></tr>
+<tr class="memdesc:a17383cd28d0924852a1a52f99caa91e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__worker__t.html" title="Worker which holds state about a single thread running the sieve.">sieve_worker_t</a>  <a href="moewsmoews__sieve_8h.html#a17383cd28d0924852a1a52f99caa91e0">More...</a><br /></td></tr>
 <tr class="separator:a17383cd28d0924852a1a52f99caa91e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afed04de36ee0b30feb9f07ad8a43681d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8h.html#afed04de36ee0b30feb9f07ad8a43681d">moews_check_prime</a> (const <a class="el" href="structsieve__worker__t.html">sieve_worker_t</a> *worker, uint64_t m)</td></tr>
 <tr class="memdesc:afed04de36ee0b30feb9f07ad8a43681d"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if odd numbers in range (seg_start, seg_start + seg_len) is prime  <a href="moewsmoews__sieve_8h.html#afed04de36ee0b30feb9f07ad8a43681d">More...</a><br /></td></tr>
@@ -172,7 +172,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>free's memory associated with <a class="el" href="structsieve__worker__t.html" title="worker which holds state about a single thread running the sieve">sieve_worker_t</a> </p>
+<p>free's memory associated with <a class="el" href="structsieve__worker__t.html" title="Worker which holds state about a single thread running the sieve.">sieve_worker_t</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">worker</td><td>to be free'd </td></tr>
@@ -236,7 +236,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>free's memory associated with <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> </p>
+<p>free's memory associated with <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cfg</td><td>to be free'd </td></tr>
@@ -317,7 +317,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>creates a <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> which is shared by a pool of workers </p>
+<p>creates a <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> which is shared by a pool of workers </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bound</td><td>sieving all odd sigma upto to bound </td></tr>

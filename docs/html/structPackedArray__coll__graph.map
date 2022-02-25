@@ -1,0 +1,4 @@
+<map id="PackedArray" name="PackedArray">
+<area shape="rect" id="node1" title="PackedArray handle." alt="" coords="5,95,108,121"/>
+<area shape="rect" id="node2" href="$structlock__info__t.html" title="Protects buffer underlying PackedArray with an array of mutexs." alt="" coords="10,5,103,32"/>
+</map>

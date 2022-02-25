@@ -1,6 +1,6 @@
 <map id="pomyang_kparent/inc/moewsmoews_sieve.h" name="pomyang_kparent/inc/moewsmoews_sieve.h">
 <area shape="rect" id="node1" title="api to the Moews and Moews sieving algorithm" alt="" coords="186,5,361,47"/>
-<area shape="rect" id="node2" href="$geomean__sn_8c.html" title=" " alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node2" href="$geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="5,95,168,136"/>
 <area shape="rect" id="node3" href="$pomyang__cli__main_8c.html" title="command line interface to interact with the pom_yang algorithm" alt="" coords="192,95,355,136"/>
 <area shape="rect" id="node4" href="$pomyang__kparent_8c.html" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="379,95,541,136"/>
 </map>

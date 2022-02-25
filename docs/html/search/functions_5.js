@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['test_82',['test',['../classMyLibrary_1_1Example.html#a1c0046b0674eb4cad09c5d3e943912b8',1,'MyLibrary::Example']]]
+  ['sumdiv_5fs_109',['sumdiv_s',['../sumdiv__util_8h.html#ae0a7222a49adfc3c41a36f5e054ba7eb',1,'sumdiv_s(uint64_t n):&#160;sumdiv_util.c'],['../sumdiv__util_8c.html#ae0a7222a49adfc3c41a36f5e054ba7eb',1,'sumdiv_s(uint64_t n):&#160;sumdiv_util.c']]],
+  ['sumdiv_5fsigma_110',['sumdiv_sigma',['../sumdiv__util_8h.html#a59383eaec4ca51fbf39048f79a15fcdb',1,'sumdiv_sigma(uint64_t n):&#160;sumdiv_util.c'],['../sumdiv__util_8c.html#a59383eaec4ca51fbf39048f79a15fcdb',1,'sumdiv_sigma(uint64_t n):&#160;sumdiv_util.c']]]
 ];

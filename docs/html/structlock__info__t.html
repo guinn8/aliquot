@@ -70,19 +70,69 @@ $(function() {
 <div class="title">lock_info_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Protects buffer underlying <a class="el" href="structPackedArray.html" title="PackedArray handle.">PackedArray</a> with an array of mutexs.  
+ <a href="structlock__info__t.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="PackedArray_8h_source.html">PackedArray.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:aa280ca8c1e06284207281421d14a94be"><td class="memItemLeft" align="right" valign="top"><a id="aa280ca8c1e06284207281421d14a94be"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>num_locks</b></td></tr>
-<tr class="separator:aa280ca8c1e06284207281421d14a94be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8845cc82e2a1febfcb3a715b1a5b6c9d"><td class="memItemLeft" align="right" valign="top"><a id="a8845cc82e2a1febfcb3a715b1a5b6c9d"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>lock_interval</b></td></tr>
-<tr class="separator:a8845cc82e2a1febfcb3a715b1a5b6c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1da70e1aa83967269598b5b2a95e2266"><td class="memItemLeft" align="right" valign="top"><a id="a1da70e1aa83967269598b5b2a95e2266"></a>
-omp_lock_t *&#160;</td><td class="memItemRight" valign="bottom"><b>locks</b></td></tr>
-<tr class="separator:a1da70e1aa83967269598b5b2a95e2266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a116bf7f7e026e119ce0ca43523ee99b1"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlock__info__t.html#a116bf7f7e026e119ce0ca43523ee99b1">num_locks</a></td></tr>
+<tr class="separator:a116bf7f7e026e119ce0ca43523ee99b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a856e5c9aa9e96d4ec44a2cef09ad4331"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlock__info__t.html#a856e5c9aa9e96d4ec44a2cef09ad4331">lock_interval</a></td></tr>
+<tr class="separator:a856e5c9aa9e96d4ec44a2cef09ad4331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d40e247145fe1eae9858cf0a0389c91"><td class="memItemLeft" align="right" valign="top">omp_lock_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlock__info__t.html#a9d40e247145fe1eae9858cf0a0389c91">locks</a></td></tr>
+<tr class="separator:a9d40e247145fe1eae9858cf0a0389c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Protects buffer underlying <a class="el" href="structPackedArray.html" title="PackedArray handle.">PackedArray</a> with an array of mutexs. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a856e5c9aa9e96d4ec44a2cef09ad4331"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a856e5c9aa9e96d4ec44a2cef09ad4331">&#9670;&nbsp;</a></span>lock_interval</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lock_info_t::lock_interval</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computed value used internally. </p>
+
+</div>
+</div>
+<a id="a9d40e247145fe1eae9858cf0a0389c91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d40e247145fe1eae9858cf0a0389c91">&#9670;&nbsp;</a></span>locks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lock_info_t::locks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calloc'ed buffer of locks. </p>
+
+</div>
+</div>
+<a id="a116bf7f7e026e119ce0ca43523ee99b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a116bf7f7e026e119ce0ca43523ee99b1">&#9670;&nbsp;</a></span>num_locks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lock_info_t::num_locks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Number of mutexes protecting buffer undlying the <a class="el" href="structPackedArray.html" title="PackedArray handle.">PackedArray</a> from concorent access. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>pomyang_kparent/inc/<a class="el" href="PackedArray_8h_source.html">PackedArray.h</a></li>
 </ul>

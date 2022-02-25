@@ -81,16 +81,16 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad072e5474e4673d2b63ae77978a6f354"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsieve__config__t.html">sieve_config_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8c.html#ad072e5474e4673d2b63ae77978a6f354">moews_init_sieve</a> (size_t bound, size_t seg_len)</td></tr>
-<tr class="memdesc:ad072e5474e4673d2b63ae77978a6f354"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> which is shared by a pool of workers  <a href="moewsmoews__sieve_8c.html#ad072e5474e4673d2b63ae77978a6f354">More...</a><br /></td></tr>
+<tr class="memdesc:ad072e5474e4673d2b63ae77978a6f354"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> which is shared by a pool of workers  <a href="moewsmoews__sieve_8c.html#ad072e5474e4673d2b63ae77978a6f354">More...</a><br /></td></tr>
 <tr class="separator:ad072e5474e4673d2b63ae77978a6f354"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51febebc5355cfca31c58108a6ec5f2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8c.html#a51febebc5355cfca31c58108a6ec5f2c">moews_destroy_sieve</a> (<a class="el" href="structsieve__config__t.html">sieve_config_t</a> *cfg)</td></tr>
-<tr class="memdesc:a51febebc5355cfca31c58108a6ec5f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a>  <a href="moewsmoews__sieve_8c.html#a51febebc5355cfca31c58108a6ec5f2c">More...</a><br /></td></tr>
+<tr class="memdesc:a51febebc5355cfca31c58108a6ec5f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a>  <a href="moewsmoews__sieve_8c.html#a51febebc5355cfca31c58108a6ec5f2c">More...</a><br /></td></tr>
 <tr class="separator:a51febebc5355cfca31c58108a6ec5f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab33ee37f9625b5e2abe481351eb783b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsieve__worker__t.html">sieve_worker_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8c.html#ab33ee37f9625b5e2abe481351eb783b7">moews_init_worker</a> (const <a class="el" href="structsieve__config__t.html">sieve_config_t</a> *cfg)</td></tr>
 <tr class="memdesc:ab33ee37f9625b5e2abe481351eb783b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a worker object which can be used to run the sieve  <a href="moewsmoews__sieve_8c.html#ab33ee37f9625b5e2abe481351eb783b7">More...</a><br /></td></tr>
 <tr class="separator:ab33ee37f9625b5e2abe481351eb783b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17383cd28d0924852a1a52f99caa91e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8c.html#a17383cd28d0924852a1a52f99caa91e0">destroy_worker</a> (<a class="el" href="structsieve__worker__t.html">sieve_worker_t</a> *worker)</td></tr>
-<tr class="memdesc:a17383cd28d0924852a1a52f99caa91e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__worker__t.html" title="worker which holds state about a single thread running the sieve">sieve_worker_t</a>  <a href="moewsmoews__sieve_8c.html#a17383cd28d0924852a1a52f99caa91e0">More...</a><br /></td></tr>
+<tr class="memdesc:a17383cd28d0924852a1a52f99caa91e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">free's memory associated with <a class="el" href="structsieve__worker__t.html" title="Worker which holds state about a single thread running the sieve.">sieve_worker_t</a>  <a href="moewsmoews__sieve_8c.html#a17383cd28d0924852a1a52f99caa91e0">More...</a><br /></td></tr>
 <tr class="separator:a17383cd28d0924852a1a52f99caa91e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1001f46d63af8f3f4ccebdb559a07d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="moewsmoews__sieve_8c.html#ac1001f46d63af8f3f4ccebdb559a07d5">moews_sieve_odd_standard</a> (<a class="el" href="structsieve__worker__t.html">sieve_worker_t</a> *worker, const uint64_t seg_start)</td></tr>
 <tr class="memdesc:ac1001f46d63af8f3f4ccebdb559a07d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">runs sieve for odd sigma(m)  <a href="moewsmoews__sieve_8c.html#ac1001f46d63af8f3f4ccebdb559a07d5">More...</a><br /></td></tr>
@@ -116,13 +116,13 @@ Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Anton Mosunov and Gavin Guinn (<a href="#" onclick="location.href='mai'+'lto:'+'gav'+'in'+'gui'+'nn'+'1@g'+'ma'+'il.'+'co'+'m'; return false;">gavin<span style="display: none;">.nosp@m.</span>guin<span style="display: none;">.nosp@m.</span>n1@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Originally Apr 18, 2014, modified 2021-12-27</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Public Domain (Please credit me; if you find this code useful I would love to hear about your work!)</dd></dl>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md2"></a>
 PERFORMANCE SUMMARY</h2>
 <p>The parameter seg_len has will increase sieve runtime by upto a order-of-magnitude if set to low/high. If seg_len is set to low the sieve will execute far more instructions than needed to complete the same outcome, as it's performance is improves with larger values of seg_len. I believe^ the amount of instructions increases exponentially as seg_len shrinks, judging by the cachegrind instruction lookup counts. However if seg_len is set to high the sieve will start thrashing at the cache missing reads/writes in the intermediate sieving steps thus degrading performance. I believe^^ this effect is more pronounced at bounds lower than ~10^9 as seg_len's that result in a reasonable amount of operations also happen to require sieving buffers that fit (very approximately) into my 32mb LL cache.</p>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 TODO</h2>
 <p>test ^ and ^^</p>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 PERFORMANCE</h2>
 <p>The performance of this sieve is highly variable on the value of seg_len, unfortunately not in a clearly tractable way. It is clear that if seg_len is set to low (whatever that means) the sieve will do a lot of additional operations for the same result. This selected cachegrind/time output from 2 pom_yang run is illustrative:</p>
 <div class="fragment"><div class="line">./cli --bound=100000000 --seg_len=400000 --num_locks=1000000 --preimage_count_bits=1 --num_thread=12</div>
@@ -153,13 +153,13 @@ PERFORMANCE</h2>
 <div class="line"> ==*== D1  miss rate:            8.3% (         10.1%     +         1.7%  )</div>
 <div class="line">12.94s user 0.36s system 744% cpu 1.786 total</div>
 </div><!-- fragment --><p>Comparing to the seg_len=400000 run we can observe that slightly less instructions are being executed but we are still in the same order of magnitude. More interestingly we can notice this run made an order of magnitude fewer references to the data cache and.. those references were much less accurate, likely accounting for the performace degradation. The vast majority of these misses originate from interactions with the sigma and numbers buffers.</p>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 SEE</h2>
 <p>Files in the cg directory for more details.</p>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 ALGORITHM</h2>
 <p>This is a rewrite of Anton Mosunov's implementation of the [Moews and Moews] sieving algorithm, prepared to utilized in the tabulation of non-aliquots, sect. 3 of [Chum et al.]. This implementation includes undocumented optimization on the original method of [Moews and Moews] that are essential for performance, I can't make any sense of why it works however. The _meows_naive_sieve implements the algorithm as described in the paper, it is much slower.</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 CITATIONS</h2>
 <p>-&gt; [Moews and Moews] Moews, D. and Moews, P. C. (1991). A search for aliquot cycles below 10 10. Mathematics of Computation, 57(196):849.</p>
 <p>-&gt; [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018). Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425. </p>
@@ -180,7 +180,7 @@ CITATIONS</h2>
       </table>
 </div><div class="memdoc">
 
-<p>free's memory associated with <a class="el" href="structsieve__worker__t.html" title="worker which holds state about a single thread running the sieve">sieve_worker_t</a> </p>
+<p>free's memory associated with <a class="el" href="structsieve__worker__t.html" title="Worker which holds state about a single thread running the sieve.">sieve_worker_t</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">worker</td><td>to be free'd </td></tr>
@@ -244,7 +244,7 @@ CITATIONS</h2>
       </table>
 </div><div class="memdoc">
 
-<p>free's memory associated with <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> </p>
+<p>free's memory associated with <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cfg</td><td>to be free'd </td></tr>
@@ -325,7 +325,7 @@ CITATIONS</h2>
       </table>
 </div><div class="memdoc">
 
-<p>creates a <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> which is shared by a pool of workers </p>
+<p>creates a <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> which is shared by a pool of workers </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bound</td><td>sieving all odd sigma upto to bound </td></tr>

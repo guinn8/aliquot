@@ -1,11 +1,14 @@
 /**
  * @file geomean_sn.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
- * @brief
+ * @brief Runs geomean calculation from [Chum et al.] Sect 2
  * @date 2022-02-18
- *
  * @copyright Copyright (c) 2022
  *
+ * CITATIONS
+ * -----------
+ *  -  [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018).
+ *      Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.
  */
 
 #include <assert.h>
@@ -17,13 +20,12 @@
 #include "../inc/moewsmoews_sieve.h"
 #include "../inc/pomyang_kparent.h"
 #include "../inc/sumdiv_util.h"
-
-#define DIVIDES(x, y) (0 == y % x)
-#define EVEN(x) (0 == (x) % 2)
+#include "../inc/math_macros.h"
 
 void weighted_geomean(size_t bound, size_t seg_len);
 void geomean(size_t bound, size_t seg_len);
 
+/** @brief CLI to geometric mean calculation */
 int main(int argc, char const *argv[]) {
     assert(argc == 3);
     size_t bound = strtol(argv[1], NULL, 10);
@@ -31,6 +33,7 @@ int main(int argc, char const *argv[]) {
     weighted_geomean(bound, seg_len);
 }
 
+/** @brief Computes the geomean of s(n) for even n numbers. */
 void geomean(size_t bound, size_t seg_len) {
     assert(EVEN(bound));
     assert(bound > 0);
@@ -55,6 +58,7 @@ void geomean(size_t bound, size_t seg_len) {
     printf("geomean= %f\n", geomean);
 }
 
+/** @brief Computes the geomean of s(n) for even n numbers weighted by the number of aliquot parents.*/
 void weighted_geomean(size_t bound, size_t seg_len) {
     assert(EVEN(bound));
     assert(bound > 0);
@@ -90,8 +94,7 @@ void weighted_geomean(size_t bound, size_t seg_len) {
             total++;
         }
     }
-    
-    double geomean = 1 + (accumulation * (1.0 / (double)total_preimages));
 
+    double geomean = 1 + (accumulation * (1.0 / (double)total_preimages));
     printf("geomean= %f\n", geomean);
 }

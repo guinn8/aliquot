@@ -70,7 +70,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">pomyang_kparent.h File Reference</div>  </div>
@@ -82,15 +81,17 @@ $(function() {
 <div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &quot;../inc/PackedArray.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="math__macros_8h_source.html">../inc/math_macros.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for pomyang_kparent.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="pomyang__kparent_8h__incl.png" border="0" usemap="#pomyang__kparent_2inc_2pomyang__kparent_8h" alt=""/></div>
 <map name="pomyang__kparent_2inc_2pomyang__kparent_8h" id="pomyang__kparent_2inc_2pomyang__kparent_8h">
-<area shape="rect" title="api for pom_yang algorithm operations" alt="" coords="67,5,229,47"/>
+<area shape="rect" title="api for pom_yang algorithm operations" alt="" coords="133,5,296,47"/>
 <area shape="rect" title=" " alt="" coords="5,95,88,121"/>
 <area shape="rect" title=" " alt="" coords="113,95,183,121"/>
 <area shape="rect" href="PackedArray_8h_source.html" title=" " alt="" coords="208,95,355,121"/>
+<area shape="rect" href="math__macros_8h.html" title=" " alt="" coords="379,95,538,121"/>
 <area shape="rect" title=" " alt="" coords="201,169,271,196"/>
 <area shape="rect" title=" " alt="" coords="295,169,358,196"/>
 </map>
@@ -100,12 +101,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="pomyang__kparent_8h__dep__incl.png" border="0" usemap="#pomyang__kparent_2inc_2pomyang__kparent_8hdep" alt=""/></div>
 <map name="pomyang__kparent_2inc_2pomyang__kparent_8hdep" id="pomyang__kparent_2inc_2pomyang__kparent_8hdep">
-<area shape="rect" title="api for pom_yang algorithm operations" alt="" coords="379,5,541,47"/>
-<area shape="rect" href="geomean__sn_8c.html" title=" " alt="" coords="5,95,168,136"/>
+<area shape="rect" title="api for pom_yang algorithm operations" alt="" coords="192,5,355,47"/>
+<area shape="rect" href="geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="5,95,168,136"/>
 <area shape="rect" href="pomyang__cli__main_8c.html" title="command line interface to interact with the pom_yang algorithm" alt="" coords="192,95,355,136"/>
 <area shape="rect" href="pomyang__kparent_8c.html" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="379,95,541,136"/>
-<area shape="rect" href="pomyang__profile__main_8c.html" title="a scratch file to programatically run ranges of the pomerance&#45;yang algorithm and dump to file" alt="" coords="565,95,752,136"/>
-<area shape="rect" href="pomyang__test__main_8c.html" title="test suite for the pom_yang algorithm" alt="" coords="776,95,947,136"/>
 </map>
 </div>
 </div>
@@ -117,49 +116,16 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the Pomerance-Yang algorithm.  <a href="structpomyang__config.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a0c2b8500f83d0c661e2f2d143edbdb03"><td class="memItemLeft" align="right" valign="top"><a id="a0c2b8500f83d0c661e2f2d143edbdb03"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_4</b>&#160;&#160;&#160;1212</td></tr>
-<tr class="separator:a0c2b8500f83d0c661e2f2d143edbdb03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3c6d835850a035b1797f0d1fac78b0d"><td class="memItemLeft" align="right" valign="top"><a id="af3c6d835850a035b1797f0d1fac78b0d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_5</b>&#160;&#160;&#160;13863</td></tr>
-<tr class="separator:af3c6d835850a035b1797f0d1fac78b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2121ac4b61f0de2cab3240a449074da0"><td class="memItemLeft" align="right" valign="top"><a id="a2121ac4b61f0de2cab3240a449074da0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_6</b>&#160;&#160;&#160;150232</td></tr>
-<tr class="separator:a2121ac4b61f0de2cab3240a449074da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09afc21d6ffec8d49d1021cea4f4f396"><td class="memItemLeft" align="right" valign="top"><a id="a09afc21d6ffec8d49d1021cea4f4f396"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_7</b>&#160;&#160;&#160;1574973</td></tr>
-<tr class="separator:a09afc21d6ffec8d49d1021cea4f4f396"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9b298b1a25860c5333d9d1589b2ae7a"><td class="memItemLeft" align="right" valign="top"><a id="af9b298b1a25860c5333d9d1589b2ae7a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_8</b>&#160;&#160;&#160;16246940</td></tr>
-<tr class="separator:af9b298b1a25860c5333d9d1589b2ae7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a500951a4761212f052a52af894835639"><td class="memItemLeft" align="right" valign="top"><a id="a500951a4761212f052a52af894835639"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_9</b>&#160;&#160;&#160;165826606</td></tr>
-<tr class="separator:a500951a4761212f052a52af894835639"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e6ba57a45524893b50ec9f29738a513"><td class="memItemLeft" align="right" valign="top"><a id="a0e6ba57a45524893b50ec9f29738a513"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_10</b>&#160;&#160;&#160;1681871718</td></tr>
-<tr class="separator:a0e6ba57a45524893b50ec9f29738a513"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb396f3566a691aa1e13db8eb438faab"><td class="memItemLeft" align="right" valign="top"><a id="acb396f3566a691aa1e13db8eb438faab"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_11</b>&#160;&#160;&#160;16988116409</td></tr>
-<tr class="separator:acb396f3566a691aa1e13db8eb438faab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae728328869b6bce3450311e43ec48b05"><td class="memItemLeft" align="right" valign="top"><a id="ae728328869b6bce3450311e43ec48b05"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_10_TO_THE_12</b>&#160;&#160;&#160;171128671374</td></tr>
-<tr class="separator:ae728328869b6bce3450311e43ec48b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adead3cb488bd10683ce2d456bbd1af97"><td class="memItemLeft" align="right" valign="top"><a id="adead3cb488bd10683ce2d456bbd1af97"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_2_TO_THE_40</b>&#160;&#160;&#160;188206399403</td></tr>
-<tr class="separator:adead3cb488bd10683ce2d456bbd1af97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4204346361c7a37b7b3fa9389e19238a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct__PackedArray.html">PackedArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8h.html#a4204346361c7a37b7b3fa9389e19238a">pomyang_algorithm</a> (const <a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg)</td></tr>
-<tr class="memdesc:a4204346361c7a37b7b3fa9389e19238a"><td class="mdescLeft">&#160;</td><td class="mdescRight">runs the Pomerance-Yang algorithm.  <a href="pomyang__kparent_8h.html#a4204346361c7a37b7b3fa9389e19238a">More...</a><br /></td></tr>
+<tr class="memitem:a4204346361c7a37b7b3fa9389e19238a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPackedArray.html">PackedArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8h.html#a4204346361c7a37b7b3fa9389e19238a">pomyang_algorithm</a> (const <a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg)</td></tr>
+<tr class="memdesc:a4204346361c7a37b7b3fa9389e19238a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the Pomerance-Yang algorithm.  <a href="pomyang__kparent_8h.html#a4204346361c7a37b7b3fa9389e19238a">More...</a><br /></td></tr>
 <tr class="separator:a4204346361c7a37b7b3fa9389e19238a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae48116046e3574091390dab702d39df1"><td class="memItemLeft" align="right" valign="top">uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8h.html#ae48116046e3574091390dab702d39df1">pomyang_count_kparent</a> (const <a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg)</td></tr>
 <tr class="memdesc:ae48116046e3574091390dab702d39df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">runs the Pomerance-Yang algorithm and counts occurrence of kparent numbers.  <a href="pomyang__kparent_8h.html#ae48116046e3574091390dab702d39df1">More...</a><br /></td></tr>
 <tr class="separator:ae48116046e3574091390dab702d39df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275e930ae309e5d28fee1bfc5ea445fd"><td class="memItemLeft" align="right" valign="top"><a id="a275e930ae309e5d28fee1bfc5ea445fd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg, const char *filename, uint64_t *count, float runtime)</td></tr>
+<tr class="memitem:a275e930ae309e5d28fee1bfc5ea445fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pomyang__kparent_8h.html#a275e930ae309e5d28fee1bfc5ea445fd">print_to_file</a> (<a class="el" href="structpomyang__config.html">pomyang_config</a> *cfg, const char *filename, uint64_t *count, float runtime)</td></tr>
+<tr class="memdesc:a275e930ae309e5d28fee1bfc5ea445fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints Pomerance-Yang algorithm configuration.  <a href="pomyang__kparent_8h.html#a275e930ae309e5d28fee1bfc5ea445fd">More...</a><br /></td></tr>
 <tr class="separator:a275e930ae309e5d28fee1bfc5ea445fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -175,7 +141,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct__PackedArray.html">PackedArray</a>* pomyang_algorithm </td>
+          <td class="memname"><a class="el" href="structPackedArray.html">PackedArray</a>* pomyang_algorithm </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structpomyang__config.html">pomyang_config</a> *&#160;</td>
           <td class="paramname"><em>cfg</em></td><td>)</td>
@@ -184,7 +150,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a
       </table>
 </div><div class="memdoc">
 
-<p>runs the Pomerance-Yang algorithm. </p>
+<p>Runs the Pomerance-Yang algorithm. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cfg</td><td>See struct defintion </td></tr>
@@ -219,6 +185,57 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_to_file</b> (<a
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint64_t* buffer of length (UINT8_MAX + 1) with occurrence counts, must be free'd by caller </dd></dl>
+
+</div>
+</div>
+<a id="a275e930ae309e5d28fee1bfc5ea445fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275e930ae309e5d28fee1bfc5ea445fd">&#9670;&nbsp;</a></span>print_to_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_to_file </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpomyang__config.html">pomyang_config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>runtime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints Pomerance-Yang algorithm configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfg</td><td>Pointer to config struct. </td></tr>
+    <tr><td class="paramname">filename</td><td>Name of file to write. </td></tr>
+    <tr><td class="paramname">count</td><td>Array of k-parent counts. </td></tr>
+    <tr><td class="paramname">runtime</td><td>CPU seconds used. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

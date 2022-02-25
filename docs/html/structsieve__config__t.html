@@ -71,42 +71,103 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>configuration and computed values needed to operate sieve, only 1 needed for multiple threads  
+<p>Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.  
  <a href="structsieve__config__t.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="moewsmoews__sieve_8h_source.html">moewsmoews_sieve.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a5fdc73561ba3790dce05473df8601123"><td class="memItemLeft" align="right" valign="top"><a id="a5fdc73561ba3790dce05473df8601123"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>bound</b></td></tr>
-<tr class="separator:a5fdc73561ba3790dce05473df8601123"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416133f0b36fd66c9f434365a28cb17b"><td class="memItemLeft" align="right" valign="top"><a id="a416133f0b36fd66c9f434365a28cb17b"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>seg_len</b></td></tr>
-<tr class="separator:a416133f0b36fd66c9f434365a28cb17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a997a78ff8fad3659ceca9a68e6946414"><td class="memItemLeft" align="right" valign="top"><a id="a997a78ff8fad3659ceca9a68e6946414"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buf_len</b></td></tr>
-<tr class="separator:a997a78ff8fad3659ceca9a68e6946414"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafebb4c4e1a402f416f234e8d37d6e64"><td class="memItemLeft" align="right" valign="top"><a id="aafebb4c4e1a402f416f234e8d37d6e64"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>primes_len</b></td></tr>
-<tr class="separator:aafebb4c4e1a402f416f234e8d37d6e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcc8102d24552e61118147396bbadf53"><td class="memItemLeft" align="right" valign="top"><a id="afcc8102d24552e61118147396bbadf53"></a>
-uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>primes</b></td></tr>
-<tr class="separator:afcc8102d24552e61118147396bbadf53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae7d5105ccf74905f6600806cd06456f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__config__t.html#aae7d5105ccf74905f6600806cd06456f">bound</a></td></tr>
+<tr class="separator:aae7d5105ccf74905f6600806cd06456f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84b5c1fcbe5cfee8cc6b0346f8d33019"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__config__t.html#a84b5c1fcbe5cfee8cc6b0346f8d33019">seg_len</a></td></tr>
+<tr class="separator:a84b5c1fcbe5cfee8cc6b0346f8d33019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae41edbd5000711c5fc42fe3390421fab"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__config__t.html#ae41edbd5000711c5fc42fe3390421fab">buf_len</a></td></tr>
+<tr class="separator:ae41edbd5000711c5fc42fe3390421fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31045fc37293fde580bd2df6d9be0f15"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__config__t.html#a31045fc37293fde580bd2df6d9be0f15">primes_len</a></td></tr>
+<tr class="separator:a31045fc37293fde580bd2df6d9be0f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc737f55b0442bbd3dcd28a7ec835297"><td class="memItemLeft" align="right" valign="top">uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__config__t.html#abc737f55b0442bbd3dcd28a7ec835297">primes</a></td></tr>
+<tr class="separator:abc737f55b0442bbd3dcd28a7ec835297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>configuration and computed values needed to operate sieve, only 1 needed for multiple threads </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bound</td><td>sieve all odd sigma upto to bound </td></tr>
-    <tr><td class="paramname">seg_len</td><td>size of range to sieve in a step </td></tr>
-    <tr><td class="paramname">buf_len</td><td>half seg_len as we are only sieving evens </td></tr>
-    <tr><td class="paramname">primes_len</td><td>length of primes buffer </td></tr>
-    <tr><td class="paramname">primes</td><td>buffer of primes needed to operate sieve </td></tr>
-  </table>
-  </dd>
-</dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<div class="textblock"><p>Configuration and computed values needed to operate sieve, only 1 needed for multiple threads. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="aae7d5105ccf74905f6600806cd06456f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae7d5105ccf74905f6600806cd06456f">&#9670;&nbsp;</a></span>bound</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_config_t::bound</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sieve all odd sigma(n) upto to bound. </p>
+
+</div>
+</div>
+<a id="ae41edbd5000711c5fc42fe3390421fab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41edbd5000711c5fc42fe3390421fab">&#9670;&nbsp;</a></span>buf_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_config_t::buf_len</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computed to be seg_len / 2 as we are producing sigma(n) for odd n. </p>
+
+</div>
+</div>
+<a id="abc737f55b0442bbd3dcd28a7ec835297"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc737f55b0442bbd3dcd28a7ec835297">&#9670;&nbsp;</a></span>primes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_config_t::primes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer of primes needed to operate sieve. </p>
+
+</div>
+</div>
+<a id="a31045fc37293fde580bd2df6d9be0f15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31045fc37293fde580bd2df6d9be0f15">&#9670;&nbsp;</a></span>primes_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_config_t::primes_len</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Length of primes buffer. </p>
+
+</div>
+</div>
+<a id="a84b5c1fcbe5cfee8cc6b0346f8d33019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84b5c1fcbe5cfee8cc6b0346f8d33019">&#9670;&nbsp;</a></span>seg_len</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_config_t::seg_len</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Size of range to sieve in a step. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>pomyang_kparent/inc/<a class="el" href="moewsmoews__sieve_8h_source.html">moewsmoews_sieve.h</a></li>
 </ul>
 </div><!-- contents -->

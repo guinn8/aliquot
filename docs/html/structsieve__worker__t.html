@@ -71,7 +71,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>worker which holds state about a single thread running the sieve  
+<p>Worker which holds state about a single thread running the sieve.  
  <a href="structsieve__worker__t.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="moewsmoews__sieve_8h_source.html">moewsmoews_sieve.h</a>&gt;</code></p>
@@ -80,49 +80,137 @@ Collaboration diagram for sieve_worker_t:</div>
 <div class="dyncontent">
 <div class="center"><img src="structsieve__worker__t__coll__graph.png" border="0" usemap="#sieve__worker__t_coll__map" alt="Collaboration graph"/></div>
 <map name="sieve__worker__t_coll__map" id="sieve__worker__t_coll__map">
-<area shape="rect" title="worker which holds state about a single thread running the sieve" alt="" coords="5,95,125,121"/>
-<area shape="rect" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads" alt="" coords="8,5,123,32"/>
+<area shape="rect" title="Worker which holds state about a single thread running the sieve." alt="" coords="5,95,125,121"/>
+<area shape="rect" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads." alt="" coords="8,5,123,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a165379595276caca4b42660a8ef5461c"><td class="memItemLeft" align="right" valign="top"><a id="a165379595276caca4b42660a8ef5461c"></a>
-const <a class="el" href="structsieve__config__t.html">sieve_config_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>cfg</b></td></tr>
-<tr class="separator:a165379595276caca4b42660a8ef5461c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a057ad6a03a086049c257464dbc86f424"><td class="memItemLeft" align="right" valign="top"><a id="a057ad6a03a086049c257464dbc86f424"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>seg_start</b></td></tr>
-<tr class="separator:a057ad6a03a086049c257464dbc86f424"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8436d201c492371dbc768fc0ed8eebbc"><td class="memItemLeft" align="right" valign="top"><a id="a8436d201c492371dbc768fc0ed8eebbc"></a>
-uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><b>sigma_buf</b></td></tr>
-<tr class="separator:a8436d201c492371dbc768fc0ed8eebbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51d348e63c54c7c5f028ffc0c0f543ed"><td class="memItemLeft" align="right" valign="top"><a id="a51d348e63c54c7c5f028ffc0c0f543ed"></a>
-uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><b>q_buf</b></td></tr>
-<tr class="separator:a51d348e63c54c7c5f028ffc0c0f543ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a819fe45de75826954944388cebc0336b"><td class="memItemLeft" align="right" valign="top"><a id="a819fe45de75826954944388cebc0336b"></a>
-ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>last_sieve_standard</b></td></tr>
-<tr class="separator:a819fe45de75826954944388cebc0336b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a313f5bd530f09dcc1ee70ec40e486e51"><td class="memItemLeft" align="right" valign="top"><a id="a313f5bd530f09dcc1ee70ec40e486e51"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>squared</b></td></tr>
-<tr class="separator:a313f5bd530f09dcc1ee70ec40e486e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d061a01ae797654612713a06461d102"><td class="memItemLeft" align="right" valign="top"><a id="a5d061a01ae797654612713a06461d102"></a>
-bool *&#160;</td><td class="memItemRight" valign="bottom"><b>is_prime_buf</b></td></tr>
-<tr class="separator:a5d061a01ae797654612713a06461d102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22b6ab01c141e012d66c04094105dd7d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structsieve__config__t.html">sieve_config_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#a22b6ab01c141e012d66c04094105dd7d">cfg</a></td></tr>
+<tr class="separator:a22b6ab01c141e012d66c04094105dd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a649dbafc650656c013d0ba15e40234cb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#a649dbafc650656c013d0ba15e40234cb">seg_start</a></td></tr>
+<tr class="separator:a649dbafc650656c013d0ba15e40234cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd5fdc78b23e61201cc9e7d07b1ea901"><td class="memItemLeft" align="right" valign="top">uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#acd5fdc78b23e61201cc9e7d07b1ea901">sigma_buf</a></td></tr>
+<tr class="separator:acd5fdc78b23e61201cc9e7d07b1ea901"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0439ce3ca2745c452e5c0cb52e5573b"><td class="memItemLeft" align="right" valign="top">uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#ae0439ce3ca2745c452e5c0cb52e5573b">q_buf</a></td></tr>
+<tr class="separator:ae0439ce3ca2745c452e5c0cb52e5573b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae4313cc27adc38fd6b2ace585a5673"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#a8ae4313cc27adc38fd6b2ace585a5673">last_sieve_standard</a></td></tr>
+<tr class="separator:a8ae4313cc27adc38fd6b2ace585a5673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af698dbb517981c947630b79ac3e929de"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#af698dbb517981c947630b79ac3e929de">squared</a></td></tr>
+<tr class="separator:af698dbb517981c947630b79ac3e929de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e2d635cb66f781c2b31960ff80bc675"><td class="memItemLeft" align="right" valign="top">bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsieve__worker__t.html#a2e2d635cb66f781c2b31960ff80bc675">is_prime_buf</a></td></tr>
+<tr class="separator:a2e2d635cb66f781c2b31960ff80bc675"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>worker which holds state about a single thread running the sieve </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cfg</td><td>initalized <a class="el" href="structsieve__config__t.html" title="configuration and computed values needed to operate sieve, only 1 needed for multiple threads">sieve_config_t</a> </td></tr>
-    <tr><td class="paramname">squared</td><td>was the last sieve block sigma(m * m) </td></tr>
-    <tr><td class="paramname">seg_start</td><td>start of the segment to be sieved </td></tr>
-    <tr><td class="paramname">sigma_buf</td><td>buffer to be filled will odd sigma in range (seg_start, seg_start + seg_len) </td></tr>
-    <tr><td class="paramname">q_buf</td><td>buffer used interally by the sieve </td></tr>
-    <tr><td class="paramname">is_prime_buf</td><td>&lt;after running moews_sieve_odd_standard&gt; this buffer store whether odd numbers... in range (seg_start, seg_start + seg_len) are prime </td></tr>
-  </table>
-  </dd>
-</dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<div class="textblock"><p>Worker which holds state about a single thread running the sieve. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a22b6ab01c141e012d66c04094105dd7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22b6ab01c141e012d66c04094105dd7d">&#9670;&nbsp;</a></span>cfg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::cfg</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initalized <a class="el" href="structsieve__config__t.html" title="Configuration and computed values needed to operate sieve, only 1 needed for multiple threads.">sieve_config_t</a> struct. </p>
+
+</div>
+</div>
+<a id="a2e2d635cb66f781c2b31960ff80bc675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e2d635cb66f781c2b31960ff80bc675">&#9670;&nbsp;</a></span>is_prime_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::is_prime_buf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This buffer stores whether odd numbers in range (seg_start, seg_start + seg_len) are prime. Function <a class="el" href="moewsmoews__sieve_8h.html#aedfd493a8ff17106362a84f56cc8e24d" title="runs sieve for odd sigma(m)">moews_sieve_odd_standard()</a> must have been run previously. </p>
+
+</div>
+</div>
+<a id="a8ae4313cc27adc38fd6b2ace585a5673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ae4313cc27adc38fd6b2ace585a5673">&#9670;&nbsp;</a></span>last_sieve_standard</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::last_sieve_standard</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Start of the last standard sieving call, -1 if has not been run. </p>
+
+</div>
+</div>
+<a id="ae0439ce3ca2745c452e5c0cb52e5573b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0439ce3ca2745c452e5c0cb52e5573b">&#9670;&nbsp;</a></span>q_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::q_buf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer used internally by sieve. </p>
+
+</div>
+</div>
+<a id="a649dbafc650656c013d0ba15e40234cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a649dbafc650656c013d0ba15e40234cb">&#9670;&nbsp;</a></span>seg_start</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::seg_start</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Start of the segment to be sieved. </p>
+
+</div>
+</div>
+<a id="acd5fdc78b23e61201cc9e7d07b1ea901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd5fdc78b23e61201cc9e7d07b1ea901">&#9670;&nbsp;</a></span>sigma_buf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::sigma_buf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Buffer to be filled will sigma(n) for odd n in range (seg_start, seg_start + seg_len). </p>
+
+</div>
+</div>
+<a id="af698dbb517981c947630b79ac3e929de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af698dbb517981c947630b79ac3e929de">&#9670;&nbsp;</a></span>squared</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sieve_worker_t::squared</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Was the last sieve block run with <a class="el" href="moewsmoews__sieve_8h.html#a8d6226688d9395c17aab43daddced438" title="takes odd m in range and runs sieve for sigma(m * m)">moews_sieve_odd_squared()</a>? </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>pomyang_kparent/inc/<a class="el" href="moewsmoews__sieve_8h_source.html">moewsmoews_sieve.h</a></li>
 </ul>
 </div><!-- contents -->

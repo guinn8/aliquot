@@ -8,12 +8,12 @@
  *
  */
 
-#ifndef _POM_YANG_INC_SUMDIV_H_
-#define _POM_YANG_INC_SUMDIV_H_
+#ifndef POMYANG_KPARENT_INC_SUMDIV_UTIL_H_
+#define POMYANG_KPARENT_INC_SUMDIV_UTIL_H_
 
 #include <stdint.h>
 
 uint64_t sumdiv_s(uint64_t n);
 uint64_t sumdiv_sigma(uint64_t n);
 
-#endif  // _POM_YANG_INC_SUMDIV_H_
+#endif  // POMYANG_KPARENT_INC_SUMDIV_UTIL_H_

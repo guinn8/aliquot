@@ -17,9 +17,10 @@
 
 #include "../inc/pomyang_kparent.h"
 #include "../inc/moewsmoews_sieve.h"
+#include "../inc/math_macros.h"
 
+/** @brief CLI runs output file.*/
 #define OUTPUT_FILE "dat/counts.csv"
-#define BYTES_TO_GB 0.000000001
 
 static struct option long_options[] = {
     {"bound", required_argument, NULL, 'b'},
@@ -37,11 +38,14 @@ static void get_args(pomyang_config *cfg, int argc, char **argv);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat"  // printf ' flag
+
+/** @brief Command line interface to the Pomerance-Yang algorithm. */
 int main(int argc, char **argv) {
     pomyang_config cfg = {0};
     get_args(&cfg, argc, argv);
 
     size_t total = 0;
+    printf("\nESTIMATED MEMORY USAGE\n");
     total += PackedArray_estimate_heap(cfg.preimage_count_bits, cfg.bound / 2, cfg.num_locks);
     total += moews_estimate_heap_usage(cfg.bound, cfg.seg_len, cfg.num_threads);
     printf("This configuration will use a minimum of: \n");
@@ -57,18 +61,14 @@ int main(int argc, char **argv) {
 }
 #pragma GCC diagnostic pop
 
+/** @brief How to use this interface.*/
 static void usage(void) {
+    printf("\nINVALID INPUT!\n");
     printf("\nFast and Memory effiecent implementation of the Pomerance-Yang algorithm enumerating preimages under s()\n");
     printf("Usage: [--bound=][--seg_len=][--num_locks=][(OPTIONAL)--est_heap][(OPTIONAL)--num_threads=][(OPTIONAL)--preimage_count_bits]\n");
     printf("Assertions protect this program from invalid input, if it blows an assert you need to modify your input.\n\n");
-    printf("%s\n\n", bound_desc);
-    printf("%s\n\n", preimage_count_bits_desc);
-    printf("%s\n\n", seg_len_desc);
-    printf("%s\n\n", num_locks_desc);
-    printf("%s\n\n", est_heap_desc);
-    printf("%s\n\n", num_threads_desc);
-    printf("%s\n\n", preimage_count_bits_desc);
-    printf("\n");
+    printf("See https://guinn8.github.io/aliquot/html/structpomyang__config.html for documentation.\n\n");
+    printf("EXAMPLE:\nmake cli && ./bin/cli --bound=$((10**9)) --seg_len=$((10**6)) --num_locks=$((10**7)) --num_threads=12  --preimage_count_bits=8\n\n");
 }
 
 static void get_args(pomyang_config *cfg, int argc, char **argv) {
@@ -103,7 +103,7 @@ static void get_args(pomyang_config *cfg, int argc, char **argv) {
                 break;
             default:
                 usage();
-                assert(0);
+                exit(0);
         }
     }
 
@@ -111,6 +111,6 @@ static void get_args(pomyang_config *cfg, int argc, char **argv) {
         0 == cfg->seg_len ||
         0 == cfg->num_locks) {  // required args
         usage();
-        assert(0);
+        exit(0);
     }
 }

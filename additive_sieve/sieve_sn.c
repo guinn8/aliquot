@@ -1,5 +1,5 @@
 /**
- * @file sn.c
+ * @file sieve_sn.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
  * @brief 
  * @date 2021-11-25
@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include "sn.h"
+#include "../additive_sieve/sieve_sn.h"
 typedef struct enumerate_status_ {
     size_t max;
     size_t sqrt_max;

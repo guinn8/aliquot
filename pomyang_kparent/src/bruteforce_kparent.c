@@ -15,10 +15,9 @@
 #include <omp.h>
 
 #include "../inc/sumdiv_util.h"
+#include "../inc/math_macros.h"
 
-#define EVEN(x) (0 == (x) % 2)
-#define F_OFFSET(x) ((x / 2) - 1)
-#define F_DE_OFFSET(x) ((x + 1) * 2)
+
 
 /* See header for documentation */
 uint8_t *bf_kparent(size_t bound) {

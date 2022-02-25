@@ -92,7 +92,6 @@ void bruteforce_kparent_aliquot_10024(void) {
     for (size_t i = 0; i < UINT8_MAX; i++) {
         assert(count[i] == brute_force_count[i]);
     }
-
 }
 
 void bruteforce_kparent_aliquot_10_to_the_5(void) {

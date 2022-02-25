@@ -1,6 +1,6 @@
 <map id="pomyang_kparent/inc/sumdiv_util.h" name="pomyang_kparent/inc/sumdiv_util.h">
 <area shape="rect" id="node1" title="api for sumdiv functions" alt="" coords="192,5,355,47"/>
 <area shape="rect" id="node2" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="5,95,168,136"/>
-<area shape="rect" id="node3" href="$geomean__sn_8c.html" title=" " alt="" coords="192,95,355,136"/>
+<area shape="rect" id="node3" href="$geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="192,95,355,136"/>
 <area shape="rect" id="node4" href="$sumdiv__util_8c.html" title="Uses factoring wheel (https://en.wikipedia.org/wiki/Wheel_factorization) to compute the sum of diviso..." alt="" coords="379,95,541,136"/>
 </map>

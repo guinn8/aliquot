@@ -8,51 +8,40 @@
  *
  */
 
-#ifndef _POM_YANG_INC_POM_YANG_H_
-#define _POM_YANG_INC_POM_YANG_H_
+#ifndef POMYANG_KPARENT_INC_POMYANG_KPARENT_H_
+#define POMYANG_KPARENT_INC_POMYANG_KPARENT_H_
 
 #include <stdbool.h>
 #include <stdlib.h>
 
 #include "../inc/PackedArray.h"
-
-// I had to manually type these non-aliquot counts from Numerical and Statistical Analysis of Aliquot Sequences (Chum et al.)
-#define _10_TO_THE_4 1212
-#define _10_TO_THE_5 13863
-#define _10_TO_THE_6 150232
-#define _10_TO_THE_7 1574973
-#define _10_TO_THE_8 16246940
-#define _10_TO_THE_9 165826606
-#define _10_TO_THE_10 1681871718
-#define _10_TO_THE_11 16988116409
-#define _10_TO_THE_12 171128671374
-#define _2_TO_THE_40 188206399403
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-variable"  // falsely reports unused
-static char *preimage_count_bits_desc =
-    "preimage_count_bits: input to the PackedArray data struct, determines the actual number of bits used...\n"
-    "to count the number of preimages some number has. Can be 1, 2, 4, or 8.";
-static char *bound_desc = "bound: determine counts of all even k-parent numbers under this bound. Must be even.";
-static char *seg_len_desc = "seg_len: segment length for sieving blocks of sigma(n), the algorithms input.";
-static char *num_locks_desc = "num_locks: the size of the mutex buffer used to protect the shared counter buffer during multi-threaded access.";
-static char *num_threads_desc = "num_threads: how many threads to use.";
-static char *est_heap_desc = "est_heap: estimates heap usage, useful for large bound runs.";
-static char *quiet_desc = "quiet: quiets some logging.";
-#pragma GCC diagnostic pop
+#include "../inc/math_macros.h"
 
 /**
- * @brief Configure the Pomerance-Yang algorithm
+ * @brief Configure the Pomerance-Yang algorithm.
+ * @struct pomyang_config
  * 
- * @param preimage_count_bits: input to the PackedArray data struct, determines the actual number of bits used 
- *                            to count the number of preimages some number has. Can be 1, 2, 4, or 8.
- * @param bound: determine counts of all even k-parent numbers under this bound. Must be even.
- * @param seg_len: segment length for sieving blocks of sigma(n), the algorithms input.
- * @param num_locks: the size of the mutex buffer used to protect the shared counter buffer during multi-threaded access.
- * @param num_threads: how many threads to use.
- * @param est_heap: estimates heap usage, useful for large bound runs.
- * @param quiet: quiets some logging.
+ * @var pomyang_config::preimage_count_bits
+ * Input to the PackedArray data struct, determines the actual number of bits used 
+ * to count the number of preimages some number has. Can be 1, 2, 4, or 8.
  * 
+ * @var pomyang_config::bound
+ * Determine counts of all even k-parent numbers under this bound. Must be even.
+ * 
+ * @var pomyang_config::seg_len
+ * Segment length for sieving blocks of sigma(n), the algorithms input.
+ * 
+ * @var pomyang_config::num_locks
+ * The size of the mutex buffer used to protect the shared counter buffer during multi-threaded access.
+ * 
+ * @var pomyang_config::num_threads
+ * How many threads to use.
+ * 
+ * @var pomyang_config::est_heap
+ * Estimates heap usage, useful for large bound runs.
+ * 
+ * @var pomyang_config::quiet
+ * Quiets some logging.
  */
 typedef struct {
     size_t preimage_count_bits;
@@ -65,7 +54,7 @@ typedef struct {
 } pomyang_config;
 
 /**
- * @brief runs the Pomerance-Yang algorithm.
+ * @brief Runs the Pomerance-Yang algorithm.
  *
  * @param cfg See struct defintion
  * @return PackedArray* containing the number of preimages for even number upto bound. Free'd by caller.
@@ -80,8 +69,13 @@ PackedArray *pomyang_algorithm(const pomyang_config *cfg);
  */
 uint64_t *pomyang_count_kparent(const pomyang_config *cfg);
 
-
+/**
+ * @brief Prints Pomerance-Yang algorithm configuration.
+ * 
+ * @param cfg Pointer to config struct.
+ * @param filename Name of file to write.
+ * @param count Array of k-parent counts.
+ * @param runtime CPU seconds used.
+ */
 void print_to_file(pomyang_config *cfg, const char *filename, uint64_t *count, float runtime);
-
-
-#endif  // _POM_YANG_INC_POM_YANG_H_
+#endif  // POMYANG_KPARENT_INC_POMYANG_KPARENT_H_

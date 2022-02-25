@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['last_5fsieve_5fstandard_24',['last_sieve_standard',['../structsieve__worker__t.html#a8ae4313cc27adc38fd6b2ace585a5673',1,'sieve_worker_t']]],
-  ['lock_5finfo_25',['lock_info',['../structPackedArray.html#a2c2a2584aceadfa528a55ad53b36e265',1,'PackedArray']]],
-  ['lock_5finfo_5ft_26',['lock_info_t',['../structlock__info__t.html',1,'']]],
-  ['lock_5finterval_27',['lock_interval',['../structlock__info__t.html#a856e5c9aa9e96d4ec44a2cef09ad4331',1,'lock_info_t']]],
-  ['locks_28',['locks',['../structlock__info__t.html#a9d40e247145fe1eae9858cf0a0389c91',1,'lock_info_t']]],
-  ['log_29',['LOG',['../math__macros_8h.html#a5a5685e8fdf139ed64c34a3414f092f7',1,'math_macros.h']]]
+  ['inc_22',['inc',['../sumdiv__util_8c.html#aaf45cdfd4cb2f36e4eae4b46ea95a6e9',1,'sumdiv_util.c']]],
+  ['initwheel_23',['initWheel',['../sumdiv__util_8c.html#a3b5b7c4ad5ee06ad3c7837ea447f0fdd',1,'sumdiv_util.c']]],
+  ['is_5fprime_5fbuf_24',['is_prime_buf',['../structsieve__worker__t.html#a2e2d635cb66f781c2b31960ff80bc675',1,'sieve_worker_t']]]
 ];

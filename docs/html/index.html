@@ -76,12 +76,30 @@ $(function() {
 <div class="line">|____/_/  \___/        /_/   |_____|_| |_|_| |_|_| |_|_|\__|\__, (_)  </div>
 <div class="line">                                                             __/ |    </div>
 <div class="line">                                                            |___/ </div>
-</div><!-- fragment --><p>Documentation can be found <a href="https://guinn8.github.io/aliquot/html/index.html">here</a> or <code>docs/index.html</code></p>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
+Introduction</h1>
+<p>This repo contains my project in computational number-theory, studying <a href="https://en.wikipedia.org/wiki/Aliquot_sequence">aliquot sequences</a> and properties of the <a href="https://en.wikipedia.org/wiki/Divisor_function">sum-of-proper-divisors</a> function. The following problem statement from the former <a href="https://en.wikipedia.org/wiki/Richard_K._Guy">Dr. Richard Guy</a> motivates this work:</p>
+<blockquote class="doxtable">
+<p>Think of a number!! Say 36%, which is nice and divisible. It appears that about 36% of the even numbers are ”orphans”.</p>
+<p>Divide by 1. For about 36% of the (even) values of n there is just one positive integer m such that s(m) = n. These values of n have just one ”parent”.</p>
+<p>Divide by 2. About 18% of the even values of n have exactly two parents.</p>
+<p>Divide by 3. About 6% of the even values of n have three parents.</p>
+<p>Divide by 4. About 1.5% of the even values of n have just 4 parents.</p>
+<p>This suggests that 1/(e ·p!) of the even numbers have p parents. Experiments suggests that these values are a bit large for small values of p and a bit small for larger values of p.</p>
+<p>Can anything be proved? </p>
+</blockquote>
+<p><b>Definition:</b> n is a k-parent aliquot number if <em>s^{-1}(n)</em> has k solutions.</p>
+<p>Documentation can be found <a href="https://guinn8.github.io/aliquot/html/index.html">here</a> or <code>docs/index.html</code></p>
 <p>This repo contains several project, most related to sieve the sum-of-proper divisors function. More details can be found in detailed src documentation. PDF's are my writings on the subject of k-parent aliquot numbers.</p>
 <p>pomyang_kparent counts the occurrence of k-parent numbers, by far the most developed. additive_sieve is a sum-of-proper divisors sieve of my own development. huer_model computes a model for density of kparent numbers. plot_aliquot_families is a experiment in plotting aliquot families.</p>
 <p><a href="https://raw.githubusercontent.com/guinn8/aliquot/master/pdf/kparent_density_basic_presentation.pdf">Accessible Presentation</a></p>
-<h1><a class="anchor" id="autotoc_md14"></a>
-TODO</h1>
+<h1><a class="anchor" id="autotoc_md15"></a>
+Citations</h1>
+<ul>
+<li>[Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018). Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md16"></a>
+Todo</h1>
 <ul>
 <li>Take additive_sieve off of doxygen exclude list. </li>
 </ul>

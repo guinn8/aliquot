@@ -1,0 +1,18 @@
+This project purpose it to implement the Pomerance-\/\+Yang algorithm efficiently, accurately, and scalable to high bounds. It includes a command line interface (cli) to interact with the algorithm dynamically and a test suite to help with accuracy. The documentation in the source files is extensive, pom\+\_\+yang.\+c provides the best starting point.\hypertarget{md_pomyang_kparent_pomyang_readme_autotoc_md0}{}\doxysubsection{Building and Running}\label{md_pomyang_kparent_pomyang_readme_autotoc_md0}
+The cli can be build and ran with\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make cli \&\& time ./cli -\/-\/bound=\$((10**8)) -\/-\/seg\_len=\$((5 * \$((10**5)))) -\/-\/num\_locks=\$((10**7)) -\/-\/preimage\_count\_bits=1 -\/-\/num\_thread=12}
+\end{DoxyCode}
+
+
+The tests will take maybe a couple a minutes to complete, successful if the program doesn\textquotesingle{}t assert out. The tests can be ran with\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make test \&\& ./test}
+\end{DoxyCode}
+
+
+Tested on Ubuntu 20.\+04.\+3 L\+TS. 

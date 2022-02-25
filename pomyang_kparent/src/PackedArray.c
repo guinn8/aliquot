@@ -1,6 +1,7 @@
 /**
+ * @cond Doxygen_Suppress
  * @file PackedArray.c
- * @author Gregory Pakosz (@gpakosz)
+ * @author Gregory Pakosz (Twitter: gpakosz)
  * @brief 
  * @date 2022-02-24
  * 
@@ -1407,3 +1408,4 @@ int main(void) {
 #endif  // #elif defined(PACKEDARRAY_SELF_BENCH)
 
 #endif  // #ifdef PACKEDARRAY_IMPL
+/** @endcond */

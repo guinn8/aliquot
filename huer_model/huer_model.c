@@ -23,13 +23,15 @@ int buffer_size;
 uint64_t s(uint64_t n);
 uint64_t factorial(uint64_t n);
 double accumulator(uint64_t start_a, char k, uint64_t *propSumDiv, long double *acc);
+/**
+ * @brief 
+ * This program implements an generalization of Conj. 1.4 of Pollack/Pomerance "Some problems of Erdos on the Sum of Divisors Function"
+ * Instead of estimating the natural density of only aliquot orphans this program also estimates the density of k-parent aliquot numbers
+ * n is a k-parent aliquot number iff there are k distinct natural numbers m st s(m) = n. An aliquot orphan is a 0-parent aliquot number
+ * let delta-k be the estimated density of k-parent aliquot numbers and s(n) be the sum-of-proper-divisors function.
+ */
 
-// This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance "Some problems of Erdos on the Sum of Divisors Function"
-// Instead of estimating the natural density of only aliqout orphans this program also estimates the density of k-parent aliquot numbers
-// n is a k-parent aliqout number iff there are k distinct natural numbers m st s(m) = n
-// An aliquot orphan is a 0-parent aliquot number
-// let delta-k be the estimated density of k-parent aliquot numbers and s(n) be the sum-of-proper-divisors function
-// delta-k = 1/log(max_bound) * sum(forall a <= max_bound)( (a^(k-1) * e^(-a/s(a)) / k! * s(a)^k) )
+delta-k = 1/log(max_bound) * sum(forall a <= max_bound)( (a^(k-1) * e^(-a/s(a)) / k! * s(a)^k) )
 int main(int argc, char *argv[]) {
     uint64_t max_bound;
 

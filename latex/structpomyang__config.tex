@@ -1,0 +1,81 @@
+\hypertarget{structpomyang__config}{}\doxysubsection{pomyang\+\_\+config Struct Reference}
+\label{structpomyang__config}\index{pomyang\_config@{pomyang\_config}}
+
+
+Configure the Pomerance-\/\+Yang algorithm.  
+
+
+
+
+{\ttfamily \#include $<$pomyang\+\_\+kparent.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpomyang__config_a46087903624ac2d259025fa149a84c22}{preimage\+\_\+count\+\_\+bits}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpomyang__config_a4b779ea8a9b326ce428bde7c716d7985}{bound}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpomyang__config_adaa44f6a893c828629adff2929cbab6c}{seg\+\_\+len}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpomyang__config_a89fd2bd0f764c6c18af6bed6133ba968}{num\+\_\+locks}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpomyang__config_a097191e2c472d94f84d07084df34d3cc}{num\+\_\+threads}}
+\item 
+bool \mbox{\hyperlink{structpomyang__config_a8b51cce8500c834186c238eb774a8f6e}{est\+\_\+heap}}
+\item 
+bool \mbox{\hyperlink{structpomyang__config_a44395c7a7112f6f2ad15e2fedc8e51f9}{quiet}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+Configure the Pomerance-\/\+Yang algorithm. 
+
+\doxysubsubsection{Field Documentation}
+\mbox{\Hypertarget{structpomyang__config_a4b779ea8a9b326ce428bde7c716d7985}\label{structpomyang__config_a4b779ea8a9b326ce428bde7c716d7985}} 
+\index{pomyang\_config@{pomyang\_config}!bound@{bound}}
+\index{bound@{bound}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{bound}{bound}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::bound}
+
+Determine counts of all even k-\/parent numbers under this bound. Must be even. \mbox{\Hypertarget{structpomyang__config_a8b51cce8500c834186c238eb774a8f6e}\label{structpomyang__config_a8b51cce8500c834186c238eb774a8f6e}} 
+\index{pomyang\_config@{pomyang\_config}!est\_heap@{est\_heap}}
+\index{est\_heap@{est\_heap}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{est\_heap}{est\_heap}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::est\+\_\+heap}
+
+Estimates heap usage, useful for large bound runs. \mbox{\Hypertarget{structpomyang__config_a89fd2bd0f764c6c18af6bed6133ba968}\label{structpomyang__config_a89fd2bd0f764c6c18af6bed6133ba968}} 
+\index{pomyang\_config@{pomyang\_config}!num\_locks@{num\_locks}}
+\index{num\_locks@{num\_locks}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{num\_locks}{num\_locks}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::num\+\_\+locks}
+
+The size of the mutex buffer used to protect the shared counter buffer during multi-\/threaded access. \mbox{\Hypertarget{structpomyang__config_a097191e2c472d94f84d07084df34d3cc}\label{structpomyang__config_a097191e2c472d94f84d07084df34d3cc}} 
+\index{pomyang\_config@{pomyang\_config}!num\_threads@{num\_threads}}
+\index{num\_threads@{num\_threads}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{num\_threads}{num\_threads}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::num\+\_\+threads}
+
+How many threads to use. \mbox{\Hypertarget{structpomyang__config_a46087903624ac2d259025fa149a84c22}\label{structpomyang__config_a46087903624ac2d259025fa149a84c22}} 
+\index{pomyang\_config@{pomyang\_config}!preimage\_count\_bits@{preimage\_count\_bits}}
+\index{preimage\_count\_bits@{preimage\_count\_bits}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{preimage\_count\_bits}{preimage\_count\_bits}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::preimage\+\_\+count\+\_\+bits}
+
+Input to the \mbox{\hyperlink{structPackedArray}{Packed\+Array}} data struct, determines the actual number of bits used to count the number of preimages some number has. Can be 1, 2, 4, or 8. \mbox{\Hypertarget{structpomyang__config_a44395c7a7112f6f2ad15e2fedc8e51f9}\label{structpomyang__config_a44395c7a7112f6f2ad15e2fedc8e51f9}} 
+\index{pomyang\_config@{pomyang\_config}!quiet@{quiet}}
+\index{quiet@{quiet}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{quiet}{quiet}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::quiet}
+
+Quiets some logging. \mbox{\Hypertarget{structpomyang__config_adaa44f6a893c828629adff2929cbab6c}\label{structpomyang__config_adaa44f6a893c828629adff2929cbab6c}} 
+\index{pomyang\_config@{pomyang\_config}!seg\_len@{seg\_len}}
+\index{seg\_len@{seg\_len}!pomyang\_config@{pomyang\_config}}
+\doxyparagraph{\texorpdfstring{seg\_len}{seg\_len}}
+{\footnotesize\ttfamily pomyang\+\_\+config\+::seg\+\_\+len}
+
+Segment length for sieving blocks of sigma(n), the algorithms input. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+pomyang\+\_\+kparent/inc/\mbox{\hyperlink{pomyang__kparent_8h}{pomyang\+\_\+kparent.\+h}}\end{DoxyCompactItemize}

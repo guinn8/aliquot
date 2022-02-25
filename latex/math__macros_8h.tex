@@ -1,0 +1,107 @@
+\hypertarget{math__macros_8h}{}\doxysubsection{pomyang\+\_\+kparent/inc/math\+\_\+macros.h File Reference}
+\label{math__macros_8h}\index{pomyang\_kparent/inc/math\_macros.h@{pomyang\_kparent/inc/math\_macros.h}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{math__macros_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{math__macros_8h_a846a8d3ccdb9513c6a3b92a492ae7db6}\label{math__macros_8h_a846a8d3ccdb9513c6a3b92a492ae7db6}} 
+\#define \mbox{\hyperlink{math__macros_8h_a846a8d3ccdb9513c6a3b92a492ae7db6}{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+GB}}~0.\+000000001
+\begin{DoxyCompactList}\small\item\em Convert bytes to gigabytes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_a3a48fcbec39129b7662b675bbe8bfd14}\label{math__macros_8h_a3a48fcbec39129b7662b675bbe8bfd14}} 
+\#define \mbox{\hyperlink{math__macros_8h_a3a48fcbec39129b7662b675bbe8bfd14}{T\+W\+O\+\_\+\+T\+H\+I\+R\+DS}}~.\+6666666666666666666666
+\begin{DoxyCompactList}\small\item\em Constant for 2/3. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_aa9da0f649266ce2adf75a3356621dd36}\label{math__macros_8h_aa9da0f649266ce2adf75a3356621dd36}} 
+\#define \mbox{\hyperlink{math__macros_8h_aa9da0f649266ce2adf75a3356621dd36}{E\+V\+EN}}(x)~(0 == (x) \% 2)
+\begin{DoxyCompactList}\small\item\em 1 if a number is even. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_aa1cf70a99e21bc2032e8867c6cafbb43}\label{math__macros_8h_aa1cf70a99e21bc2032e8867c6cafbb43}} 
+\#define \mbox{\hyperlink{math__macros_8h_aa1cf70a99e21bc2032e8867c6cafbb43}{S\+Q\+U\+A\+RE}}(x)~((x) $\ast$ (x))
+\begin{DoxyCompactList}\small\item\em Square a number. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_a74e75242132eaabbc1c512488a135926}\label{math__macros_8h_a74e75242132eaabbc1c512488a135926}} 
+\#define \mbox{\hyperlink{math__macros_8h_a74e75242132eaabbc1c512488a135926}{M\+IN}}(x,  y)~(((x) $<$ (y)) ? (x) \+: (y))
+\begin{DoxyCompactList}\small\item\em Return the smaller number. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_a81c7dd2d351f0f833cef23366cf8c768}\label{math__macros_8h_a81c7dd2d351f0f833cef23366cf8c768}} 
+\#define \mbox{\hyperlink{math__macros_8h_a81c7dd2d351f0f833cef23366cf8c768}{D\+I\+V\+I\+D\+ES}}(x,  y)~(0 == y \% x)
+\begin{DoxyCompactList}\small\item\em Check if x divides y evenly. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_ac6481d83e0fa7358fa921288969cf0a0}\label{math__macros_8h_ac6481d83e0fa7358fa921288969cf0a0}} 
+\#define \mbox{\hyperlink{math__macros_8h_ac6481d83e0fa7358fa921288969cf0a0}{F\+\_\+\+O\+F\+F\+S\+ET}}(x)~((x / 2) -\/ 1)
+\begin{DoxyCompactList}\small\item\em Offset an even number into an array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_a8830bde16e4b675d031c73c229614750}\label{math__macros_8h_a8830bde16e4b675d031c73c229614750}} 
+\#define \mbox{\hyperlink{math__macros_8h_a8830bde16e4b675d031c73c229614750}{F\+\_\+\+D\+E\+\_\+\+O\+F\+F\+S\+ET}}(x)~((x + 1) $\ast$ 2)
+\begin{DoxyCompactList}\small\item\em Get the even number represented by this array index. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{math__macros_8h_a5a5685e8fdf139ed64c34a3414f092f7}{L\+OG}}(shush,  fmt, ...)
+\begin{DoxyCompactList}\small\item\em quietable logging macro. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{math__macros_8h_aff8d3f9908bd5c90304b2adccda33ebe}\label{math__macros_8h_aff8d3f9908bd5c90304b2adccda33ebe}} 
+\#define \mbox{\hyperlink{math__macros_8h_aff8d3f9908bd5c90304b2adccda33ebe}{D\+E\+B\+U\+G\+\_\+\+A\+S\+S\+E\+RT}}(x)
+\begin{DoxyCompactList}\small\item\em Turn off asserts for production runs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{math__macros_8h_a7c3683aa8a3919699db7895455a38898}{nonaliquot\+\_\+counts\+\_\+t}} \{ \newline
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+4} = 1212, 
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+5} = 13863, 
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+6} = 150232, 
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+7} = 1574973, 
+\newline
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+8} = 16246940, 
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+9} = 165826606, 
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+10} = 1681871718, 
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+11} = 16988116409, 
+\newline
+{\bfseries \+\_\+10\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+12} = 171128671374, 
+{\bfseries \+\_\+2\+\_\+\+T\+O\+\_\+\+T\+H\+E\+\_\+40} = 188206399403
+ \}
+\begin{DoxyCompactList}\small\item\em Counts of nonaliquots typed out from (Chum et al.) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Gavin Guinn (\href{mailto:gavinguinn1@gmail.com}{\texttt{ gavinguinn1@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2022-\/02-\/24
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{math__macros_8h_a5a5685e8fdf139ed64c34a3414f092f7}\label{math__macros_8h_a5a5685e8fdf139ed64c34a3414f092f7}} 
+\index{math\_macros.h@{math\_macros.h}!LOG@{LOG}}
+\index{LOG@{LOG}!math\_macros.h@{math\_macros.h}}
+\doxyparagraph{\texorpdfstring{LOG}{LOG}}
+{\footnotesize\ttfamily \#define L\+OG(\begin{DoxyParamCaption}\item[{}]{shush,  }\item[{}]{fmt,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \textcolor{keywordflow}{do} \{                                              \(\backslash\)}
+\DoxyCodeLine{        if (!shush) \{                                 \(\backslash\)}
+\DoxyCodeLine{            fprintf(stderr, \textcolor{stringliteral}{"[\%s:\%d] "} fmt, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{                    \_\_LINE\_\_, \_\_VA\_ARGS\_\_);           \(\backslash\)}
+\DoxyCodeLine{        \}                                             \(\backslash\)}
+\DoxyCodeLine{    \} \textcolor{keywordflow}{while} (0)}
+
+\end{DoxyCode}
+
+
+quietable logging macro. 
+
+
+
+\doxysubsubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{math__macros_8h_a7c3683aa8a3919699db7895455a38898}\label{math__macros_8h_a7c3683aa8a3919699db7895455a38898}} 
+\index{math\_macros.h@{math\_macros.h}!nonaliquot\_counts\_t@{nonaliquot\_counts\_t}}
+\index{nonaliquot\_counts\_t@{nonaliquot\_counts\_t}!math\_macros.h@{math\_macros.h}}
+\doxyparagraph{\texorpdfstring{nonaliquot\_counts\_t}{nonaliquot\_counts\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{math__macros_8h_a7c3683aa8a3919699db7895455a38898}{nonaliquot\+\_\+counts\+\_\+t}}}
+
+
+
+Counts of nonaliquots typed out from (Chum et al.) 
+

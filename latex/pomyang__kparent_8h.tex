@@ -1,0 +1,113 @@
+\hypertarget{pomyang__kparent_8h}{}\doxysubsection{pomyang\+\_\+kparent/inc/pomyang\+\_\+kparent.h File Reference}
+\label{pomyang__kparent_8h}\index{pomyang\_kparent/inc/pomyang\_kparent.h@{pomyang\_kparent/inc/pomyang\_kparent.h}}
+
+
+api for pom\+\_\+yang algorithm operations  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../inc/\+Packed\+Array.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../inc/math\+\_\+macros.\+h\char`\"{}}\newline
+Include dependency graph for pomyang\+\_\+kparent.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pomyang__kparent_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pomyang__kparent_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}}
+\begin{DoxyCompactList}\small\item\em Configure the Pomerance-\/\+Yang algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structPackedArray}{Packed\+Array}} $\ast$ \mbox{\hyperlink{pomyang__kparent_8h_a4204346361c7a37b7b3fa9389e19238a}{pomyang\+\_\+algorithm}} (const \mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}} $\ast$cfg)
+\begin{DoxyCompactList}\small\item\em Runs the Pomerance-\/\+Yang algorithm. \end{DoxyCompactList}\item 
+uint64\+\_\+t $\ast$ \mbox{\hyperlink{pomyang__kparent_8h_ae48116046e3574091390dab702d39df1}{pomyang\+\_\+count\+\_\+kparent}} (const \mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}} $\ast$cfg)
+\begin{DoxyCompactList}\small\item\em runs the Pomerance-\/\+Yang algorithm and counts occurrence of kparent numbers. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{pomyang__kparent_8h_a275e930ae309e5d28fee1bfc5ea445fd}{print\+\_\+to\+\_\+file}} (\mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}} $\ast$cfg, const char $\ast$filename, uint64\+\_\+t $\ast$count, float runtime)
+\begin{DoxyCompactList}\small\item\em Prints Pomerance-\/\+Yang algorithm configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+api for pom\+\_\+yang algorithm operations 
+
+\begin{DoxyAuthor}{Author}
+Gavin Guinn (\href{mailto:gavinguinn1@gmail.com}{\texttt{ gavinguinn1@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2021-\/2-\/17
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Public Domain (Please credit me; if you find this code useful I would love to hear about your work!) 
+\end{DoxyCopyright}
+
+
+\doxysubsubsection{Function Documentation}
+\mbox{\Hypertarget{pomyang__kparent_8h_a4204346361c7a37b7b3fa9389e19238a}\label{pomyang__kparent_8h_a4204346361c7a37b7b3fa9389e19238a}} 
+\index{pomyang\_kparent.h@{pomyang\_kparent.h}!pomyang\_algorithm@{pomyang\_algorithm}}
+\index{pomyang\_algorithm@{pomyang\_algorithm}!pomyang\_kparent.h@{pomyang\_kparent.h}}
+\doxyparagraph{\texorpdfstring{pomyang\_algorithm()}{pomyang\_algorithm()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structPackedArray}{Packed\+Array}}$\ast$ pomyang\+\_\+algorithm (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}} $\ast$}]{cfg }\end{DoxyParamCaption})}
+
+
+
+Runs the Pomerance-\/\+Yang algorithm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cfg} & See struct defintion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Packed\+Array$\ast$ containing the number of preimages for even number upto bound. Free\textquotesingle{}d by caller. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{pomyang__kparent_8h_ae48116046e3574091390dab702d39df1}\label{pomyang__kparent_8h_ae48116046e3574091390dab702d39df1}} 
+\index{pomyang\_kparent.h@{pomyang\_kparent.h}!pomyang\_count\_kparent@{pomyang\_count\_kparent}}
+\index{pomyang\_count\_kparent@{pomyang\_count\_kparent}!pomyang\_kparent.h@{pomyang\_kparent.h}}
+\doxyparagraph{\texorpdfstring{pomyang\_count\_kparent()}{pomyang\_count\_kparent()}}
+{\footnotesize\ttfamily uint64\+\_\+t$\ast$ pomyang\+\_\+count\+\_\+kparent (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}} $\ast$}]{cfg }\end{DoxyParamCaption})}
+
+
+
+runs the Pomerance-\/\+Yang algorithm and counts occurrence of kparent numbers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cfg} & See struct definition \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint64\+\_\+t$\ast$ buffer of length (U\+I\+N\+T8\+\_\+\+M\+AX + 1) with occurrence counts, must be free\textquotesingle{}d by caller 
+\end{DoxyReturn}
+\mbox{\Hypertarget{pomyang__kparent_8h_a275e930ae309e5d28fee1bfc5ea445fd}\label{pomyang__kparent_8h_a275e930ae309e5d28fee1bfc5ea445fd}} 
+\index{pomyang\_kparent.h@{pomyang\_kparent.h}!print\_to\_file@{print\_to\_file}}
+\index{print\_to\_file@{print\_to\_file}!pomyang\_kparent.h@{pomyang\_kparent.h}}
+\doxyparagraph{\texorpdfstring{print\_to\_file()}{print\_to\_file()}}
+{\footnotesize\ttfamily void print\+\_\+to\+\_\+file (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpomyang__config}{pomyang\+\_\+config}} $\ast$}]{cfg,  }\item[{const char $\ast$}]{filename,  }\item[{uint64\+\_\+t $\ast$}]{count,  }\item[{float}]{runtime }\end{DoxyParamCaption})}
+
+
+
+Prints Pomerance-\/\+Yang algorithm configuration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cfg} & Pointer to config struct. \\
+\hline
+{\em filename} & Name of file to write. \\
+\hline
+{\em count} & Array of k-\/parent counts. \\
+\hline
+{\em runtime} & C\+PU seconds used. \\
+\hline
+\end{DoxyParams}

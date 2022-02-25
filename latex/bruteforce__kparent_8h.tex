@@ -1,0 +1,83 @@
+\hypertarget{bruteforce__kparent_8h}{}\doxysubsection{pomyang\+\_\+kparent/inc/bruteforce\+\_\+kparent.h File Reference}
+\label{bruteforce__kparent_8h}\index{pomyang\_kparent/inc/bruteforce\_kparent.h@{pomyang\_kparent/inc/bruteforce\_kparent.h}}
+
+
+api to brute force number of preimages  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+Include dependency graph for bruteforce\+\_\+kparent.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{bruteforce__kparent_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{bruteforce__kparent_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t $\ast$ \mbox{\hyperlink{bruteforce__kparent_8h_a898ead632248db00afb6b656912f42c0}{bf\+\_\+kparent}} (size\+\_\+t bound)
+\begin{DoxyCompactList}\small\item\em compute number of preimages for even number upto bound \end{DoxyCompactList}\item 
+uint64\+\_\+t $\ast$ \mbox{\hyperlink{bruteforce__kparent_8h_ac9dde7a83d291a23226ba5575ac17b8e}{bf\+\_\+kparent\+\_\+counts}} (size\+\_\+t bound)
+\begin{DoxyCompactList}\small\item\em count number of even kparent numbers upto bound \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+api to brute force number of preimages 
+
+\begin{DoxyAuthor}{Author}
+Gavin Guinn (\href{mailto:gavinguinn1@gmail.com}{\texttt{ gavinguinn1@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2022-\/02-\/11
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Public Domain (Please credit me; if you find this code useful I would love to hear about your work!) 
+\end{DoxyCopyright}
+
+
+\doxysubsubsection{Function Documentation}
+\mbox{\Hypertarget{bruteforce__kparent_8h_a898ead632248db00afb6b656912f42c0}\label{bruteforce__kparent_8h_a898ead632248db00afb6b656912f42c0}} 
+\index{bruteforce\_kparent.h@{bruteforce\_kparent.h}!bf\_kparent@{bf\_kparent}}
+\index{bf\_kparent@{bf\_kparent}!bruteforce\_kparent.h@{bruteforce\_kparent.h}}
+\doxyparagraph{\texorpdfstring{bf\_kparent()}{bf\_kparent()}}
+{\footnotesize\ttfamily uint8\+\_\+t$\ast$ bf\+\_\+kparent (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{bound }\end{DoxyParamCaption})}
+
+
+
+compute number of preimages for even number upto bound 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bound} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t$\ast$ buffer sized bound/2 counting counts of preimages, free\textquotesingle{}ed by caller. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{bruteforce__kparent_8h_ac9dde7a83d291a23226ba5575ac17b8e}\label{bruteforce__kparent_8h_ac9dde7a83d291a23226ba5575ac17b8e}} 
+\index{bruteforce\_kparent.h@{bruteforce\_kparent.h}!bf\_kparent\_counts@{bf\_kparent\_counts}}
+\index{bf\_kparent\_counts@{bf\_kparent\_counts}!bruteforce\_kparent.h@{bruteforce\_kparent.h}}
+\doxyparagraph{\texorpdfstring{bf\_kparent\_counts()}{bf\_kparent\_counts()}}
+{\footnotesize\ttfamily uint64\+\_\+t$\ast$ bf\+\_\+kparent\+\_\+counts (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{bound }\end{DoxyParamCaption})}
+
+
+
+count number of even kparent numbers upto bound 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bound} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint64\+\_\+t$\ast$ buffer of size U\+I\+N\+T8\+\_\+\+M\+AX containing preimage counts, free\textquotesingle{}ed by caller. 
+\end{DoxyReturn}

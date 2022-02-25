@@ -76,6 +76,9 @@ $(function() {
 <div class="title">huer_model.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance "Some problems of Erdos on the Sum of Divisors Function" Instead of estimating the natural density of only aliqout orphans this program also estimates the density of k-parent aliquot numbers n is a k-parent aliqout number iff there are k distinct natural numbers m st s(m) = n An aliquot orphan is a 0-parent aliquot number let delta-k be the estimated density of k-parent aliquot numbers and s(n) be the sum-of-proper-divisors function delta-k = 1/log(max_bound) * sum(forall a &lt;= max_bound)( (a^(k-1) * e^(-a/s(a)) / k! * s(a)^k) )  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;assert.h&gt;</code><br />
 <code>#include &lt;math.h&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
@@ -86,7 +89,7 @@ Include dependency graph for huer_model.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="huer__model_8c__incl.png" border="0" usemap="#huer__model_2huer__model_8c" alt=""/></div>
 <map name="huer__model_2huer__model_8c" id="huer__model_2huer__model_8c">
-<area shape="rect" title=" " alt="" coords="135,5,326,32"/>
+<area shape="rect" title="This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance &quot;Some problems of Erdos on..." alt="" coords="135,5,326,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,80,107"/>
 <area shape="rect" title=" " alt="" coords="105,80,173,107"/>
 <area shape="rect" title=" " alt="" coords="197,80,264,107"/>
@@ -112,6 +115,9 @@ uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>factorial</b> (ui
 <tr class="memitem:ac76e09503073de3fd43121a3f5863ced"><td class="memItemLeft" align="right" valign="top"><a id="ac76e09503073de3fd43121a3f5863ced"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>accumulator</b> (uint64_t start_a, char k, uint64_t *propSumDiv, long double *acc)</td></tr>
 <tr class="separator:ac76e09503073de3fd43121a3f5863ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top"><a id="a0ddf1224851353fc92bfbff6f499fa97"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, char *argv[])</td></tr>
+<tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -126,7 +132,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_size</b></td></
 <tr class="separator:af22ff4ab7a026e6c3b4b08eafb2df027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Gavin Guinn (<a href="#" onclick="location.href='mai'+'lto:'+'gav'+'in'+'gui'+'nn'+'1@g'+'ma'+'il.'+'co'+'m'; return false;">gavin<span style="display: none;">.nosp@m.</span>guin<span style="display: none;">.nosp@m.</span>n1@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
+<div class="textblock"><p>This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance "Some problems of Erdos on the Sum of Divisors Function" Instead of estimating the natural density of only aliqout orphans this program also estimates the density of k-parent aliquot numbers n is a k-parent aliqout number iff there are k distinct natural numbers m st s(m) = n An aliquot orphan is a 0-parent aliquot number let delta-k be the estimated density of k-parent aliquot numbers and s(n) be the sum-of-proper-divisors function delta-k = 1/log(max_bound) * sum(forall a &lt;= max_bound)( (a^(k-1) * e^(-a/s(a)) / k! * s(a)^k) ) </p>
+<dl class="section author"><dt>Author</dt><dd>Gavin Guinn (<a href="#" onclick="location.href='mai'+'lto:'+'gav'+'in'+'gui'+'nn'+'1@g'+'ma'+'il.'+'co'+'m'; return false;">gavin<span style="display: none;">.nosp@m.</span>guin<span style="display: none;">.nosp@m.</span>n1@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2022-02-24</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2022 </dd></dl>
 </div></div><!-- contents -->

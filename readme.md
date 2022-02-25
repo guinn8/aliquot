@@ -12,7 +12,12 @@ Aliquot Sequences: Computational Number-Theory
                                                              |___/  
 ```
 
-Introduction
+Documentation
+-------------
+
+Documentation can be found [here](https://guinn8.github.io/aliquot/html/index.html) or `docs/index.html`
+
+Introduction to Aliquot Sequences
 ------------
 
 This repo contains my project in computational number-theory, studying [aliquot sequences](https://en.wikipedia.org/wiki/Aliquot_sequence) and properties of the [sum-of-proper-divisors](https://en.wikipedia.org/wiki/Divisor_function) function. 
@@ -60,28 +65,47 @@ The following problem statement from the former [Dr. Richard Guy](https://en.wik
 
 **Definition:** n is a k-parent aliquot number if *s^{-1}(n)* has k solutions.
 
-[This presentation](https://github.com/guinn8/aliquot/blob/master/pdf/kparent_density_technical_presentation.pdf) details an extension of the [Pollack and Pomerance] which uses heuristics to estimate the density of non-aliquots. [huer_model.c](https://guinn8.github.io/aliquot/html/huer__model_8c.html) computes this model.
+My Project
+----------
 
+[This presentation](https://github.com/guinn8/aliquot/blob/master/pdf/kparent_density_technical_presentation.pdf) details an extension of the [Pollack and Pomerance] which uses heuristics to estimate the density of k-parent numbers; [huer_model.c](https://guinn8.github.io/aliquot/html/huer__model_8c.html) computes this model.
 
+| **Delta_k** | **k = 0** | **k = 1** | **k = 2** | **k = 3** | **k = 4** |
+|-------------|-----------|-----------|-----------|-----------|-----------|
+| y = 10^3    | 0.155     | 0.164     | 0.100     | 0.046     | 0.018     |
+| y = 10^4    | 0.161     | 0.165     | 0.098     | 0.044     | 0.017     |
+| y = 10^5    | 0.165     | 0.166     | 0.097     | 0.044     | 0.016     |
+| y = 10^6    | 0.167     | 0.166     | 0.096     | 0.043     | 0.016     |
+| y = 10^7    | 0.169     | 0.167     | 0.096     | 0.042     | 0.016     |
 
-[huer_model.c](https://guinn8.github.io/aliquot/html/huer__model_8c.html) computes 
+| 1/2(p! * e) | p = 0     | p = 1     | p = 2     | p = 3     | p = 4     |
+|-------------|-----------|-----------|-----------|-----------|-----------|
+| -           | 0.184     | 0.184     | 0.092     | 0.031     | 0.008      |
 
-Documentation can be found [here](https://guinn8.github.io/aliquot/html/index.html) or `docs/index.html`
+Where Delta_k is my model's prediction of k-parent numbers and 1/2(p! * e) is Dr. Guy's prediction.
 
-This repo contains several project, most related to sieve the sum-of-proper divisors function. More details can be found in detailed src documentation. PDF's are my writings on the subject of k-parent aliquot numbers.
+[This document](https://github.com/guinn8/aliquot/blob/master/pdf/kparent_aliquot_interm_report.pdf) contains an run-down of effort to computationally verify this model. [pomyang_kparent](https://guinn8.github.io/aliquot/html/pomyang__kparent_8c.html) contains the implementation.
 
-pomyang_kparent counts the occurrence of k-parent numbers, by far the most developed.
-additive_sieve is a sum-of-proper divisors sieve of my own development.
-huer_model computes a model for density of kparent numbers.
-plot_aliquot_families is a experiment in plotting aliquot families.
+| **Bound** | **0-parent** | **1-parent** | **2-parent** | **3-parent** | **4-parent** | **5-parent** | **6-parent** | **7-parent** | **8-parent** |
+|---|---|---|---|---|---|---|---|---|---|
+| 10000 | 0.121 | 0.187 | 0.121 | 0.048 | 0.015 | 0.005 | 0.002 | 0.002 | 0.000 |
+| 1000000 | 0.150 | 0.178 | 0.103 | 0.042 | 0.016 | 0.006 | 0.003 | 0.001 | 0.001 |
+| 10000000 | 0.157 | 0.175 | 0.099 | 0.042 | 0.016 | 0.006 | 0.003 | 0.001 | 0.001 |
+| 100000000 | 0.162 | 0.173 | 0.097 | 0.041 | 0.016 | 0.006 | 0.003 | 0.001 | 0.001 |
+| 1000000000 | 0.166 | 0.171 | 0.096 | 0.040 | 0.015 | 0.006 | 0.002 | 0.001 | 0.001 |
+| 10000000000 | 0.168 | 0.171 | 0.095 | 0.040 | 0.015 | 0.006 | 0.002 | 0.001 | 0.001 |
+| 100000000000 | 0.170 | 0.170 | 0.094 | 0.040 | 0.015 | 0.006 | 0.002 | 0.001 | 0.001 |
+| 1000000000000 | 0.171 | 0.170 | 0.094 | 0.040 | 0.015 | 0.006 | 0.002 | 0.001 | 0.001 |
 
-[Accessible Presentation](https://raw.githubusercontent.com/guinn8/aliquot/master/pdf/kparent_density_basic_presentation.pdf)
+Which contains the computed densities of even k-parent number less than bound.
 
 Citations
 -----------
- -  [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018).
+
+- [Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018).
       Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.
 
 Todo
 -----
- - Take additive_sieve off of doxygen exclude list.
+
+- Take additive_sieve off of doxygen exclude list.

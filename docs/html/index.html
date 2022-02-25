@@ -77,7 +77,10 @@ $(function() {
 <div class="line">                                                             __/ |    </div>
 <div class="line">                                                            |___/  </div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
-Introduction</h1>
+Documentation</h1>
+<p>Documentation can be found <a href="https://guinn8.github.io/aliquot/html/index.html">here</a> or <code>docs/index.html</code></p>
+<h1><a class="anchor" id="autotoc_md15"></a>
+Introduction to Aliquot Sequences</h1>
 <p>This repo contains my project in computational number-theory, studying <a href="https://en.wikipedia.org/wiki/Aliquot_sequence">aliquot sequences</a> and properties of the <a href="https://en.wikipedia.org/wiki/Divisor_function">sum-of-proper-divisors</a> function.</p>
 <p>Aliquot sequences are iterations of the sum-of-proper-divisors function, for example:</p>
 <div class="fragment"><div class="line">s(12) = 1 + 2 + 3 + 4 + 6</div>
@@ -107,18 +110,58 @@ Introduction</h1>
 <p>Can anything be proved? </p>
 </blockquote>
 <p><b>Definition:</b> n is a k-parent aliquot number if <em>s^{-1}(n)</em> has k solutions.</p>
-<p>[This presentation]</p>
-<p><a href="https://guinn8.github.io/aliquot/html/huer__model_8c.html">huer_model.c</a> computes</p>
-<p>Documentation can be found <a href="https://guinn8.github.io/aliquot/html/index.html">here</a> or <code>docs/index.html</code></p>
-<p>This repo contains several project, most related to sieve the sum-of-proper divisors function. More details can be found in detailed src documentation. PDF's are my writings on the subject of k-parent aliquot numbers.</p>
-<p>pomyang_kparent counts the occurrence of k-parent numbers, by far the most developed. additive_sieve is a sum-of-proper divisors sieve of my own development. huer_model computes a model for density of kparent numbers. plot_aliquot_families is a experiment in plotting aliquot families.</p>
-<p><a href="https://raw.githubusercontent.com/guinn8/aliquot/master/pdf/kparent_density_basic_presentation.pdf">Accessible Presentation</a></p>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
+My Project</h1>
+<p><a href="https://github.com/guinn8/aliquot/blob/master/pdf/kparent_density_technical_presentation.pdf">This presentation</a> details an extension of the [Pollack and Pomerance] which uses heuristics to estimate the density of k-parent numbers; <a href="https://guinn8.github.io/aliquot/html/huer__model_8c.html">huer_model.c</a> computes this model.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><b>Delta_k</b> </th><th class="markdownTableHeadNone"><b>k = 0</b> </th><th class="markdownTableHeadNone"><b>k = 1</b> </th><th class="markdownTableHeadNone"><b>k = 2</b> </th><th class="markdownTableHeadNone"><b>k = 3</b> </th><th class="markdownTableHeadNone"><b>k = 4</b>  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">y = 10^3 </td><td class="markdownTableBodyNone">0.155 </td><td class="markdownTableBodyNone">0.164 </td><td class="markdownTableBodyNone">0.100 </td><td class="markdownTableBodyNone">0.046 </td><td class="markdownTableBodyNone">0.018  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">y = 10^4 </td><td class="markdownTableBodyNone">0.161 </td><td class="markdownTableBodyNone">0.165 </td><td class="markdownTableBodyNone">0.098 </td><td class="markdownTableBodyNone">0.044 </td><td class="markdownTableBodyNone">0.017  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">y = 10^5 </td><td class="markdownTableBodyNone">0.165 </td><td class="markdownTableBodyNone">0.166 </td><td class="markdownTableBodyNone">0.097 </td><td class="markdownTableBodyNone">0.044 </td><td class="markdownTableBodyNone">0.016  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">y = 10^6 </td><td class="markdownTableBodyNone">0.167 </td><td class="markdownTableBodyNone">0.166 </td><td class="markdownTableBodyNone">0.096 </td><td class="markdownTableBodyNone">0.043 </td><td class="markdownTableBodyNone">0.016  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">y = 10^7 </td><td class="markdownTableBodyNone">0.169 </td><td class="markdownTableBodyNone">0.167 </td><td class="markdownTableBodyNone">0.096 </td><td class="markdownTableBodyNone">0.042 </td><td class="markdownTableBodyNone">0.016  </td></tr>
+</table>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">1/2(p! * e) </th><th class="markdownTableHeadNone">p = 0 </th><th class="markdownTableHeadNone">p = 1 </th><th class="markdownTableHeadNone">p = 2 </th><th class="markdownTableHeadNone">p = 3 </th><th class="markdownTableHeadNone">p = 4  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">- </td><td class="markdownTableBodyNone">0.184 </td><td class="markdownTableBodyNone">0.184 </td><td class="markdownTableBodyNone">0.092 </td><td class="markdownTableBodyNone">0.031 </td><td class="markdownTableBodyNone">0.008  </td></tr>
+</table>
+<p>Where Delta_k is my model's prediction of k-parent numbers and 1/2(p! * e) is Dr. Guy's prediction.</p>
+<p><a href="https://github.com/guinn8/aliquot/blob/master/pdf/kparent_aliquot_interm_report.pdf">This document</a> contains an run-down of effort to computationally verify this model. <a href="https://guinn8.github.io/aliquot/html/pomyang__kparent_8c.html">pomyang_kparent</a> contains the implementation.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><b>Bound</b> </th><th class="markdownTableHeadNone"><b>0-parent</b> </th><th class="markdownTableHeadNone"><b>1-parent</b> </th><th class="markdownTableHeadNone"><b>2-parent</b> </th><th class="markdownTableHeadNone"><b>3-parent</b> </th><th class="markdownTableHeadNone"><b>4-parent</b> </th><th class="markdownTableHeadNone"><b>5-parent</b> </th><th class="markdownTableHeadNone"><b>6-parent</b> </th><th class="markdownTableHeadNone"><b>7-parent</b> </th><th class="markdownTableHeadNone"><b>8-parent</b>  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">10000 </td><td class="markdownTableBodyNone">0.121 </td><td class="markdownTableBodyNone">0.187 </td><td class="markdownTableBodyNone">0.121 </td><td class="markdownTableBodyNone">0.048 </td><td class="markdownTableBodyNone">0.015 </td><td class="markdownTableBodyNone">0.005 </td><td class="markdownTableBodyNone">0.002 </td><td class="markdownTableBodyNone">0.002 </td><td class="markdownTableBodyNone">0.000  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1000000 </td><td class="markdownTableBodyNone">0.150 </td><td class="markdownTableBodyNone">0.178 </td><td class="markdownTableBodyNone">0.103 </td><td class="markdownTableBodyNone">0.042 </td><td class="markdownTableBodyNone">0.016 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.003 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">10000000 </td><td class="markdownTableBodyNone">0.157 </td><td class="markdownTableBodyNone">0.175 </td><td class="markdownTableBodyNone">0.099 </td><td class="markdownTableBodyNone">0.042 </td><td class="markdownTableBodyNone">0.016 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.003 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">100000000 </td><td class="markdownTableBodyNone">0.162 </td><td class="markdownTableBodyNone">0.173 </td><td class="markdownTableBodyNone">0.097 </td><td class="markdownTableBodyNone">0.041 </td><td class="markdownTableBodyNone">0.016 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.003 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">1000000000 </td><td class="markdownTableBodyNone">0.166 </td><td class="markdownTableBodyNone">0.171 </td><td class="markdownTableBodyNone">0.096 </td><td class="markdownTableBodyNone">0.040 </td><td class="markdownTableBodyNone">0.015 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.002 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">10000000000 </td><td class="markdownTableBodyNone">0.168 </td><td class="markdownTableBodyNone">0.171 </td><td class="markdownTableBodyNone">0.095 </td><td class="markdownTableBodyNone">0.040 </td><td class="markdownTableBodyNone">0.015 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.002 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">100000000000 </td><td class="markdownTableBodyNone">0.170 </td><td class="markdownTableBodyNone">0.170 </td><td class="markdownTableBodyNone">0.094 </td><td class="markdownTableBodyNone">0.040 </td><td class="markdownTableBodyNone">0.015 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.002 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1000000000000 </td><td class="markdownTableBodyNone">0.171 </td><td class="markdownTableBodyNone">0.170 </td><td class="markdownTableBodyNone">0.094 </td><td class="markdownTableBodyNone">0.040 </td><td class="markdownTableBodyNone">0.015 </td><td class="markdownTableBodyNone">0.006 </td><td class="markdownTableBodyNone">0.002 </td><td class="markdownTableBodyNone">0.001 </td><td class="markdownTableBodyNone">0.001  </td></tr>
+</table>
+<p>Which contains the computed densities of even k-parent number less than bound.</p>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Citations</h1>
 <ul>
 <li>[Chum et al.] Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018). Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4):414–425.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Todo</h1>
 <ul>
 <li>Take additive_sieve off of doxygen exclude list. </li>

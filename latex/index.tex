@@ -9,7 +9,8 @@
 \DoxyCodeLine{                                                             \_\_/ |    }
 \DoxyCodeLine{                                                            |\_\_\_/  }
 \end{DoxyCode}
-\hypertarget{index_autotoc_md14}{}\doxysubsection{Introduction}\label{index_autotoc_md14}
+\hypertarget{index_autotoc_md14}{}\doxysubsection{Documentation}\label{index_autotoc_md14}
+Documentation can be found \href{https://guinn8.github.io/aliquot/html/index.html}{\texttt{ here}} or {\ttfamily docs/index.\+html}\hypertarget{index_autotoc_md15}{}\doxysubsection{Introduction to Aliquot Sequences}\label{index_autotoc_md15}
 This repo contains my project in computational number-\/theory, studying \href{https://en.wikipedia.org/wiki/Aliquot_sequence}{\texttt{ aliquot sequences}} and properties of the \href{https://en.wikipedia.org/wiki/Divisor_function}{\texttt{ sum-\/of-\/proper-\/divisors}} function.
 
 Aliquot sequences are iterations of the sum-\/of-\/proper-\/divisors function, for example\+:
@@ -63,23 +64,71 @@ This suggests that 1/(e ·p!) of the even numbers have p parents. Experiments su
 Can anything be proved? \end{quote}
 
 
-{\bfseries{Definition\+:}} n is a k-\/parent aliquot number if {\itshape s$^\wedge$\{-\/1\}(n)} has k solutions.
+{\bfseries{Definition\+:}} n is a k-\/parent aliquot number if {\itshape s$^\wedge$\{-\/1\}(n)} has k solutions.\hypertarget{index_autotoc_md16}{}\doxysubsection{My Project}\label{index_autotoc_md16}
+\href{https://github.com/guinn8/aliquot/blob/master/pdf/kparent_density_technical_presentation.pdf}{\texttt{ This presentation}} details an extension of the \mbox{[}Pollack and Pomerance\mbox{]} which uses heuristics to estimate the density of k-\/parent numbers; \href{https://guinn8.github.io/aliquot/html/huer__model_8c.html}{\texttt{ huer\+\_\+model.\+c}} computes this model.
 
-\mbox{[}This presentation\mbox{]}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{6}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{Delta\+\_\+k}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 0}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 1}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 2}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 3}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 4}}  }\\\cline{1-6}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{Delta\+\_\+k}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 0}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 1}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 2}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 3}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{k = 4}}  }\\\cline{1-6}
+\endhead
+y = 10$^\wedge$3 &0.\+155 &0.\+164 &0.\+100 &0.\+046 &0.\+018  \\\cline{1-6}
+y = 10$^\wedge$4 &0.\+161 &0.\+165 &0.\+098 &0.\+044 &0.\+017  \\\cline{1-6}
+y = 10$^\wedge$5 &0.\+165 &0.\+166 &0.\+097 &0.\+044 &0.\+016  \\\cline{1-6}
+y = 10$^\wedge$6 &0.\+167 &0.\+166 &0.\+096 &0.\+043 &0.\+016  \\\cline{1-6}
+y = 10$^\wedge$7 &0.\+169 &0.\+167 &0.\+096 &0.\+042 &0.\+016  \\\cline{1-6}
+\end{longtabu}
 
-\href{https://guinn8.github.io/aliquot/html/huer__model_8c.html}{\texttt{ huer\+\_\+model.\+c}} computes
 
-Documentation can be found \href{https://guinn8.github.io/aliquot/html/index.html}{\texttt{ here}} or {\ttfamily docs/index.\+html}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{6}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1/2(p! $\ast$ e) }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 0 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 1 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 2 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 3 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 4  }\\\cline{1-6}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1/2(p! $\ast$ e) }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 0 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 1 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 2 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 3 }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ p = 4  }\\\cline{1-6}
+\endhead
+-\/ &0.\+184 &0.\+184 &0.\+092 &0.\+031 &0.\+008  \\\cline{1-6}
+\end{longtabu}
 
-This repo contains several project, most related to sieve the sum-\/of-\/proper divisors function. More details can be found in detailed src documentation. P\+DF\textquotesingle{}s are my writings on the subject of k-\/parent aliquot numbers.
 
-pomyang\+\_\+kparent counts the occurrence of k-\/parent numbers, by far the most developed. additive\+\_\+sieve is a sum-\/of-\/proper divisors sieve of my own development. huer\+\_\+model computes a model for density of kparent numbers. plot\+\_\+aliquot\+\_\+families is a experiment in plotting aliquot families.
+Where Delta\+\_\+k is my model\textquotesingle{}s prediction of k-\/parent numbers and 1/2(p! $\ast$ e) is Dr. Guy\textquotesingle{}s prediction.
 
-\href{https://raw.githubusercontent.com/guinn8/aliquot/master/pdf/kparent_density_basic_presentation.pdf}{\texttt{ Accessible Presentation}}\hypertarget{index_autotoc_md15}{}\doxysubsection{Citations}\label{index_autotoc_md15}
+\href{https://github.com/guinn8/aliquot/blob/master/pdf/kparent_aliquot_interm_report.pdf}{\texttt{ This document}} contains an run-\/down of effort to computationally verify this model. \href{https://guinn8.github.io/aliquot/html/pomyang__kparent_8c.html}{\texttt{ pomyang\+\_\+kparent}} contains the implementation.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{10}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{Bound}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{0-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{1-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{2-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{3-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{4-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{5-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{6-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{7-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{8-\/parent}}  }\\\cline{1-10}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{Bound}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{0-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{1-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{2-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{3-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{4-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{5-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{6-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{7-\/parent}} }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ {\bfseries{8-\/parent}}  }\\\cline{1-10}
+\endhead
+10000 &0.\+121 &0.\+187 &0.\+121 &0.\+048 &0.\+015 &0.\+005 &0.\+002 &0.\+002 &0.\+000  \\\cline{1-10}
+1000000 &0.\+150 &0.\+178 &0.\+103 &0.\+042 &0.\+016 &0.\+006 &0.\+003 &0.\+001 &0.\+001  \\\cline{1-10}
+10000000 &0.\+157 &0.\+175 &0.\+099 &0.\+042 &0.\+016 &0.\+006 &0.\+003 &0.\+001 &0.\+001  \\\cline{1-10}
+100000000 &0.\+162 &0.\+173 &0.\+097 &0.\+041 &0.\+016 &0.\+006 &0.\+003 &0.\+001 &0.\+001  \\\cline{1-10}
+1000000000 &0.\+166 &0.\+171 &0.\+096 &0.\+040 &0.\+015 &0.\+006 &0.\+002 &0.\+001 &0.\+001  \\\cline{1-10}
+10000000000 &0.\+168 &0.\+171 &0.\+095 &0.\+040 &0.\+015 &0.\+006 &0.\+002 &0.\+001 &0.\+001  \\\cline{1-10}
+100000000000 &0.\+170 &0.\+170 &0.\+094 &0.\+040 &0.\+015 &0.\+006 &0.\+002 &0.\+001 &0.\+001  \\\cline{1-10}
+1000000000000 &0.\+171 &0.\+170 &0.\+094 &0.\+040 &0.\+015 &0.\+006 &0.\+002 &0.\+001 &0.\+001  \\\cline{1-10}
+\end{longtabu}
+
+
+Which contains the computed densities of even k-\/parent number less than bound.\hypertarget{index_autotoc_md17}{}\doxysubsection{Citations}\label{index_autotoc_md17}
 
 \begin{DoxyItemize}
 \item \mbox{[}Chum et al.\mbox{]} Chum, K., Guy, R. K., Jacobson, J. M. J., and Mosunov, A. S. (2018). Numerical and statistical analysis of aliquot sequences. Experimental Mathematics, 29(4)\+:414–425.
-\end{DoxyItemize}\hypertarget{index_autotoc_md16}{}\doxysubsection{Todo}\label{index_autotoc_md16}
+\end{DoxyItemize}\hypertarget{index_autotoc_md18}{}\doxysubsection{Todo}\label{index_autotoc_md18}
 
 \begin{DoxyItemize}
 \item Take additive\+\_\+sieve off of doxygen exclude list. 

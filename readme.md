@@ -16,6 +16,7 @@ Documentation
 -------------
 
 Documentation can be found [here](https://guinn8.github.io/aliquot/html/index.html) or `docs/index.html`
+
 Repo can be found [here](https://github.com/guinn8/aliquot)
 
 Introduction to Aliquot Sequences

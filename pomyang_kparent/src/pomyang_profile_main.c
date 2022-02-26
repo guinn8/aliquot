@@ -30,7 +30,7 @@ int main(int argc, char const *argv[]) {
         pomyang_config cfg = {
             .preimage_count_bits = 8,
             .bound = bound,
-            .seg_len = bound / 16,
+            .seg_len = bound / 16384,
             .num_locks = bound / 10,
             .num_threads = 12,
             .est_heap = 0,

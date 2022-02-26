@@ -7,5 +7,7 @@ debug_main
 test
 cli
 */bin/*
-
+.ipynb_checkpoints
+__py_cache__
 */docs/latex
+*.pyc

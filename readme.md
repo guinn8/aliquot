@@ -19,6 +19,8 @@ Documentation can be found [here](https://guinn8.github.io/aliquot/html/index.ht
 
 Repo can be found [here](https://github.com/guinn8/aliquot)
 
+View data collected using the Pomerance-Yang algorithm [here](https://docs.google.com/spreadsheets/d/1VtGl4Ibcjozck1wItciN3UREl9lPy5-rlCBIPKwWrgc/edit?usp=sharing)
+
 Introduction to Aliquot Sequences
 ------------
 

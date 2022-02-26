@@ -27,20 +27,23 @@ int main(int argc, char const *argv[]) {
     const char *filename = argv[3];
     size_t bound = minbound;
     while (bound <= maxbound) {
-        pomyang_config cfg = {
-            .preimage_count_bits = 8,
-            .bound = bound,
-            .seg_len = bound / 16384,
-            .num_locks = bound / 10,
-            .num_threads = 12,
-            .est_heap = 0,
-            .quiet = 1,
-        };
+        // pomyang_config cfg = {
+        //     .preimage_count_bits = 8,
+        //     .bound = bound,
+        //     .seg_len = bound / 2,
+        //     .num_locks = bound / 2,
+        //     .num_threads = 12,
+        //     .est_heap = 0,
+        //     .quiet = 1,
+        // };
 
-        clock_t start = clock();
-        uint64_t *count = pomyang_count_kparent(&cfg);
-        print_to_file(&cfg, filename, count, (clock() - start));
-        bound *= 2;
+        // clock_t start = clock();
+        // uint64_t *count = pomyang_count_kparent(&cfg);
+        // print_to_file(&cfg, filename, count, (clock() - start));
+        // bound *= 2;
+        run_ordermag_intervals(bound, filename);
+
+        bound *= 10;
     }
     return 0;
 }
@@ -51,7 +54,7 @@ void run_ordermag_intervals(size_t bound, const char *filename) {
         pomyang_config cfg = {
             .preimage_count_bits = 8,
             .bound = sub_bound,
-            .seg_len = sub_bound / 5000,
+            .seg_len = sub_bound,
             .num_locks = sub_bound / 10,
             .num_threads = 12,
             .est_heap = 0,

@@ -16,9 +16,8 @@
 
 #include "../inc/pomyang_kparent.h"
 
-/** @brief profiller output file.*/
-#define OUTPUT_FILE "dat/profile.csv"
 void run_seglen_perms(size_t sub_bound, const char *filename);
+void run_ordermag_intervals(size_t bound, const char *filename);
 
 int main(int argc, char const *argv[]) {
     assert(argc == 4);
@@ -28,26 +27,42 @@ int main(int argc, char const *argv[]) {
     const char *filename = argv[3];
     size_t bound = minbound;
     while (bound <= maxbound) {
-        for (size_t i = 1; i < 10; i++) {
-            size_t sub_bound = i * bound;
-            // run_seglen_perms(sub_bound, filename);
-            pomyang_config cfg = {
-                .preimage_count_bits = 8,
-                .bound = sub_bound,
-                .seg_len = sub_bound / 5000,
-                .num_locks = sub_bound / 10,
-                .num_threads = 12,
-                .est_heap = 0,
-                .quiet = 1,
-            };
+        pomyang_config cfg = {
+            .preimage_count_bits = 8,
+            .bound = bound,
+            .seg_len = bound / 16,
+            .num_locks = bound / 10,
+            .num_threads = 12,
+            .est_heap = 0,
+            .quiet = 1,
+        };
 
-            clock_t start = clock();
-            uint64_t *count = pomyang_count_kparent(&cfg);
-            print_to_file(&cfg, filename, count, (clock() - start));
-        }
-        bound = bound * 10;
+        clock_t start = clock();
+        uint64_t *count = pomyang_count_kparent(&cfg);
+        print_to_file(&cfg, filename, count, (clock() - start));
+        bound *= 2;
     }
     return 0;
+}
+
+void run_ordermag_intervals(size_t bound, const char *filename) {
+    for (size_t i = 1; i < 10; i++) {
+        size_t sub_bound = i * bound;
+        pomyang_config cfg = {
+            .preimage_count_bits = 8,
+            .bound = sub_bound,
+            .seg_len = sub_bound / 5000,
+            .num_locks = sub_bound / 10,
+            .num_threads = 12,
+            .est_heap = 0,
+            .quiet = 1,
+        };
+
+        clock_t start = clock();
+        uint64_t *count = pomyang_count_kparent(&cfg);
+        print_to_file(&cfg, filename, count, (clock() - start));
+    }
+    bound = bound * 10;
 }
 
 void run_seglen_perms(size_t sub_bound, const char *filename) {

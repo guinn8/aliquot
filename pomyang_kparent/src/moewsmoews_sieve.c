@@ -195,7 +195,7 @@ static void _moews_sieve_odd(sieve_worker_t *worker, uint64_t seg_start, const b
     num_segments++;
 
     // printf("\rtotal_time = %lds, num_segments = %ld, average_sieve_time %.02fs.\r", time(NULL) - start_time, num_segments,
-    ((float)total_sieving_time/CLOCKS_PER_SEC)/(float)num_segments);
+    // ((float)total_sieving_time/CLOCKS_PER_SEC)/(float)num_segments);
 }
 
 /* See header for documentation */

@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 
     printf("Pomerance-Yang Test Suite, all tests have passed if the program does not assert out :)\n");
     bruteforce_kparent_aliquot_10_to_the_5();
-    bruteforce_kparent_aliquot_2_to_the_20();
+    // bruteforce_kparent_aliquot_2_to_the_20();
     bruteforce_kparent_aliquot_2_to_the_3();
     bruteforce_kparent_aliquot_24();
     bruteforce_kparent_aliquot_10024();
@@ -70,9 +70,9 @@ int main(int argc, char **argv) {
     simple_10_to_the_5();
     simple_10_to_the_6();
     simple_10_to_the_7();
-    simple_10_to_the_8();
-    simple_10_to_the_9();
-    simple_10_to_the_10();  // takes a long time but is needed
+    // simple_10_to_the_8();
+    // simple_10_to_the_9();
+    // simple_10_to_the_10();  // takes a long time but is needed
 }
 
 void bruteforce_kparent_aliquot_10024(void) {

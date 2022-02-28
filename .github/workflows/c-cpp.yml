@@ -15,5 +15,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: make_kparent
       run: make -C pomyang_kparent
-    - name: pomyang_kparent/bin/test
-      run: make
+    - name: test
+      run: pomyang_kparent/bin/test

@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/guinn8/Code/aliquot'
+make: Leaving directory '/home/guinn8/Code/aliquot'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+ 

@@ -68,10 +68,6 @@
  * 
  *  -  kparent == number with k preimages under s(n) 
  * 
- * TODO: Finish collecting data to 2^40
- * TODO: Revisit heuristic model computation code
- * TODO: Move all relevant .tex files into this repo and find a vsCode tex workflow
- * 
  */
 
 #include "../inc/pomyang_kparent.h"

@@ -1,6 +1,11 @@
 import matplotlib.pyplot as plt
 from sympy.ntheory import factorint
 import numpy as np
+from mpl_toolkits import mplot3d
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
 
 def s(n):
     """ @brief Compute the sum-of-proper-divisors of n """
@@ -69,4 +74,38 @@ def plot_aliquot_family(start, sn_ennum):
         plt.plot([i-1, i], [seq[i-1], seq[i]])
         if seq[i] > 1:
             recurse_preimages(sn_ennum, seq[i], pre, i)
+    plt.show()
+
+if __name__ == "__main__":
+    # x = np.arange(10)
+    # y = np.zeros(10)
+    # z = np.arange(10)# remove *100 and the arrow heads will reappear.
+    # dx = np.zeros(10)
+    # dy = np.arange(10)
+    # dz = np.zeros(10)
+
+    x = 0
+    y = 0
+    z = 0
+    dx = 5
+    dy = 0
+    dz = 5
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    for i in range(0, 10):
+        ax.quiver(x, y, z, dx, dy, dz, arrow_length_ratio=0.0)
+        x += dx
+        y += dy
+        z += dz
+        dz += dz
+        # dy += dy
+        
+        
+
+
+        
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 100)
+    ax.set_zlim(0, 2000)
+
     plt.show()

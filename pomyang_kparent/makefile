@@ -7,6 +7,8 @@ CC= gcc
 # CFLAGS += -DDEBUG_ASSERT_ON
 all: cli test profiler
 
+
+
 cli: src/pomyang_cli_main.c obj/moewsmoews_sieve.o obj/sumdiv_util.o obj/pomyang_kparent.o obj/PackedArray.o
 	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
 

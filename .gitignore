@@ -1,6 +1,6 @@
 *.exe
 *.out
-.*
+
 *.csv
 *.o
 debug_main

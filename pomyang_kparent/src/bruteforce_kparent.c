@@ -32,7 +32,7 @@ uint8_t *bf_kparent(size_t bound) {
 #pragma omp for
         for (size_t i = 2; i <= 2 * bound; i += 2) {
             uint64_t s_n = factor_s(i);
-            if (s_n <= bound && EVEN(s_n)) {
+            if (s_n <= bound && EVEN(s_n) && s_n > 0) {
 #pragma omp atomic
                 f[F_OFFSET(s_n)]++;
             }
@@ -41,7 +41,7 @@ uint8_t *bf_kparent(size_t bound) {
 #pragma omp for
         for (size_t i = 1; i <= bound; i += 2) {
             uint64_t s_n = factor_s(i * i);
-            if (s_n <= bound && EVEN(s_n)) {
+            if (s_n <= bound && EVEN(s_n) && s_n > 0) {
 #pragma omp atomic
                 f[F_OFFSET(s_n)]++;
             }

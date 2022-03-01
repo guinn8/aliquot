@@ -95,8 +95,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <omp.h>
-
-#include "../inc/sumdiv_util.h"
+#include "../../factor/factor.h"
 
 #define EVEN(x) (0 == (x) % 2)
 #define ODD(x) (0 == ((x) + 1) % 2)

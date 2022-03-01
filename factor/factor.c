@@ -64,7 +64,7 @@ uint64_t factor_sigma(uint64_t n) {
 }
 
 uint64_t factor_s(uint64_t n){
-    return sumdiv(n) - n;
+    return factor_sigma(n) - n;
 }
 
 

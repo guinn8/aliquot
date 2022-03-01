@@ -74,7 +74,7 @@ enumerated_range_t *enumerate_sn(enumerate_handle_t sts) {
                 sts->range.s[n] += (i * cond);
                 sts->range.s[n] += sts->iter[i] * cond * (sts->iter[i] > sts->sqrt_max);  // accumlate the divisor's pair
 
-                sts->iter[i]+= cond;
+                sts->iter[i] += cond;
                 sts->mult[i] += (i * cond);
             }
 

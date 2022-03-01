@@ -19,7 +19,8 @@
 
 #include "../inc/moewsmoews_sieve.h"
 #include "../inc/pomyang_kparent.h"
-#include "../inc/sumdiv_util.h"
+// #include "../inc/sumdiv_util.h"
+#include "../../factor/factor.h"
 #include "../inc/math_macros.h"
 
 void weighted_geomean(size_t bound, size_t seg_len);
@@ -85,7 +86,7 @@ void weighted_geomean(size_t bound, size_t seg_len) {
 
     for (size_t seg_start = 0; seg_start < bound; seg_start += seg_len) {
         for (uint64_t m = seg_start + 2; m <= seg_start + seg_len; m += 2) {
-            uint64_t s_m = sumdiv_s(m);
+            uint64_t s_m = factor_s(m);
             double abundance = (double)s_m / (double)m;
             uint8_t num_preimages = PackedArray_get(f, total);
             // num_preimages = (num_preimages == 0) ? 1 : num_preimages;

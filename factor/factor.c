@@ -21,7 +21,9 @@ this program.  If not, see https://www.gnu.org/licenses/.  */
 #include <string.h>
 
 #include "gmp.h"
-#include "../sumdiv/factor.h"
+#include "../factor/factor.h"
+
+
 
 static unsigned char primes_diff[] = {
 #define P(a, b, c) a,
@@ -37,6 +39,33 @@ int flag_prove_primality = 1;
 
 /* Number of Miller-Rabin tests to run when not proving primality. */
 #define MR_REPS 25
+
+// https://www2.math.upenn.edu/~deturck/m170/wk3/lecture/sumdiv.html
+uint64_t factor_sumdiv(uint64_t n) {
+    mpz_t integ;
+    mpz_init_set_ui(integ, n);
+    struct factors fs = {0};
+    factor(integ, &fs);
+    uint64_t sn = 1;
+    for (int i = 0; i < fs.nfactors; i++) {
+        uint64_t exp = 1;
+        uint64_t row_total = 0;
+        for (size_t j = 0; j <= fs.e[i]; j++) {
+            // printf("%ld,\t", exp);
+            row_total += exp;
+            exp *= mpz_get_ui(fs.p[i]);
+        }
+        sn *= row_total;
+        // printf("row sum = %ld\n", row_total);
+    }
+    factor_clear(&fs);
+    mpz_clear(integ);
+    return sn;
+}
+
+uint64_t factor_s(uint64_t n){
+    return sumdiv(n) - n;
+}
 
 
 void factor_init(struct factors *factors) {

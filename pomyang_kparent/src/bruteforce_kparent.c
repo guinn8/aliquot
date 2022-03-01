@@ -14,7 +14,8 @@
 #include <assert.h>
 #include <omp.h>
 
-#include "../inc/sumdiv_util.h"
+// #include "../inc/sumdiv_util.h"
+#include "../../factor/factor.h"
 #include "../inc/math_macros.h"
 
 
@@ -30,7 +31,7 @@ uint8_t *bf_kparent(size_t bound) {
     {
 #pragma omp for
         for (size_t i = 2; i <= 2 * bound; i += 2) {
-            uint64_t s_n = sumdiv_s(i);
+            uint64_t s_n = factor_s(i);
             if (s_n <= bound && EVEN(s_n)) {
 #pragma omp atomic
                 f[F_OFFSET(s_n)]++;
@@ -39,7 +40,7 @@ uint8_t *bf_kparent(size_t bound) {
 
 #pragma omp for
         for (size_t i = 1; i <= bound; i += 2) {
-            uint64_t s_n = sumdiv_s(i * i);
+            uint64_t s_n = factor_s(i * i);
             if (s_n <= bound && EVEN(s_n)) {
 #pragma omp atomic
                 f[F_OFFSET(s_n)]++;

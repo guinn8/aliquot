@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #include "gmp.h"
 
 struct factors {
@@ -6,6 +8,8 @@ struct factors {
     long nfactors;
 };
 
+uint64_t factor_sumdiv(uint64_t n);
+uint64_t factor_s(uint64_t n);
 void factor(mpz_t, struct factors *);
 
 void factor_clear(struct factors *factors);

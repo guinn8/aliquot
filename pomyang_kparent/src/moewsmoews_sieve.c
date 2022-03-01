@@ -268,7 +268,7 @@ uint64_t moews_lookup_sigma_m(const sieve_worker_t *worker, uint64_t m) {
     DEBUG_ASSERT(assert(index < worker->cfg->buf_len));
 
     uint64_t sigma_m = worker->sigma_buf[index];
-    DEBUG_ASSERT(assert(sigma_m == sumdiv_sigma(m)));
+    DEBUG_ASSERT(assert(sigma_m == factor_sigma(m)));
     return sigma_m;
 }
 
@@ -280,7 +280,7 @@ uint64_t moews_lookup_sigma_m_squared(const sieve_worker_t *worker, uint64_t m) 
     DEBUG_ASSERT(assert(index < worker->cfg->buf_len));
 
     uint64_t sigma_m = worker->sigma_buf[index];
-    DEBUG_ASSERT(assert(sigma_m == sumdiv_sigma(m * m)));
+    DEBUG_ASSERT(assert(sigma_m == factor_sigma(m * m)));
     return sigma_m;
 }
 

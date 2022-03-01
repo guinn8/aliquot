@@ -27,7 +27,7 @@
 #include <time.h>
 
 #include "../pomyang_kparent/inc/math_macros.h"
-#include "../sumdiv/sumdiv.h"
+#include "../factor/factor.h"
 
 const char filename[] = "densities.csv";
 
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
                 uint64_t m = (cfg.chunk_len * i) + 2;  // first even number in chunk
 
                 for (size_t j = 0; j < cfg.buffer_len; j++) {
-                    sigma[j] = s(m + 2 * j);
+                    sigma[j] = factor_s(m + 2 * j);
                 }
 
                 for (size_t g = 0; g < 16; g++) {

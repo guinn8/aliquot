@@ -127,7 +127,7 @@ void factor_insert_ui(struct factors *factors, unsigned long prime) {
 void factor_using_division(mpz_t t, struct factors *factors) {
     mpz_t q;
     unsigned long int p;
-    int i;
+    size_t i;
 
     if (flag_verbose > 0) {
         printf("[trial division] ");
@@ -178,7 +178,8 @@ mp_millerrabin(mpz_srcptr n, mpz_srcptr nm1, mpz_ptr x, mpz_ptr y,
 }
 
 int mp_prime_p(mpz_t n) {
-    int k, r, is_prime;
+    size_t r;
+    int k, is_prime;
     mpz_t q, a, nm1, tmp;
     struct factors factors;
 

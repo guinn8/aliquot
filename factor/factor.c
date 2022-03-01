@@ -41,7 +41,7 @@ int flag_prove_primality = 1;
 #define MR_REPS 25
 
 // https://www2.math.upenn.edu/~deturck/m170/wk3/lecture/sumdiv.html
-uint64_t factor_sumdiv(uint64_t n) {
+uint64_t factor_sigma(uint64_t n) {
     mpz_t integ;
     mpz_init_set_ui(integ, n);
     struct factors fs = {0};

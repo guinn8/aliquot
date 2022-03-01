@@ -8,7 +8,7 @@ struct factors {
     long nfactors;
 };
 
-uint64_t factor_sumdiv(uint64_t n);
+uint64_t factor_sigma(uint64_t n);
 uint64_t factor_s(uint64_t n);
 void factor(mpz_t, struct factors *);
 

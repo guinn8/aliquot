@@ -3,7 +3,7 @@ SRCDIR=../src
 INCS=-I../inc
 LINKS=-lm -lpthread
 
-all: sn_test
+all: cli
 
-sn_test: sn.c sn_test.c
+cli: sieve_sn.c sieve_sn_cli.c
 	$(CC) $(CFLAGS) $(INCS) -o $@ $^ $(LINKS)

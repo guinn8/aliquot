@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['inc_121',['inc',['../sumdiv__util_8c.html#aaf45cdfd4cb2f36e4eae4b46ea95a6e9',1,'sumdiv_util.c']]],
-  ['initwheel_122',['initWheel',['../sumdiv__util_8c.html#a3b5b7c4ad5ee06ad3c7837ea447f0fdd',1,'sumdiv_util.c']]],
-  ['is_5fprime_5fbuf_123',['is_prime_buf',['../structsieve__worker__t.html#a2e2d635cb66f781c2b31960ff80bc675',1,'sieve_worker_t']]]
+  ['e_133',['e',['../structfactors.html#ae06e87d23caf42a11cf5694a955dba30',1,'factors']]],
+  ['est_5fheap_134',['est_heap',['../structpomyang__config__t.html#ab22850bf535f7b93ac506939b9d7dcbc',1,'pomyang_config_t']]]
 ];

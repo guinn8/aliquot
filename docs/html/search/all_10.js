@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['two_5fthirds_75',['TWO_THIRDS',['../math__macros_8h.html#a3a48fcbec39129b7662b675bbe8bfd14',1,'math_macros.h']]]
+  ['weighted_5fgeomean_84',['weighted_geomean',['../geomean__sn_8c.html#aed40a6407439d6b6f54375f35dee48fb',1,'geomean_sn.c']]]
 ];

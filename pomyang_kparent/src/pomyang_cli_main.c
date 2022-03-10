@@ -34,14 +34,14 @@ static struct option long_options[] = {
 };
 
 static void usage(void);
-static void get_args(pomyang_config *cfg, int argc, char **argv);
+static void get_args(pomyang_config_t *cfg, int argc, char **argv);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat"  // printf ' flag
 
 /** @brief Command line interface to the Pomerance-Yang algorithm. */
 int main(int argc, char **argv) {
-    pomyang_config cfg = {0};
+    pomyang_config_t cfg = {0};
     get_args(&cfg, argc, argv);
 
     size_t total = 0;
@@ -71,7 +71,7 @@ static void usage(void) {
     printf("EXAMPLE:\nmake cli && ./bin/cli --bound=$((10**9)) --seg_len=$((10**6)) --num_locks=$((10**7)) --num_threads=12  --preimage_count_bits=8\n\n");
 }
 
-static void get_args(pomyang_config *cfg, int argc, char **argv) {
+static void get_args(pomyang_config_t *cfg, int argc, char **argv) {
     cfg->preimage_count_bits = 8;
     cfg->est_heap = false;
     cfg->quiet = false;

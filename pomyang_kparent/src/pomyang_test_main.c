@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
 }
 
 void bruteforce_kparent_aliquot_10024(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = 10024,
         .seg_len = 56,
@@ -95,7 +95,7 @@ void bruteforce_kparent_aliquot_10024(void) {
 }
 
 void bruteforce_kparent_aliquot_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = 100000,
         .seg_len = 10000,
@@ -116,7 +116,7 @@ void bruteforce_kparent_aliquot_10_to_the_5(void) {
 }
 
 void bruteforce_kparent_aliquot_2_to_the_20(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = 262144,
         .seg_len = 65536,
@@ -135,7 +135,7 @@ void bruteforce_kparent_aliquot_2_to_the_20(void) {
 }
 
 void bruteforce_kparent_aliquot_2_to_the_3(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = 8,
         .seg_len = 4,
@@ -154,7 +154,7 @@ void bruteforce_kparent_aliquot_2_to_the_3(void) {
 }
 
 void bruteforce_kparent_aliquot_24(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = 24,
         .seg_len = 8,
@@ -173,7 +173,7 @@ void bruteforce_kparent_aliquot_24(void) {
 }
 
 void numbits_1_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 100000,
         .seg_len = 10000,
@@ -189,7 +189,7 @@ void numbits_1_10_to_the_5(void) {
 }
 
 void numbits_2_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 2,
         .bound = 100000,
         .seg_len = 10000,
@@ -205,7 +205,7 @@ void numbits_2_10_to_the_5(void) {
 }
 
 void numbits_3_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 3,
         .bound = 100000,
         .seg_len = 10000,
@@ -221,7 +221,7 @@ void numbits_3_10_to_the_5(void) {
 }
 
 void numbits_4_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 4,
         .bound = 100000,
         .seg_len = 10000,
@@ -237,7 +237,7 @@ void numbits_4_10_to_the_5(void) {
 }
 
 void numbits_5_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 5,
         .bound = 100000,
         .seg_len = 10000,
@@ -253,7 +253,7 @@ void numbits_5_10_to_the_5(void) {
 }
 
 void numbits_6_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 6,
         .bound = 100000,
         .seg_len = 10000,
@@ -269,7 +269,7 @@ void numbits_6_10_to_the_5(void) {
 }
 
 void numbits_7_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 7,
         .bound = 100000,
         .seg_len = 10000,
@@ -285,7 +285,7 @@ void numbits_7_10_to_the_5(void) {
 }
 
 void numbits_8_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = 100000,
         .seg_len = 10000,
@@ -301,7 +301,7 @@ void numbits_8_10_to_the_5(void) {
 }
 
 void num_locks_0_edge_10_to_the_6(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 10000,
@@ -317,7 +317,7 @@ void num_locks_0_edge_10_to_the_6(void) {
 }
 
 void num_locks_1_edge_10_to_the_6(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 10000,
@@ -333,7 +333,7 @@ void num_locks_1_edge_10_to_the_6(void) {
 }
 
 void seg_len_0_edge_10_to_the_6(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 4,
@@ -349,7 +349,7 @@ void seg_len_0_edge_10_to_the_6(void) {
 }
 
 void seg_len_1_edge_10_to_the_6(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 1000000,
@@ -365,7 +365,7 @@ void seg_len_1_edge_10_to_the_6(void) {
 }
 
 void seg_len_2_edge_10_to_the_6(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 62500,
@@ -381,7 +381,7 @@ void seg_len_2_edge_10_to_the_6(void) {
 }
 
 void simple_10_to_the_4(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 10000,
         .seg_len = 100,
@@ -397,7 +397,7 @@ void simple_10_to_the_4(void) {
 }
 
 void simple_10_to_the_5(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 100000,
         .seg_len = 1000,
@@ -413,7 +413,7 @@ void simple_10_to_the_5(void) {
 }
 
 void simple_10_to_the_6(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000,
         .seg_len = 10000,
@@ -429,7 +429,7 @@ void simple_10_to_the_6(void) {
 }
 
 void simple_10_to_the_7(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 10000000,
         .seg_len = 100000,
@@ -445,7 +445,7 @@ void simple_10_to_the_7(void) {
 }
 
 void simple_10_to_the_8(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 100000000,
         .seg_len = 1000000,
@@ -461,7 +461,7 @@ void simple_10_to_the_8(void) {
 }
 
 void simple_10_to_the_9(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 1000000000,
         .seg_len = 5000000,
@@ -479,7 +479,7 @@ void simple_10_to_the_9(void) {
 // this one will take a long time, but is required.
 // it is the first simple test greater than 2^32
 void simple_10_to_the_10(void) {
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 1,
         .bound = 10000000000,
         .seg_len = 5000000,

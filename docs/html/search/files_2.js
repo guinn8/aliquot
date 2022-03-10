@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['huer_5fmodel_2ec_85',['huer_model.c',['../huer__model_8c.html',1,'']]]
+  ['geomean_5fsn_2ec_95',['geomean_sn.c',['../geomean__sn_8c.html',1,'']]]
 ];

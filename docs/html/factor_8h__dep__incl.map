@@ -1,0 +1,6 @@
+<map id="factor/factor.h" name="factor/factor.h">
+<area shape="rect" id="node1" title=" " alt="" coords="243,5,357,32"/>
+<area shape="rect" id="node2" href="$pollpom__kparent_8c.html" title="This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance &quot;Some problems of Erdos on..." alt="" coords="5,80,195,121"/>
+<area shape="rect" id="node3" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="219,80,381,121"/>
+<area shape="rect" id="node4" href="$geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="405,80,568,121"/>
+</map>

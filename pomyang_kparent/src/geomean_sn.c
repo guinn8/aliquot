@@ -68,7 +68,7 @@ void weighted_geomean(size_t bound, size_t seg_len) {
     assert(seg_len <= bound);
     assert(DIVIDES(seg_len, bound));
 
-    pomyang_config cfg = {
+    pomyang_config_t cfg = {
         .preimage_count_bits = 8,
         .bound = bound,
         .seg_len = bound / 100,

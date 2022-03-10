@@ -1,0 +1,51 @@
+\hypertarget{factor_8h}{}\doxysubsection{factor/factor.h File Reference}
+\label{factor_8h}\index{factor/factor.h@{factor/factor.h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}gmp.\+h\char`\"{}}\newline
+Include dependency graph for factor.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{factor_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{factor_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structfactors}{factors}}
+\begin{DoxyCompactList}\small\item\em Holds a prime factorization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{factor_8h_a03b2e036ca5785728a316ce96fe1a0c1}\label{factor_8h_a03b2e036ca5785728a316ce96fe1a0c1}} 
+uint64\+\_\+t {\bfseries factor\+\_\+sigma} (uint64\+\_\+t n)
+\item 
+\mbox{\Hypertarget{factor_8h_a248f05b4ffecd594f5f8e6e2785d7dd3}\label{factor_8h_a248f05b4ffecd594f5f8e6e2785d7dd3}} 
+uint64\+\_\+t {\bfseries factor\+\_\+s} (uint64\+\_\+t n)
+\item 
+\mbox{\Hypertarget{factor_8h_ac1a066ce538bf96ded8d91d5d6722e7e}\label{factor_8h_ac1a066ce538bf96ded8d91d5d6722e7e}} 
+void {\bfseries factor} (mpz\+\_\+t, struct \mbox{\hyperlink{structfactors}{factors}} $\ast$)
+\item 
+\mbox{\Hypertarget{factor_8h_a572082fe868f6984aea0254e01bc6848}\label{factor_8h_a572082fe868f6984aea0254e01bc6848}} 
+void {\bfseries factor\+\_\+clear} (struct \mbox{\hyperlink{structfactors}{factors}} $\ast$\mbox{\hyperlink{structfactors}{factors}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Gavin Guinn (\href{mailto:gavinguinn1@gmail.com}{\texttt{ gavinguinn1@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2022-\/03-\/07
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}

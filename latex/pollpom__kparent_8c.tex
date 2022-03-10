@@ -1,0 +1,59 @@
+\hypertarget{pollpom__kparent_8c}{}\doxysubsection{pollpom\+\_\+kparent/pollpom\+\_\+kparent.c File Reference}
+\label{pollpom__kparent_8c}\index{pollpom\_kparent/pollpom\_kparent.c@{pollpom\_kparent/pollpom\_kparent.c}}
+
+
+This program implements an generaliztion of Conj. 1.\+4 of Pollack/\+Pomerance \char`\"{}\+Some problems of Erdos on the Sum of Divisors Function\char`\"{} Instead of estimating the natural density of only aliqout orphans this program also estimates the density of k-\/parent aliquot numbers n is a k-\/parent aliqout number iff there are k distinct natural numbers m st s(m) = n An aliquot orphan is a 0-\/parent aliquot number let delta-\/k be the estimated density of k-\/parent aliquot numbers and s(n) be the sum-\/of-\/proper-\/divisors function delta-\/k = 1/log(bound) $\ast$ sum(forall a $<$= bound)( (a$^\wedge$(k-\/1) $\ast$ e$^\wedge$(-\/a/s(a)) / k! $\ast$ s(a)$^\wedge$k) )  
+
+
+{\ttfamily \#include \char`\"{}../pollpom\+\_\+kparent/pollpom\+\_\+kparent.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$alloca.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$omp.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../factor/factor.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../pomyang\+\_\+kparent/inc/math\+\_\+macros.\+h\char`\"{}}\newline
+Include dependency graph for pollpom\+\_\+kparent.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pollpom__kparent_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{pollpom__kparent_8c_ae168f3ab51b00d57b4e4f80ec2ace3f0}{pollpom\+\_\+kparent}} (\mbox{\hyperlink{structpollpom__config__t}{pollpom\+\_\+config\+\_\+t}} $\ast$cfg)
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+This program implements an generaliztion of Conj. 1.\+4 of Pollack/\+Pomerance \char`\"{}\+Some problems of Erdos on the Sum of Divisors Function\char`\"{} Instead of estimating the natural density of only aliqout orphans this program also estimates the density of k-\/parent aliquot numbers n is a k-\/parent aliqout number iff there are k distinct natural numbers m st s(m) = n An aliquot orphan is a 0-\/parent aliquot number let delta-\/k be the estimated density of k-\/parent aliquot numbers and s(n) be the sum-\/of-\/proper-\/divisors function delta-\/k = 1/log(bound) $\ast$ sum(forall a $<$= bound)( (a$^\wedge$(k-\/1) $\ast$ e$^\wedge$(-\/a/s(a)) / k! $\ast$ s(a)$^\wedge$k) ) 
+
+\begin{DoxyAuthor}{Author}
+Gavin Guinn (\href{mailto:gavinguinn1@gmail.com}{\texttt{ gavinguinn1@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2022-\/02-\/24
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsubsection{Function Documentation}
+\mbox{\Hypertarget{pollpom__kparent_8c_ae168f3ab51b00d57b4e4f80ec2ace3f0}\label{pollpom__kparent_8c_ae168f3ab51b00d57b4e4f80ec2ace3f0}} 
+\index{pollpom\_kparent.c@{pollpom\_kparent.c}!pollpom\_kparent@{pollpom\_kparent}}
+\index{pollpom\_kparent@{pollpom\_kparent}!pollpom\_kparent.c@{pollpom\_kparent.c}}
+\doxyparagraph{\texorpdfstring{pollpom\_kparent()}{pollpom\_kparent()}}
+{\footnotesize\ttfamily void pollpom\+\_\+kparent (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpollpom__config__t}{pollpom\+\_\+config\+\_\+t}} $\ast$}]{cfg }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em cfg} & \\
+\hline
+\end{DoxyParams}

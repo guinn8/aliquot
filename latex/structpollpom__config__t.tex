@@ -1,0 +1,73 @@
+\hypertarget{structpollpom__config__t}{}\doxysubsection{pollpom\+\_\+config\+\_\+t Struct Reference}
+\label{structpollpom__config__t}\index{pollpom\_config\_t@{pollpom\_config\_t}}
+
+
+Config struct for the kparent generalization of the Pollack-\/\+Pomerance heuristic model for non-\/aliquots.  
+
+
+
+
+{\ttfamily \#include $<$pollpom\+\_\+kparent.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+double $\ast$ \mbox{\hyperlink{structpollpom__config__t_a86d941d1bd1734b9081859bb90d596d5}{accum}}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structpollpom__config__t_ae73b1a06aecf04989832385b0c71e4aa}{bound}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpollpom__config__t_abba4d8b3ab5ba6a86f95dc7f9c7a9744}{num\+\_\+chunks}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpollpom__config__t_a6868b638fca867cadd730f098f42bcfb}{chunk\+\_\+len}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structpollpom__config__t_a8bb7fb06aef32cb2dc3ba08eac415eed}{buffer\+\_\+len}}
+\item 
+char \mbox{\hyperlink{structpollpom__config__t_a7b3ba71dbe5ee6e216cd808a44834266}{filename}} \mbox{[}128\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+Config struct for the kparent generalization of the Pollack-\/\+Pomerance heuristic model for non-\/aliquots. 
+
+\doxysubsubsection{Field Documentation}
+\mbox{\Hypertarget{structpollpom__config__t_a86d941d1bd1734b9081859bb90d596d5}\label{structpollpom__config__t_a86d941d1bd1734b9081859bb90d596d5}} 
+\index{pollpom\_config\_t@{pollpom\_config\_t}!accum@{accum}}
+\index{accum@{accum}!pollpom\_config\_t@{pollpom\_config\_t}}
+\doxyparagraph{\texorpdfstring{accum}{accum}}
+{\footnotesize\ttfamily pollpom\+\_\+config\+\_\+t\+::accum}
+
+Array where index k holds the summation for kparent numbers. \mbox{\Hypertarget{structpollpom__config__t_ae73b1a06aecf04989832385b0c71e4aa}\label{structpollpom__config__t_ae73b1a06aecf04989832385b0c71e4aa}} 
+\index{pollpom\_config\_t@{pollpom\_config\_t}!bound@{bound}}
+\index{bound@{bound}!pollpom\_config\_t@{pollpom\_config\_t}}
+\doxyparagraph{\texorpdfstring{bound}{bound}}
+{\footnotesize\ttfamily pollpom\+\_\+config\+\_\+t\+::bound}
+
+Compute the limit upto this bound. \mbox{\Hypertarget{structpollpom__config__t_a8bb7fb06aef32cb2dc3ba08eac415eed}\label{structpollpom__config__t_a8bb7fb06aef32cb2dc3ba08eac415eed}} 
+\index{pollpom\_config\_t@{pollpom\_config\_t}!buffer\_len@{buffer\_len}}
+\index{buffer\_len@{buffer\_len}!pollpom\_config\_t@{pollpom\_config\_t}}
+\doxyparagraph{\texorpdfstring{buffer\_len}{buffer\_len}}
+{\footnotesize\ttfamily pollpom\+\_\+config\+\_\+t\+::buffer\+\_\+len}
+
+Size of local sigma buffer. \mbox{\Hypertarget{structpollpom__config__t_a6868b638fca867cadd730f098f42bcfb}\label{structpollpom__config__t_a6868b638fca867cadd730f098f42bcfb}} 
+\index{pollpom\_config\_t@{pollpom\_config\_t}!chunk\_len@{chunk\_len}}
+\index{chunk\_len@{chunk\_len}!pollpom\_config\_t@{pollpom\_config\_t}}
+\doxyparagraph{\texorpdfstring{chunk\_len}{chunk\_len}}
+{\footnotesize\ttfamily pollpom\+\_\+config\+\_\+t\+::chunk\+\_\+len}
+
+Size of chuck to sieve at a time. No sieve currently implemented. \mbox{\Hypertarget{structpollpom__config__t_a7b3ba71dbe5ee6e216cd808a44834266}\label{structpollpom__config__t_a7b3ba71dbe5ee6e216cd808a44834266}} 
+\index{pollpom\_config\_t@{pollpom\_config\_t}!filename@{filename}}
+\index{filename@{filename}!pollpom\_config\_t@{pollpom\_config\_t}}
+\doxyparagraph{\texorpdfstring{filename}{filename}}
+{\footnotesize\ttfamily pollpom\+\_\+config\+\_\+t\+::filename}
+
+Name of the file to write the output to \mbox{\Hypertarget{structpollpom__config__t_abba4d8b3ab5ba6a86f95dc7f9c7a9744}\label{structpollpom__config__t_abba4d8b3ab5ba6a86f95dc7f9c7a9744}} 
+\index{pollpom\_config\_t@{pollpom\_config\_t}!num\_chunks@{num\_chunks}}
+\index{num\_chunks@{num\_chunks}!pollpom\_config\_t@{pollpom\_config\_t}}
+\doxyparagraph{\texorpdfstring{num\_chunks}{num\_chunks}}
+{\footnotesize\ttfamily pollpom\+\_\+config\+\_\+t\+::num\+\_\+chunks}
+
+Computed value, the number of chunks to sieve. No sieve currently implemented. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+pollpom\+\_\+kparent/\mbox{\hyperlink{pollpom__kparent_8h}{pollpom\+\_\+kparent.\+h}}\end{DoxyCompactItemize}

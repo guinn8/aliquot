@@ -86,12 +86,12 @@
 
 static inline void _record_image(uint64_t x, PackedArray *f);
 static uint64_t *_tabulate_kparent(const PackedArray *f);
-static void _print_config(const pomyang_config *cfg, double odd_comp_bound);
+static void _print_config(const pomyang_config_t *cfg, double odd_comp_bound);
 
 static bool quiet = false;
 
 /* See header for documentation */
-PackedArray *pomyang_algorithm(const pomyang_config *cfg) {
+PackedArray *pomyang_algorithm(const pomyang_config_t *cfg) {
     assert(EVEN(cfg->bound));
     assert(cfg->bound > 0);
     assert(EVEN(cfg->seg_len));
@@ -151,7 +151,7 @@ PackedArray *pomyang_algorithm(const pomyang_config *cfg) {
 }
 
 /* See header for documentation */
-uint64_t *pomyang_count_kparent(const pomyang_config *cfg) {
+uint64_t *pomyang_count_kparent(const pomyang_config_t *cfg) {
     PackedArray *f = pomyang_algorithm(cfg);
     uint64_t *count = _tabulate_kparent(f);
     free(f);
@@ -159,7 +159,7 @@ uint64_t *pomyang_count_kparent(const pomyang_config *cfg) {
 }
 
 /* See header for documentation */
-void print_to_file(pomyang_config *cfg, const char *filename, uint64_t *count, float runtime) {
+void print_to_file(pomyang_config_t *cfg, const char *filename, uint64_t *count, float runtime) {
     const size_t max_line_len = 10000;
     char *header_line = alloca(max_line_len * sizeof(char));
     memset(header_line, 0, max_line_len * sizeof(char));
@@ -234,7 +234,7 @@ uint64_t *_tabulate_kparent(const PackedArray *f) {
  * @param cfg config struct (see definition)
  * @param odd_comp_bound computed bound relevant to pomyang algorithm
  */
-void _print_config(const pomyang_config *cfg, double odd_comp_bound) {
+void _print_config(const pomyang_config_t *cfg, double odd_comp_bound) {
     printf("\nPOMYANG CONFIG\n");
     printf("-> Using %ld bits per number, count between 0-%d preimages\n", cfg->preimage_count_bits, (1 << cfg->preimage_count_bits) - 1);
     printf("-> Bound = %ld\n", cfg->bound);

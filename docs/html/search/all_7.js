@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['huer_5fmodel_2ec_21',['huer_model.c',['../huer__model_8c.html',1,'']]]
+  ['is_5fprime_5fbuf_28',['is_prime_buf',['../structsieve__worker__t.html#a2e2d635cb66f781c2b31960ff80bc675',1,'sieve_worker_t']]]
 ];

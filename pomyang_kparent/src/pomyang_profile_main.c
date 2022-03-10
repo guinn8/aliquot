@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
     const char *filename = argv[3];
     size_t bound = minbound;
     while (bound <= maxbound) {
-        // pomyang_config cfg = {
+        // pomyang_config_t cfg = {
         //     .preimage_count_bits = 8,
         //     .bound = bound,
         //     .seg_len = bound / 2,
@@ -51,7 +51,7 @@ int main(int argc, char const *argv[]) {
 void run_ordermag_intervals(size_t bound, const char *filename) {
     for (size_t i = 1; i < 10; i++) {
         size_t sub_bound = i * bound;
-        pomyang_config cfg = {
+        pomyang_config_t cfg = {
             .preimage_count_bits = 8,
             .bound = sub_bound,
             .seg_len = sub_bound,
@@ -76,7 +76,7 @@ void run_seglen_perms(size_t sub_bound, const char *filename) {
             0 == (seg_len / 2) % 2 &&
             num_segs >= 12 &&
             num_segs <= (sub_bound / 12)) {
-            pomyang_config cfg = {
+            pomyang_config_t cfg = {
                 .preimage_count_bits = 1,
                 .bound = sub_bound,
                 .seg_len = seg_len,

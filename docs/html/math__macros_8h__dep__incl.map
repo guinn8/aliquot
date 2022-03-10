@@ -1,8 +1,9 @@
 <map id="pomyang_kparent/inc/math_macros.h" name="pomyang_kparent/inc/math_macros.h">
-<area shape="rect" id="node1" title=" " alt="" coords="225,5,388,47"/>
-<area shape="rect" id="node2" href="$pomyang__kparent_8h.html" title="api for pom_yang algorithm operations" alt="" coords="225,95,388,136"/>
-<area shape="rect" id="node3" href="$geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="5,184,168,225"/>
-<area shape="rect" id="node4" href="$pomyang__cli__main_8c.html" title="command line interface to interact with the pom_yang algorithm" alt="" coords="192,184,355,225"/>
-<area shape="rect" id="node5" href="$pomyang__kparent_8c.html" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="379,184,541,225"/>
-<area shape="rect" id="node6" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="463,95,625,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="328,5,491,47"/>
+<area shape="rect" id="node2" href="$pollpom__kparent_8c.html" title="This program implements an generaliztion of Conj. 1.4 of Pollack/Pomerance &quot;Some problems of Erdos on..." alt="" coords="5,95,195,136"/>
+<area shape="rect" id="node3" href="$pomyang__kparent_8h.html" title="api for pom_yang algorithm operations" alt="" coords="269,95,432,136"/>
+<area shape="rect" id="node4" href="$geomean__sn_8c.html" title="Runs geomean calculation from [Chum et al.] Sect 2." alt="" coords="116,184,279,225"/>
+<area shape="rect" id="node5" href="$pomyang__cli__main_8c.html" title="command line interface to interact with the pom_yang algorithm" alt="" coords="303,184,465,225"/>
+<area shape="rect" id="node6" href="$pomyang__kparent_8c.html" title="Counts the even numbers with k&#45;preimages under the sum&#45;of&#45;proper&#45;divisors function." alt="" coords="489,184,652,225"/>
+<area shape="rect" id="node7" href="$bruteforce__kparent_8c.html" title="Uses a simple bruteforce method to compute number of preimages for even number upto bound...." alt="" coords="557,95,720,136"/>
 </map>

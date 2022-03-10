@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{etoolbox}
+\usepackage{enumerate}
+\usepackage{breakcites}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode, float}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\AfterEndEnvironment{definition}{\noindent\ignorespaces}
+
+\newtheorem{conjecture}{Conjecture}[section]
+\AfterEndEnvironment{conjecture}{\noindent\ignorespaces}
+
+\newtheorem{theorem}{Theorem}[section]
+\AfterEndEnvironment{theorem}{\noindent\ignorespaces}
+
+\newtheorem{proposition}{Proposition}[section]
+\AfterEndEnvironment{proposition}{\noindent\ignorespaces}
+
+\setlength{\parskip}{.5em}
+
+\title{$k$-Parent Aliquot Numbers: Counting Pre-Images Under the Sum-of-Proper-Divisors Function} 
+\author{Gavin Guinn\\{\small Supervisor: Michael J. Jacobson}}
+\date{December 2021}
+
+\begin{document}
+\maketitle
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Pollack-Pomerance Heuristics: Estimating the Density of Even k-Parent Numbers}
+Suppos
+\begin{conjecture}{Heuristic Model for the Density of Non-Aliquots}
+$$\Delta = \lim_{y \to \infty}\frac{1}{\log y} \sum_{\substack{a\leq y \\ 2 | a}} \frac{1}{a}\text{e}^{-a/s(a)}$$
+\end{conjecture}
+\section{Pomerance-Yang Algorithm: Tabulation of Even k-Parent Numbers}
+
+
+\cite{pomYang}
+\bibliographystyle{apalike}
+\bibliography{kparent_final_report}
+\end{document}

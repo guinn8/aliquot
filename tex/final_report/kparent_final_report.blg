@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: kparent_final_report.aux
 The style file: apalike.bst
 Database file #1: kparent_final_report.bib
-You've used 1 entry,
+You've used 4 entries,
             1935 wiz_defined-function locations,
-            480 strings with 3882 characters,
-and the built_in function-call counts, 439 in all, are:
-= -- 44
-> -- 13
-< -- 1
-+ -- 4
-- -- 4
-* -- 39
-:= -- 77
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 7
-chr.to.int$ -- 1
-cite$ -- 1
-duplicate$ -- 14
-empty$ -- 33
-format.name$ -- 7
-if$ -- 84
+            499 strings with 4331 characters,
+and the built_in function-call counts, 1542 in all, are:
+= -- 152
+> -- 56
+< -- 3
++ -- 20
+- -- 18
+* -- 133
+:= -- 274
+add.period$ -- 12
+call.type$ -- 4
+change.case$ -- 29
+chr.to.int$ -- 4
+cite$ -- 4
+duplicate$ -- 52
+empty$ -- 109
+format.name$ -- 26
+if$ -- 296
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 1
-newline$ -- 8
-num.names$ -- 3
-pop$ -- 4
+missing$ -- 3
+newline$ -- 23
+num.names$ -- 12
+pop$ -- 18
 preamble$ -- 1
-purify$ -- 7
+purify$ -- 29
 quote$ -- 0
-skip$ -- 12
+skip$ -- 42
 stack$ -- 0
-substring$ -- 43
-swap$ -- 1
+substring$ -- 129
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 6
+type$ -- 24
 warning$ -- 0
-while$ -- 4
+while$ -- 12
 width$ -- 0
-write$ -- 15
+write$ -- 53

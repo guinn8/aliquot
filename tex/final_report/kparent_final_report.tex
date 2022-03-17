@@ -36,18 +36,68 @@
 
 \begin{document}
 \maketitle
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Pollack-Pomerance Heuristics: Estimating the Density of Even k-Parent Numbers}
-Suppos
-\begin{conjecture}{Heuristic Model for the Density of Non-Aliquots}
-$$\Delta = \lim_{y \to \infty}\frac{1}{\log y} \sum_{\substack{a\leq y \\ 2 | a}} \frac{1}{a}\text{e}^{-a/s(a)}$$
+\section{Model Density of k-Parent Numbers}
+\subsection{Pollack-Pomerance Heuristics}
+
+\section{Tabulation of k-Parent Numbers}
+\subsection{Brute-Forcing Preimages}
+Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of $n$ under the sum-of-proper-divisors function. The problem is equivalent to the prime-factorization of $n$, using the method of \cite{compute_sumdiv}. A harder problem is to compute the \textit{preimages} of $m$, all integers $n$ such that $s(n) = m$ expressed as $s^{-1}(m)$. Restricting to even values of $m$ this problem can be brute-forced by computing $s(n)$ for ranges of $n$, a conjecture similar to \cite{sumdiv_range} is useful to select the values of $n$.
+
+\begin{conjecture} If $2 | m$ and $s(n) = m$ then $n \in \{x| \text{ even } x, 2 \leq x \leq 2m \} \cup \{x^2| \text{ odd } x, 1 \leq x \leq m\}$
+
+    If $2 | n$ then $s(n) = 1+ 2 + \frac{n}{2} + x $ so $s(n) > \frac{n}{2}$;
+
+    \hspace{\parindent}thus $s(n) > m$ if $n > 2m$.
+
+    If $2 \nmid n$ then $s(n) = m$ if and only if $n$ is an odd square,
+
+    \hspace{\parindent}thus $s(n) = 1 + \sqrt{n} + x$ and $s(n) > \sqrt{n}$. So $s(n) > m$ if $n > m^2$.
 \end{conjecture}
-\section{Pomerance-Yang Algorithm: Tabulation of Even k-Parent Numbers}
+
+\begin{proposition} $s(n)$ is even if and only if
+
+    $n = (2m+1)^2$, or
+
+    $2 | n$ and $(n \neq m^2 \text{ or } n \neq 2m^2)$.
+\end{proposition}
+
+This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, most values $s(n)$ will be disregarded when searching for $s(n) = m$. It is more palatable to apply this method to compute the preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
+
+\subsection{Pomerance-Yang Algorithm}
+We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all integers less than or equal to the bound $x$. 
+
+\begin{algorithm}[H]
+    \caption{Pomerance-Yang}
+    \label{alg:pomyang}
+    \begin{algorithmic}[1]
+        \Procedure{Enumerate\_kParent}{$x$}
+        \State{$f[i] \gets 1,\, \forall i \in [1, x]$}
+        \ForAll{odd $m \in [1, x]$}
+        \If{$2 | \sigma(m)$}
+        \State $t \gets 3\sigma(m) - 2m$
+        \While{$t \leq x$}
+        \State{$f[t] \gets f[t] + 1$}
+        \State{$t \gets 2t + \sigma(m)$}
+        \EndWhile
+        \EndIf
+        \If{$\sigma(m) = m+1$} \Comment{if $m$ is prime}
+        \State{$f[m+1] \gets f[m+1] + 1$}
+        \EndIf
+        \EndFor
+        \ForAll{odd composite $m \in [1, x^{2/3})$}
+        \If{$s(m^2) \leq x$}
+        \State{$f[s(m^2)] \gets f[s(m^2)] + 1$}
+        \EndIf
+        \EndFor
+        \State{\textbf{return} $f$}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. Extending this work to compute the density of $k$-parent numbers I have re-implemented the algorithm and can report a substantial performance improvement. 
 
 
-\cite{pomYang}
 \bibliographystyle{apalike}
 \bibliography{kparent_final_report}
 \end{document}

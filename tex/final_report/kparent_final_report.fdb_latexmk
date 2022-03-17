@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex kparent_final_report"] 1646884227 "kparent_final_report.aux" "kparent_final_report.bbl" "kparent_final_report" 1646934731
+["bibtex kparent_final_report"] 1647124748 "kparent_final_report.aux" "kparent_final_report.bbl" "kparent_final_report" 1647125609
   "/usr/local/texlive/2021/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "kparent_final_report.aux" 1646934731 1211 fcd5bd9084b89307b394130d02d9540e "pdflatex"
-  "kparent_final_report.bib" 1645683498 3937 928140df512c2e0cf72dee5e73e36a1f ""
+  "kparent_final_report.aux" 1647125609 1976 5884af2bb6446f9ca3eb5c0edc97452e "pdflatex"
+  "kparent_final_report.bib" 1647121549 4993 13c0969b766f97f52a325959940cea66 ""
   (generated)
   "kparent_final_report.bbl"
   "kparent_final_report.blg"
-["pdflatex"] 1646934731 "/home/guinn8/Code/aliquot/tex/final_report/kparent_final_report.tex" "kparent_final_report.pdf" "kparent_final_report" 1646934731
-  "/home/guinn8/Code/aliquot/tex/final_report/kparent_final_report.tex" 1646934731 1532 f832d24a8de3421dba608d3a28fbf401 ""
+["pdflatex"] 1647125609 "/home/guinn8/Code/aliquot/tex/final_report/kparent_final_report.tex" "kparent_final_report.pdf" "kparent_final_report" 1647125609
+  "/home/guinn8/Code/aliquot/tex/final_report/kparent_final_report.tex" 1647125609 4496 f7b09f09d77a8dbc62c640ca6932b586 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -19,6 +19,7 @@
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
+  "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm" 1136768653 1300 63a6111ee6274895728663cf4b4e7e81 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1136768653 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -34,7 +35,7 @@
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1248133631 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
-  "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
+  "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb" 1248133631 32001 6aeea3afe875097b1eb0da29acd61e28 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
@@ -42,9 +43,12 @@
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
+  "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1248133631 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
+  "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
+  "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2021/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/usr/local/texlive/2021/texmf-dist/tex/generic/babel-english/english.ldf" 1496785618 7008 9ff5fdcc865b01beca2b0fe4a46231d4 ""
@@ -112,10 +116,10 @@
   "/usr/local/texlive/2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1646880566 2797779 6cd259d26b87ac24ddf9f79441556861 ""
   "/usr/local/texlive/2021/texmf.cnf" 1646880529 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
   "breakcites.sty" 1646882754 615 0a157db121fb266f4be4180b141d5b8c ""
-  "kparent_final_report.aux" 1646934731 1211 fcd5bd9084b89307b394130d02d9540e "pdflatex"
-  "kparent_final_report.bbl" 1646884227 279 8ff66613b311c01ef454284d965b0540 "bibtex kparent_final_report"
-  "kparent_final_report.out" 1646934731 818 56bb6bfb3ff1d161c3f6647bf8ae8ca1 "pdflatex"
-  "kparent_final_report.tex" 1646934731 1532 f832d24a8de3421dba608d3a28fbf401 ""
+  "kparent_final_report.aux" 1647125609 1976 5884af2bb6446f9ca3eb5c0edc97452e "pdflatex"
+  "kparent_final_report.bbl" 1647124748 917 369ac10b5309d7d79f5c65fc621cf7a9 "bibtex kparent_final_report"
+  "kparent_final_report.out" 1647125609 977 af5f4106be575f621d5b10326a195d49 "pdflatex"
+  "kparent_final_report.tex" 1647125609 4496 f7b09f09d77a8dbc62c640ca6932b586 ""
   (generated)
   "kparent_final_report.aux"
   "kparent_final_report.log"

@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex kparent_aliquot_interm_report"] 1646886400 "kparent_aliquot_interm_report.aux" "kparent_aliquot_interm_report.bbl" "kparent_aliquot_interm_report" 1646886401
+["bibtex kparent_aliquot_interm_report"] 1647069750 "kparent_aliquot_interm_report.aux" "kparent_aliquot_interm_report.bbl" "kparent_aliquot_interm_report" 1647069750
   "/usr/local/texlive/2021/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
   "aliquot_proposal.bib" 0 -1 0 ""
   "kparent_aliquot_interm_report.aux" 1646886401 7354 b0613fb17d89919ca2f2d7a4efdb8a36 "pdflatex"
   (generated)
   "kparent_aliquot_interm_report.bbl"
   "kparent_aliquot_interm_report.blg"
-["pdflatex"] 1646886400 "/home/guinn8/Code/aliquot/tex/kparent_aliquot_interm_report/kparent_aliquot_interm_report.tex" "kparent_aliquot_interm_report.pdf" "kparent_aliquot_interm_report" 1646886401
+["pdflatex"] 1646886400 "/home/guinn8/Code/aliquot/tex/kparent_aliquot_interm_report/kparent_aliquot_interm_report.tex" "kparent_aliquot_interm_report.pdf" "kparent_aliquot_interm_report" 1647069750
   "/home/guinn8/Code/aliquot/tex/kparent_aliquot_interm_report/kparent_aliquot_interm_report.tex" 1645683494 43330 33ccab8037f1d12f558ebf36ab64b557 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""

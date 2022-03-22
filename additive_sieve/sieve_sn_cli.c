@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+
 #include "../additive_sieve/sieve_sn.h"
 
 int main(int argc, char **argv) {
@@ -25,9 +26,9 @@ int main(int argc, char **argv) {
     enumerate_handle_t sts = init_enumerate_sn(max, blk_len);
     enumerated_range_t *range;
     while (NULL != (range = enumerate_sn(sts))) {
-        for (size_t i = 0; i < range->len; i++) {
-            printf("%ld\n", range->s[i] - (i + range->base));
-        }
+//        for (size_t i = 0; i < range->len; i++) {
+//            printf("%ld\n", range->s[i] - (i + range->base));
+//        }
     }
 
     destroy_enumerate_status(sts);

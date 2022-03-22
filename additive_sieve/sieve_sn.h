@@ -12,6 +12,7 @@
 #define FAST_ENNUM_SN_SN_H_
 
 #include <stdint.h>
+#include <stddef.h>
 
 typedef struct {
     uint64_t *s;

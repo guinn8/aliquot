@@ -37,14 +37,31 @@
 \begin{document}
 \maketitle
 
-\section{Model Density of k-Parent Numbers}
-\subsection{Pollack-Pomerance Heuristics}
+\section{Introduction}
+\subsection{Sum-of-Proper-Divisors Function}
+\subsection{Aliquot Sequences}
+\subsection{Non-Aliquots and k-Parent Numbers}
+
+\section{Modeling the Density of k-Parent Numbers}
+Consider the following set,
+$$N_a = \{2,5,52,88,96,120,124,146,162,188,206,210,216,238,246,248, \dots\}$$
+which contains non-aliquot numbers \cite{sloane_2022}, if $n \in N_a$ then $\nexists m \text{ s.t. } s(m) = n$ or $\#s^{-1}(n) = 0$. The name non-aliquot implies that these numbers do not appear in aliquot sequences, however every sequence begins with a member of $N_a$; if $\#s^{-1}(n) > 0$ then there must be some preceding number in the same sequence.
+
+We are interested in the natural density of $N_a$, where
+$$d(N_a) = \lim_{n \to \infty}\frac{|N_a \cap[1,n]|}{n},$$
+in other words determining the proportion of numbers that are non-aliquot. Using probabilistic methods \cite{pollPom} precisely model the density of non-aliquot numbers.
+\begin{conjecture}{\textit{The set of non-aliquot numbers has asymptotic density $\Delta$},}
+    $$\Delta = \lim_{y \to \infty}\frac{1}{\log y} \sum_{\substack{a\leq y \\ 2 | a}} \frac{1}{a}\text{e}^{-a/s(a)}.$$
+\end{conjecture}
+
+This model is an application of the "balls into bins" statistics problem, estimating the number of empty bins after throwing $m$ balls randomly into $n$ bins;
+$$\#[\text{empty bins}] = n(1- \frac{1}{n})^m.$$
 
 \section{Tabulation of k-Parent Numbers}
 \subsection{Brute-Forcing Preimages}
-Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of $n$ under the sum-of-proper-divisors function. The problem is equivalent to the prime-factorization of $n$, using the method of \cite{compute_sumdiv}. A harder problem is to compute the \textit{preimages} of $m$, all integers $n$ such that $s(n) = m$ expressed as $s^{-1}(m)$. Restricting to even values of $m$ this problem can be brute-forced by computing $s(n)$ for ranges of $n$, a conjecture similar to \cite{sumdiv_range} is useful to select the values of $n$.
+Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of $n$ under the sum-of-proper-divisors function. Computing $s(n)$ is equivalent to the prime-factorization of $n$, using the method of \cite{compute_sumdiv}. A harder problem is to compute the \textit{preimages} of $m$, all integers $n$ such that $s(n) = m$ expressed as $s^{-1}(m)$. Restricting to even values of $m$ this problem can be brute-forced by computing $s(n)$ for ranges of $n$, a conjecture similar to \cite{sumdiv_range} is useful to select the values of $n$.
 
-\begin{conjecture} If $2 | m$ and $s(n) = m$ then $n \in \{x| \text{ even } x, 2 \leq x \leq 2m \} \cup \{x^2| \text{ odd } x, 1 \leq x \leq m\}$
+\begin{conjecture} \textit{If $2 | m$ and $s(n) = m$ then $n \in \{x| \text{ even } x, 2 \leq x \leq 2m \} \cup \{x^2| \text{ odd } x, 1 \leq x \leq m\}$}
 
     If $2 | n$ then $s(n) = 1+ 2 + \frac{n}{2} + x $ so $s(n) > \frac{n}{2}$;
 
@@ -62,10 +79,10 @@ Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of
     $2 | n$ and $(n \neq m^2 \text{ or } n \neq 2m^2)$.
 \end{proposition}
 
-This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, most values $s(n)$ will be disregarded when searching for $s(n) = m$. It is more palatable to apply this method to compute the preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
+This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, most values will be disregarded when searching for $s(n) = m$. It is more palatable to compute preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
 
 \subsection{Pomerance-Yang Algorithm}
-We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all integers less than or equal to the bound $x$. 
+We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all integers less than or equal to the bound $x$.
 
 \begin{algorithm}[H]
     \caption{Pomerance-Yang}
@@ -95,7 +112,7 @@ We can certainly do better than this brute-force approach for enumerating preima
     \end{algorithmic}
 \end{algorithm}
 
-Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. Extending this work to compute the density of $k$-parent numbers I have re-implemented the algorithm and can report a substantial performance improvement. 
+Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. Extending this work to compute the density of $k$-parent numbers I have re-implemented the algorithm and can report a substantial performance improvement.
 
 
 \bibliographystyle{apalike}

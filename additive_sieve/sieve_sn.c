@@ -1,19 +1,21 @@
 /**
  * @file sieve_sn.c
  * @author Gavin Guinn (gavinguinn1@gmail.com)
- * @brief 
+ * @brief
  * @date 2021-11-25
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
-#include <stdlib.h>
-#include <math.h>
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
 #include "../additive_sieve/sieve_sn.h"
+
+#include <assert.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
 typedef struct enumerate_status_ {
     size_t max;
     size_t sqrt_max;
@@ -56,26 +58,18 @@ enumerated_range_t *enumerate_sn(enumerate_handle_t sts) {
 
     if (sts->blk <= sts->max) {
         sts->range.base = (sts->blk - sts->range.len) + 1;  // offset from block index to integer
-        uint32_t max_div = sts->sqrt_max;  // max divisor for any item in block
+        uint32_t max_div = sts->sqrt_max;                   // max divisor for any item in block
         while (1 <= max_div) {
             for (size_t i = 1; i <= max_div; i++) {
-                // if (sts->mult[i] <= sts->blk) {
-                //     const size_t n = sts->mult[i] - sts->range.base;
+                if (sts->mult[i] <= sts->blk) {
+                    const size_t n = sts->mult[i] - sts->range.base;
 
-                //     sts->range.s[n] += i;
-                //     sts->range.s[n] += (sts->iter[i] > sts->sqrt_max) ? sts->iter[i] : 0;  // accumlate the divisor's pair
+                    sts->range.s[n] += i;
+                    sts->range.s[n] += (sts->iter[i] > sts->sqrt_max) ? sts->iter[i] : 0;  // accumlate the divisor's pair
 
-                //     sts->iter[i]++;
-                //     sts->mult[i] += i;
-                // }
-                ////////////////////////
-                const size_t n = sts->mult[i] - sts->range.base;
-                const bool cond = (sts->mult[i] <= sts->blk);
-                sts->range.s[n] += (i * cond);
-                sts->range.s[n] += sts->iter[i] * cond * (sts->iter[i] > sts->sqrt_max);  // accumlate the divisor's pair
-
-                sts->iter[i] += cond;
-                sts->mult[i] += (i * cond);
+                    sts->iter[i]++;
+                    sts->mult[i] += i;
+                }
             }
 
             while (sts->mult[max_div] > sts->blk) {  // next max_div is largest multiple in block

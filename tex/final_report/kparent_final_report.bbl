@@ -15,10 +15,20 @@ Luca, F. and Pomerance, C. (2015).
 \newblock The range of the sum-of-proper-divisors function.
 \newblock {\em Acta Arithmetica}, 168:187--199.
 
+\bibitem[Pollack and Pomerance, 2016]{pollPom}
+Pollack, P. and Pomerance, C. (2016).
+\newblock Some problems of erdős on the sum-of-divisors function.
+\newblock {\em Transactions of the American Mathematical Society, Series B},
+  3:1--26.
+
 \bibitem[Pomerance and Yang, 2014]{pomYang}
 Pomerance, C. and Yang, H.-S. (2014).
 \newblock Variant of a theorem of erdös on the sum-of-proper-divisors
   function.
 \newblock {\em Mathematics of Computation}, 83(288):1903--1913.
+
+\bibitem[Sloane, 2022]{sloane_2022}
+Sloane, N. (2022).
+\newblock A005114.
 
 \end{thebibliography}

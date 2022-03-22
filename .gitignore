@@ -11,3 +11,7 @@ cli
 __py_cache__
 */docs/latex
 *.pyc
+*.fls
+*.aux
+*.gz
+*.fdb_latexmk

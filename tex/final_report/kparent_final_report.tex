@@ -57,6 +57,30 @@ in other words determining the proportion of numbers that are non-aliquot. Using
 This model is an application of the "balls into bins" statistics problem, estimating the number of empty bins after throwing $m$ balls randomly into $n$ bins;
 $$\#[\text{empty bins}] = n(1- \frac{1}{n})^m.$$
 
+To apply this technique the authors begin by defining a series of disjoint subsets, using the following
+$$A_y = \text{ lcm}[1, 2, ..., y]$$
+define the following sets for a positive integers $a | A_y$:
+$$T_a = \{n : \text{gcd}(n, A_y) = a\}$$
+For example, let $A_y = 6$ then $a \in \{1,2,3,6\}$
+
+\begin{center}
+\begin{tabular}{ |c|c|} 
+ \hline
+ $a$ & $T_a$\\ 
+ \hline
+ 1 & \{1, 5, 7, 11, 13, 17, 19, ...\}\\ 
+ \hline
+ 2 & \{2, 4, 8, 14, 16, 20, 22, ...\}\\ 
+ \hline
+ 3 & \{3, 9, 15, 21, 27, 33, 39, ...  \}\\ 
+ \hline
+ 6 & \{6, 12, 18, 24, 30, 36, 42, ... \}\\ 
+ \hline
+
+\end{tabular}
+\end{center}
+
+
 \section{Tabulation of k-Parent Numbers}
 \subsection{Brute-Forcing Preimages}
 Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of $n$ under the sum-of-proper-divisors function. Computing $s(n)$ is equivalent to the prime-factorization of $n$, using the method of \cite{compute_sumdiv}. A harder problem is to compute the \textit{preimages} of $m$, all integers $n$ such that $s(n) = m$ expressed as $s^{-1}(m)$. Restricting to even values of $m$ this problem can be brute-forced by computing $s(n)$ for ranges of $n$, a conjecture similar to \cite{sumdiv_range} is useful to select the values of $n$.
@@ -113,7 +137,6 @@ We can certainly do better than this brute-force approach for enumerating preima
 \end{algorithm}
 
 Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. Extending this work to compute the density of $k$-parent numbers I have re-implemented the algorithm and can report a substantial performance improvement.
-
 
 \bibliographystyle{apalike}
 \bibliography{kparent_final_report}

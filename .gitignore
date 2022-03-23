@@ -16,3 +16,5 @@ __py_cache__
 *.gz
 *.fdb_latexmk
 *.log
+*.bbl
+*.blg

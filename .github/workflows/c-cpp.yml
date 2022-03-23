@@ -16,7 +16,7 @@ jobs:
     - name: make_kparent
       run: make -C pomyang_kparent
     - name: make model
-      run: make -C huer_model
+      run: make -C pollpom_kparent
     - name: make seive
       run: make -C additive_sieve
       

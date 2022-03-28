@@ -213,12 +213,12 @@ which models the probability that some member of $T_a(x)$ is non-aliquot.
 
 The authors note a useful asymptotic equivalence,
 $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a}.$$
-Since we are interested in the asymptotic behavior we take the limit of the bound $x$ and substitute in the equivalence, 
+Since we are interested in the asymptotic behavior we take the limit of the bound $x$ and substitute in the equivalence,
 \begin{align*}
-    &\lim_{x \to \infty}\left(1-\frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{(\phi(A_y) \cdot x)/( A_y \cdot s(a))}\\
-    &= e^{-a/s(a)}.
+     & \lim_{x \to \infty}\left(1-\frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{(\phi(A_y) \cdot x)/( A_y \cdot s(a))} \\
+     & = e^{-a/s(a)}.
 \end{align*}
-This expression models the probability that a member of the unbounded set $T_a$ is non-aliquot. An intuition for this simplification can be gained by considering a definition of Euler's number,  
+This expression models the probability that a member of the unbounded set $T_a$ is non-aliquot. An intuition for this simplification can be gained by considering a definition of Euler's number,
 $$\lim_{x \to \infty} (1- \frac{1}{x})^x = e.$$
 
 At this point we have a model for non-aliquot density within any set $T_a$, we would like to extend this to model non-aliquot density over all naturals. To accomplish this we again utilize the equivalence,
@@ -226,16 +226,17 @@ $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a},$$
 noticing that the ratio $\phi(A_y)/ (a \cdot A_y)$ expresses the probability that some natural is in $T_a$, see \cite{dens} for a similar treatment. Supposing $n \in T_a$ and $s^{-1}(n)$ are independent events model the joint probability,
 $$\mathbb{P}[\text{$T_a$ and non-aliquot}]= \frac{\phi(A_y)}{ A_y \cdot a} \cdot  e^{-a/s(a)}.$$
 
-Since each set $T_a$ is disjoint we can apply the additive property to find the natural density of non-aliquot numbers: 
+Since each set $T_a$ is disjoint we can apply the additive property to find the natural density of non-aliquot numbers:
 \begin{align*}
-     \Delta &= \lim_{y \to \infty}  \sum_{\subalign{a&|A_y\\2&|a}} \frac{\phi(A_y)}{a \cdot A_y} \cdot e^{-a/s(a)}\\ \\
-     &= \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\subalign{a&|A_y \\ 2 &| a}} \frac{1}{a} e^{-a/s(a)}
+    \Delta & = \lim_{y \to \infty}  \sum_{\subalign{a                      & |A_y \\2&|a}} \frac{\phi(A_y)}{a \cdot A_y} \cdot e^{-a/s(a)}\\ \\
+           & = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\subalign{a & |A_y \\ 2 &| a}} \frac{1}{a} e^{-a/s(a)}
 \end{align*}
 We restrict $a$ to even values as $a$'s parity determines the parity of the entire set  $T_a$ and we know that the density of odd aliquot orphans quickly vanishes
 
 \subsection{k-Parent Generalization}
 
-\textbf{Note: Unedited copy from final report for NSERC workterm.}
+\textbf{Note: Unedited copy from final report for NSERC workterm.\\
+    Todo: Clean up non-formal language.}
 
 Luckily people interested in statistics have done the work for us, say we have $n$ 'bins', $m$ 'balls', and want to know the probability of a specific bin has exactly $k$ balls.  $$\mathbb{P}[k \text{ balls in bin}] = {m \choose k } \frac{1}{n^k} (1- \frac{1}{n})^{m-k}$$
 This gives a fairly simple strategy to generalize the Pollack/Pomerance heuristic model, simply swap out the probability of getting 0-balls in a bin for the general equation. Plugging in the same values of:
@@ -253,7 +254,33 @@ The authors continue to establish an easier to compute expression for $\Delta$: 
            & = \lim_{y \to \infty} \frac{1}{\log y} \sum_{\substack{a\leq y      \\ 2 | a}} \frac{1}{a} e^{-a/s(a)}&(\text{3.4})\\
 \end{align*}
 
-This suggests that the density of $k$ parent numbers can be simplified to:    $$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
+This suggests that the density of $k$ parent numbers can be simplified to:
+$$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
+
+Computed estimates of this limit are given in Table \ref{tab:pomyang_kparent}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{| c | c | c | c | c | c | c | c | c | c |}
+        \hline
+        $\Delta_k$       & $k = 0$  & $k = 1$  & $k = 2$  & $k = 3$  & $k = 4$  & $k = 5$  \\
+        \hline
+        $y = 10^2$       & 0.143753 & 0.162516 & 0.103907 & 0.049607 & 0.019508 & 0.006589 \\
+        $y = 10^3$       & 0.155222 & 0.164297 & 0.100006 & 0.046153 & 0.017759 & 0.005918 \\
+        $y = 10^4$       & 0.161059 & 0.165306 & 0.098209 & 0.044498 & 0.016892 & 0.005575 \\
+        $y = 10^5$       & 0.164577 & 0.165923 & 0.097137 & 0.043506 & 0.016373 & 0.005369 \\
+        $y = 10^6$       & 0.166923 & 0.166336 & 0.096423 & 0.042846 & 0.016027 & 0.005232 \\
+        $y = 10^7$       & 0.168599 & 0.166631 & 0.095912 & 0.042373 & 0.015779 & 0.005133 \\
+        $y = 10^8$       & 0.169857 & 0.166853 & 0.095530 & 0.042019 & 0.015594 & 0.005060 \\
+        $y = 10^9$       & 0.170834 & 0.167025 & 0.095232 & 0.041744 & 0.015449 & 0.005003 \\
+        $y = 10^{10}$    & 0.171617 & 0.167162 & 0.094994 & 0.041524 & 0.015334 & 0.004957 \\
+        $y = 2(10^{10})$ & 0.171822 & 0.167198 & 0.094931 & 0.041466 & 0.015303 & 0.004945 \\
+        \hline
+    \end{tabular}
+    \caption{Computed estimates of $k$-parent density hueristic model, note $\Delta_0$ matches \cite{pollPom} nonaliquot density at reported bound $y = 2(10^{10})$.}
+    \label{tab:pomyang_kparent}
+\end{table}
+
 
 \subsection{Open Work}
 \begin{enumerate}
@@ -323,6 +350,52 @@ We can certainly do better than this brute-force approach for enumerating preima
 \end{algorithm}
 
 Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. Extending this work to compute the density of $k$-parent numbers I have re-implemented the algorithm and can report a substantial performance improvement.
+
+\appendix
+\section{k-Parent Density Model Simplification}
+\subsection*{Prove that:}
+\begin{align*}
+    \mathbb{P}[k \text{ parents}] & =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k} \\
+                                  & = \frac{a^{k}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}
+\end{align*}
+
+\subsection*{Proof:} \begin{align*}
+    \mathbb{P}[k \text{ parents}] & =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k} \\
+                                  & =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k \cdot \lim_{x \to \infty}\left(1- \frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}           \\
+                                  & =  \lim_{x \to \infty}\mathbb{A}  \cdot \lim_{x \to \infty} \mathbb{B}
+\end{align*}
+
+\subsection*{Part $\mathbb{A}$:}\begin{align*}
+    \lim_{x \to \infty}\mathbb{A} & = \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k                                                                                                                                     \\\\
+                                  & = \lim_{x \to \infty} \frac{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}\right)!}{k!\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - k \right)!} \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k           & \text{(Def. Binomial Coefficient)}              \\\\
+                                  & = \frac{1}{k!}\lim_{x \to \infty} \frac{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}\right)!}{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - k \right)!} \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k & \text{(Constant coefficient limit law)}         \\\\
+                                  & = \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - i \right ]\left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k                                             & \text{(See note [1])}                           \\\\
+                                  & = \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - i\right)\left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right) \right]                                   & \text{(See note [2])}                           \\\\
+                                  & = \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\frac{\phi(A_y) \cdot A_y  \cdot x \cdot a}{ \phi(A_y) \cdot A_y \cdot   x \cdot s(a)} - \frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x}  \right]                                                        \\\\
+                                  & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[\lim_{x \to \infty} \left(   \frac{a}{ s(a)} - \frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x} \right) \right]                                                            & \text{(Distribution over product limit law)}    \\\\
+                                  & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[  \lim_{x \to \infty} \left(   \frac{a}{ s(a)}\right) -  \lim_{x \to \infty}\left(\frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x} \right) \right]                         & \text{(Distribution over difference limit law)} \\\\
+                                  & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[     \frac{a}{ s(a)} \right]                                                                                                                                                                                               \\\\
+                                  & =\frac{a^k}{k! \cdot s(a)^k}                                                                                                                                                                                      & \left( \prod_{i = 0}^{k-1}c = c^k \right)
+\end{align*}
+
+\subsection*{Part $\mathbb{B}$:}
+Note: simplification checked using Wolfram-Alpha.
+\begin{align*}
+    \lim_{x \to \infty} \mathbb{B} & = \lim_{x \to \infty}\left(1- \frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k} \\\\
+                                   & = e^{-a/s(a)}
+\end{align*}
+
+\subsubsection*{Note [1]}
+\begin{align*}
+    \frac{x!}{(x-k)!} & = \frac{x(x-1)(x-2) \text{ } ...\text{ } (x-(k-1))(x-k)!  }{(x-k)!} & \text{(Def. factorial)} \\\\
+                      & = x(x-1)(x-2) \text{ } ...\text{ } (x-(k-1))                                                  \\\\
+                      & = \prod_{i = 0}^{k-1}(x-i)
+\end{align*}
+\subsubsection*{Note [2]}\begin{align*}
+    \prod_{i=0}^{k-1}(x-i) \cdot y^k & = \overbrace {(x)(x-1)(x-2) \text{ } ... \text{ } (x-k)}^{k \text{ terms}} \text{ } \cdot \text{ }y^k \\
+                                     & = y(x) \cdot  y(x-1) \cdot y(x-2) \text{ } ... \text{ } y(x-k)                                        \\
+                                     & = \prod_{i=0}^{k-1} y(x-i)
+\end{align*}
 
 \bibliographystyle{amsplain}
 \bibliography{kparent_final_report}

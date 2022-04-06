@@ -281,7 +281,6 @@ Computed estimates of this limit are given in Table \ref{tab:pomyang_kparent}.
     \label{tab:pomyang_kparent}
 \end{table}
 
-
 \subsection{Open Work}
 \begin{enumerate}
     \item Prove: \begin{align*}
@@ -319,7 +318,7 @@ Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of
 This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, most values will be disregarded when searching for $s(n) = m$. It is more palatable to compute preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
 
 \subsection{Pomerance-Yang Algorithm}
-We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all integers less than or equal to the bound $x$.
+We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all even integers $n$ less than or equal to the bound $x$.
 
 \begin{algorithm}[H]
     \caption{Pomerance-Yang}
@@ -349,7 +348,15 @@ We can certainly do better than this brute-force approach for enumerating preima
     \end{algorithmic}
 \end{algorithm}
 
-Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. Extending this work to compute the density of $k$-parent numbers I have re-implemented the algorithm and can report a substantial performance improvement.
+Algorithm \ref{alg:pomyang} was computed on a large scale by \cite{chum_guy_jacobson_mosunov_2018} who used the result to compute the geometric mean of $s(n) / n$ weighted by $\#s^{-1}(n)$. To gather data on the density of $k$-parent numbers I have re-implemented this algorithm utilizing techniques that improve performance and data compression. These improvements have enabled the collection of non-aliquot counts up-to $2^{44}$ from the previous maximum result of $2^{40}$ while utilizing substantially less CPU time. In concrete terms \cite{chum_guy_jacobson_mosunov_2018} utilize 662 CPU days to compute $\#s^{-1}(n)$ for even $n \leq 2^{40}$, my implementation required 3.6 CPU days. 
+
+The performance improvement can largely be credited to avoiding any disc operations. The Pomerance-Yang algorithm requires $\sigma(m)$ for odd $m$ less than or equal to the bound $x$, these values are computed using a sieving technique related to the well known Segmented Sieve of Eratosthenes. This input is computationally expensive, \cite{chum_guy_jacobson_mosunov_2018} choose to amortize this cost by storing the result to disc allowing reuse over multiple runs of the Pomerance-Yang algorithm. However in practice it appears more efficient to sieve ranges of $\sigma(m)$ and to immediately pass this array as input to the Pomerance-Yang algorithm. Suggesting that re-sieving $\sigma(m)$ is less expensive than loading the pre-computed result from disc to memory.
+
+This variant of the Pomerance-Yang algorithm outputs a buffer with each index corresponding to an even integer $n$ and with the value storing $\#s^{-1}(n)$. Like the input this buffer is managed completely in memory to avoid the overhead of disc operations. One challenge of this approach is fitting the output buffer into the constrained size of memory, the simplest solution is to allocate a byte for each even $n$ up-to the bound $x$. This requires at least $x/2$ bytes of memory, for instance at $x = 2^{40}$ the algorithm requires approximately \texttt{550GB} which is well within the \texttt{3TB} provided by the \texttt{bigmem} partition on uCalgary's Advanced Research Computing (ARC) cluster. However allocating a byte for each $n$ is excessive for most use cases, enumerating non-aliquots requires only a single bit for each $n$. A bit-array does not come naturally to modern low-level languages as the smallest addressable unit of memory is a byte, thus in C the following expression is true,
+$$\texttt{sizeof(uint8\_t) == sizeof(bool)}.$$
+The \texttt{PackedArray} data structure \cite{packedArray} provides an interface to manipulate an array with values stored in a user definable number of bits. Thus a 1-bit PackedArray can be defined which can be used to enumerate non-aliquots with a memory requirement of $x/16$, thus enumerating up-to $2^{44}$ requires \texttt{1.1TB} rather than \texttt{8.8TB} for a byte array.
+
+Like the Pomerance-Yang implementation of \cite{chum_guy_jacobson_mosunov_2018} my implementation takes advantage of the natural parallelism of the algorithm, each iteration of the \texttt{for} loops on lines 3 and 15 of Algorithm \ref{alg:pomyang} are totally independent. A challenge in my \texttt{PackedArray} implementation is managing data races caused multiple threads simultaneously incrementing values in the output buffer. In the byte array implementation this problem can be trivially solved by declaring updates to the output buffer as \texttt{atomic}. An array of mutex's provides a performant mechanism to synchronize shared \texttt{PackedArray} access, each mutex guarding access to a range of indices in the output buffer. This approach yields significant performance improvements compared to using a single mutex to guard all updates to the output \texttt{PackedArray}.   
 
 \appendix
 \section{k-Parent Density Model Simplification}

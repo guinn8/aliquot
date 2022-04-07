@@ -66,5 +66,6 @@
         "Mosunov",
         "Pomerance",
         "preimages"
-    ]
+    ],
+    "latex-workshop.latex.autoBuild.run": "onSave"
 }

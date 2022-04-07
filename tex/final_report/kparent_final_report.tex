@@ -20,6 +20,7 @@
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
 \usepackage{pgfplots}
+\allowdisplaybreaks
 
 \makeatletter
 \newcommand{\subalign}[1]{%
@@ -281,18 +282,6 @@ Computed estimates of this limit are given in Table \ref{tab:pomyang_kparent}.
     \label{tab:pomyang_kparent}
 \end{table}
 
-\subsection{Open Work}
-\begin{enumerate}
-    \item Prove: \begin{align*}
-              \Delta_k & = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\substack{a | A_y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}\\
-                       & = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y       \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}
-          \end{align*}
-
-    \item Given that: $$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
-          Estimates the density of \textbf{even} $k$ parent numbers over all naturals, does:$$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{a\leq y} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$ Estimate the density of \textbf{all} $k$-parent numbers over all naturals? (note that the condition $2|a$ is removed from the sum)
-\end{enumerate}
-
-
 \section{Tabulation of k-Parent Numbers}
 \subsection{Brute-Forcing Preimages}
 Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of $n$ under the sum-of-proper-divisors function. Computing $s(n)$ is equivalent to the prime-factorization of $n$, using the method of \cite{compute_sumdiv}. A harder problem is to compute the \textit{preimages} of $m$, all integers $n$ such that $s(n) = m$ expressed as $s^{-1}(m)$. Restricting to even values of $m$ this problem can be brute-forced by computing $s(n)$ for ranges of $n$, a conjecture similar to \cite{sumdiv_range} is useful to select the values of $n$.
@@ -301,7 +290,7 @@ Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of
     $$n = (2m+1)^2 \text{, or}$$
     $$2 | n \text{ and } (n \neq m^2 \text{ or } n \neq 2m^2)$$.
 \end{proposition}
-\pagebreak
+
 \begin{conjecture} \textit{If $2 | m$ and $s(n) = m$ then $n \in \{x| \text{ even } x, 2 \leq x \leq 2m \} \cup \{x^2| \text{ odd } x, 1 \leq x \leq m\}$}
     \begin{itemize}
         \item If $2 | n$ then $s(n) = 1+ 2 + \frac{n}{2} + x $ so $s(n) > \frac{n}{2}$;\\
@@ -313,14 +302,12 @@ Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of
     \end{itemize}
 \end{conjecture}
 
-
-
 This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, most values will be disregarded when searching for $s(n) = m$. It is more palatable to compute preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
 
 \subsection{Pomerance-Yang Algorithm}
 We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all even integers $n$ less than or equal to the bound $x$.
 
-\begin{algorithm}[H]
+\begin{algorithm}[]
     \caption{Pomerance-Yang}
     \label{alg:pomyang}
     \begin{algorithmic}[1]
@@ -357,6 +344,12 @@ $$\texttt{sizeof(uint8\_t) == sizeof(bool)}.$$
 The \texttt{PackedArray} data structure \cite{packedArray} provides an interface to manipulate an array with values stored in a user definable number of bits. Thus a 1-bit PackedArray can be defined which can be used to enumerate non-aliquots with a memory requirement of $x/16$, thus enumerating up-to $2^{44}$ requires \texttt{1.1TB} rather than \texttt{8.8TB} for a byte array.
 
 Like the Pomerance-Yang implementation of \cite{chum_guy_jacobson_mosunov_2018} my implementation takes advantage of the natural parallelism of the algorithm, each iteration of the \texttt{for} loops on lines 3 and 15 of Algorithm \ref{alg:pomyang} are totally independent. A challenge in my \texttt{PackedArray} implementation is managing data races caused multiple threads simultaneously incrementing values in the output buffer. In the byte array implementation this problem can be trivially solved by declaring updates to the output buffer as \texttt{atomic}. An array of mutex's provides a performant mechanism to synchronize shared \texttt{PackedArray} access, each mutex guarding access to a range of indices in the output buffer. This approach yields significant performance improvements compared to using a single mutex to guard all updates to the output \texttt{PackedArray}.
+
+Table \ref{tab:pomyang_all} summarizes the density of $k$-parent numbers computed with my implementation of the Pomerance-Yang algorithm. For $y  = 2^{43}$ and $y = 2^{44}$ the output \texttt{PackedArray} was allocated 2 and 1 bits respectively. These results extend \cite{chum_guy_jacobson_mosunov_2018} and match all reported non-aliquot densities. 
+
+\section{Comparison of k-Parent Heuristic and Computed Densities}
+The purpose of this project is to extend the precise statistical model for non-aliquot density of \cite{pollPom} to estimate the density of $k$-parent numbers. The Pomerance-Yang algorithm is used to compute the real densities of k-parent numbers to validate the $k$-parent model's accuracy.  
+
 
 
 \pagebreak
@@ -443,11 +436,13 @@ Like the Pomerance-Yang implementation of \cite{chum_guy_jacobson_mosunov_2018} 
             $y = 2^{42}$             & 0.171763 & 0.169478              & 0.093641              & 0.039761              & 0.015076              & 0.005654              & 0.002265              & 0.001014              \\
             $y = 2^{43}$             & 0.172023 & 0.169408              & 0.093571              & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} \\
             $y = 2^{44}$             & 0.172264 & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-} & \multicolumn{1}{l}{-}
-        \end{tabular}
+        \end{tabular} 
     }
-    \caption{Densities of $k$-parent numbers up-to bound $y$, $P_k = \{n \,|\, s^{-1}(n) = k\}$.}
+    \label{tab:pomyang_all}
+    \caption{Computed densities of $k$-parent numbers up-to bound $y$, $P_k = \{n \,|\, s^{-1}(n) = k\}$.}
 \end{table}
 \pagebreak
+
 \section{k-Parent Density Model Simplification}
 \subsection*{Prove that:}
 \begin{align*}
@@ -463,7 +458,7 @@ Like the Pomerance-Yang implementation of \cite{chum_guy_jacobson_mosunov_2018} 
 \end{align*}
 
 \subsection*{Part $\mathbb{A}$:}
-\begin{align*}
+\begin{align*} 
     \lim_{x \to \infty}\mathbb{A} & = \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k                                                                                                                                     \\
                                   & = \lim_{x \to \infty} \frac{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}\right)!}{k!\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - k \right)!} \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k           & \text{(Def. Binomial Coefficient)}              \\
                                   & = \frac{1}{k!}\lim_{x \to \infty} \frac{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}\right)!}{\left(\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} - k \right)!} \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k & \text{(Constant coefficient limit law)}         \\
@@ -494,6 +489,17 @@ Note: simplification checked using Wolfram-Alpha.
                                      & = y(x) \cdot  y(x-1) \cdot y(x-2) \text{ } ... \text{ } y(x-k)                                        \\
                                      & = \prod_{i=0}^{k-1} y(x-i)
 \end{align*}
+
+\section{Open Work}
+\begin{enumerate}
+    \item Prove: \begin{align*}
+              \Delta_k & = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\substack{a | A_y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}\\
+                       & = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y       \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}
+          \end{align*}
+
+    \item Given that: $$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{\substack{a\leq y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
+          Estimates the density of \textbf{even} $k$ parent numbers over all naturals, does:$$\Delta_k = \lim_{y \to \infty} \frac{1}{\log y}\sum_{a\leq y} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$ Estimate the density of \textbf{all} $k$-parent numbers over all naturals? (note that the condition $2|a$ is removed from the sum)
+\end{enumerate}
 
 \bibliographystyle{amsplain}
 \bibliography{kparent_final_report}

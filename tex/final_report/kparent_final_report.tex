@@ -14,14 +14,14 @@
 \usepackage{algpseudocode, float}
 \usepackage{hyperref}
 \usepackage{graphicx}
-
+\usepackage[toc,page]{appendix}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
 \usepackage{pgfplots}
 \allowdisplaybreaks
-
+\usepackage{url}
 \makeatletter
 \newcommand{\subalign}[1]{%
   \vcenter{%
@@ -55,7 +55,7 @@
 \setlength{\parskip}{.5em}
 
 \title{$k$-Parent Aliquot Numbers: Counting Pre-Images Under the Sum-of-Proper-Divisors Function} 
-\author{Gavin Guinn\\{\small Supervisor: Michael J. Jacobson}}
+\author{Gavin Guinn\\\url{https://github.com/guinn8/aliquot}\\{ Supervisor: Michael J. Jacobson}}
 \date{December 2021}
 
 \begin{document}
@@ -88,20 +88,16 @@ It seems that cycles can form with arbitrary length \cite{chum_guy_jacobson_mosu
     $$a_0,\text{ }a_1 = s(a_0),\text{ }a_2 = s^2(a_0),\text{ }...$$
 \end{definition}
 %
-\begin{proposition}An aliquot sequence is bounded if and only if
-    $$\exists a_n,\,\forall a_m \text{ s.t. }a_n \geq a_m$$
-\end{proposition}
-%
 The aliquot sequence of 276,
 $$s(276) \rightarrow s(396) \rightarrow s(696) \rightarrow s(1104) \rightarrow s(1872)  \rightarrow ...$$
 is the smallest example that has not been shown to be bounded, \cite{zimmermann_2016} has followed the it's growth over 2090 iterations to values with over $200$ digits! The dichotomy between the seemingly unbounded growth of the $276$ sequence and the boundedness of the $12$ sequence gets to the most important open question relating to aliquot sequences:
 %
 \begin{conjecture}[Catalan-Dickson]
-    All aliquot sequences are bounded and thus must terminate or enter a cycle. \cite{catalan_1888}
+    \textit{All aliquot sequences are bounded and thus must terminate or enter a cycle. \cite{catalan_1888}}
 \end{conjecture}
 %
 \begin{conjecture}[Guy-Selfridge]
-    The Catalan-Dickson conjecture is false, perhaps most aliquot sequences are unbounded. \cite{guy_selfridge_1975}
+    \textit{The Catalan-Dickson conjecture is false, perhaps most aliquot sequences are unbounded. \cite{guy_selfridge_1975}}
 \end{conjecture}
 %
 The computational exploration of these sequences that has taken place since Catalan originally proposed his conjecture in 1888 has certainly given credence to the Guy-Selfridge point-of-view. However a trend in the data is far from a proof, under our current understanding it is entirely possible that the $276$ sequence could trip over a prime or enter a cycle on some future iteration.
@@ -113,7 +109,7 @@ What statistics can be compiled on the behaviour of $s(n)$ to argue for or again
     \item \textbf{if} other effects on the growth of a sequence are relatively minor compared to the tendency for aliquot sequences to preserve parity,
     \item \textbf{then} we would expect most even aliquot sequences that reach large values to be unbounded.
 \end{itemize}
-This argument seems to match the numerical evidence as seemly unbounded sequences such as $s(276)$ \cite{zimmermann_2016} appear to maintain constant even parity.
+This argument seems to match the numerical evidence as seemly unbounded sequences such as $s(276)$ appear to maintain constant even parity.
 
 The method used to either analytically determine or numerically compute $\mathcal{S}(2n)$ impacts the parameters value. While not explicitly stated by Guy and Selfridge, \cite{bosma_kane_2010} indicate that arithmetic mean of $s(2n) / 2n$ was used to determine $\mathcal{S}(2n)$ in constructing their heuristic argument for unboundedness.
 %
@@ -158,7 +154,7 @@ These percentages refer to the density of even $k$-parent numbers or the probabi
 \subsection{Pollack-Pomerance Model of Non-Aliquot Density}
 Consider the following set,
 $$N_a = \{2,5,52,88,96,120,124,146,162,188,206,210,216,238,246,248, \dots\}$$
-which contains non-aliquot numbers \cite{sloane_2022}, if $n \in N_a$ then $\nexists m \text{ s.t. } s(m) = n$, in symbols $\#s^{-1}(n) = 0$. The name non-aliquot implies that these numbers do not appear in aliquot sequences, however every sequence begins with a member of $N_a$; if $\#s^{-1}(n) > 0$ then there must be some preceding number in the same sequence.
+which contains non-aliquot numbers \cite{sloane_2022}, if $n \in N_a$ then $\#s^{-1}(n) = 0$. The name non-aliquot implies that these numbers do not appear in aliquot sequences, however every sequence begins with a member of $N_a$; if $\#s^{-1}(n) > 0$ then there must be some preceding number in the same sequence.
 
 We are interested in the natural density of $N_a$,
 $$d(N_a) = \lim_{n \to \infty}\frac{|N_a \cap[1,n]|}{n},$$
@@ -167,9 +163,9 @@ a method of determining the proportion of numbers that are non-aliquot. Using pr
     $$\Delta = \lim_{y \to \infty}\frac{1}{\log y} \sum_{\substack{a\leq y \\ 2 | a}} \frac{1}{a}\text{e}^{-a/s(a)}.$$
 \end{conjecture}
 
-This model is an application of the \textit{"balls into bins"} statistics problem, estimating the result after throwing $m$ balls randomly into $n$ bins;
+This model is an application of the \textit{balls into bins} statistics problem, estimating the result after throwing $m$ balls randomly into $n$ bins;
 $$\#[\text{empty bins}] = n(1- \frac{1}{n})^m.$$
-To apply this technique the authors begin by defining a series of disjoint subsets,
+To apply this technique the authors begin by defining a series of disjoint subsets utilizing the following variable,
 $$A_y = \text{ lcm}[1, 2, ..., y]$$
 and for each divisor $a | A_y$ uniquely define a set $T_a$,
 $$T_a = \{n : \text{gcd}(n, A_y) = a\}.$$
@@ -199,13 +195,13 @@ Utilizing the asymptotic properties of $T_a$ the authors set up assumptions need
     \item Assume that $s(\cdot)$ is a random map.
 \end{itemize}
 
-To apply this model we need values for the number of \textit{bins} $n$ and \textit{balls} $m$; naturally we use the bounded sets $T_a$ as a analog for the number of \textit{bins},
-$$n = |T_a(x)|.$$
-For an \textit{balls} $m$ we need to find a range of $T_a$ such that $s(\cdot)$ maps these numbers into $T_a(x)$. Utilizing our assumptions that that $s(\cdot)$ maps $T_a$ to $T_a$ and $\sigma(n)/n \approx \sigma(a)/a$ we can choose a value for $m$ such that
+To estimate the natural density of non-aliquots we first need to estimate this density in a specific bounded set $T_a(x)$. We consider members of $r \in T_a(x)$ as a \textit{bin}, the \textit{balls} constituting the set defined by $s^{-1}(r)$. So to estimate the density of non-aliquots in $T_a(x)$ we need to understand out of all \textit{bins}
+$$n = |T_a(x)|,$$
+how many will be empty after throwing $m$ \textit{balls}. The assumption that $s(\cdot)$ maps $T_a \to T_a$ means that each of our balls must be a member of $T_a$, we need to choose a subset of $T_a$ where each member maps onto the bounded set $T_a(x)$. Utilizing our assumption $\forall n \in T_a,\, \sigma(n)/n \approx \sigma(a)/a$ we can choose a value for $m$ such that
 $$\forall h \in T_a \leq m,\, s(h) \in T_a(x).$$
 We are choosing $m$ to be the largest value in the set $T_a$ such that $s(\cdot)$ maps all values less or equal to $m$ into $T_a(x)$. It is useful to observe that every member of a $T_a$ by assumption shares the ratio $a / s(a)$,
 $$\frac{a}{s(a)} = \frac{1}{(\sigma(a)/a)-1}.$$
-Utilizing this assumption we set our number of \textit{balls} $m$ to
+Utilizing this assumption we set our number of \textit{balls} to
 $$m = |T_a(x \cdot (a/s(a))|.$$
 
 Plugging in values we have the following expression,
@@ -224,7 +220,7 @@ $$\lim_{x \to \infty} (1- \frac{1}{x})^x = e.$$
 
 At this point we have a model for non-aliquot density within any set $T_a$, we would like to extend this to model non-aliquot density over all naturals. To accomplish this we again utilize the equivalence,
 $$|T_a(x)|  \sim  \frac{\phi(A_y) \cdot x}{ A_y \cdot a},$$
-noticing that the ratio $\phi(A_y)/ (a \cdot A_y)$ expresses the probability that some natural is in $T_a$, see \cite{dens} for a similar treatment. Supposing $n \in T_a$ and $s^{-1}(n)$ are independent events model the joint probability,
+noticing that the ratio $\phi(A_y)/ (a \cdot A_y)$ expresses the probability that some natural is in $T_a$, see \cite{dens} for a similar treatment. Supposing $n \in T_a$ and $s^{-1}(n)$ are independent events we model the joint probability as follows,
 $$\mathbb{P}[\text{$T_a$ and non-aliquot}]= \frac{\phi(A_y)}{ A_y \cdot a} \cdot  e^{-a/s(a)}.$$
 
 Since each set $T_a$ is disjoint we can apply the additive property to find the natural density of non-aliquot numbers:
@@ -232,23 +228,20 @@ Since each set $T_a$ is disjoint we can apply the additive property to find the 
     \Delta & = \lim_{y \to \infty}  \sum_{\subalign{a                      & |A_y \\2&|a}} \frac{\phi(A_y)}{a \cdot A_y} \cdot e^{-a/s(a)}\\ \\
            & = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\subalign{a & |A_y \\ 2 &| a}} \frac{1}{a} e^{-a/s(a)}
 \end{align*}
-We restrict $a$ to even values as $a$'s parity determines the parity of the entire set  $T_a$ and we know that the density of odd aliquot orphans quickly vanishes
+We restrict $a$ to even values as $a$'s parity determines the parity of the entire set  $T_a$ and we know that the density of odd aliquot orphans quickly vanishes.
 
 \subsection{k-Parent Generalization}
-
-\textbf{Note: Unedited copy from final report for NSERC workterm.\\
-    Todo: Clean up non-formal language.}
-
-Luckily people interested in statistics have done the work for us, say we have $n$ 'bins', $m$ 'balls', and want to know the probability of a specific bin has exactly $k$ balls.  $$\mathbb{P}[k \text{ balls in bin}] = {m \choose k } \frac{1}{n^k} (1- \frac{1}{n})^{m-k}$$
-This gives a fairly simple strategy to generalize the Pollack/Pomerance heuristic model, simply swap out the probability of getting 0-balls in a bin for the general equation. Plugging in the same values of:
+Pollack and Pomerance \cite{pollPom} used the probability of a \textit{bin} remaining empty to model non-aliquot density, we can extend this model by considering the probability that a \textit{bin} contains $k$ \textit{balls},
+$$\mathbb{P}[k \text{ balls in bin}] = {m \choose k } \frac{1}{n^k} (1- \frac{1}{n})^{m-k}.$$
+Inputting the same values used in the non-aliquot model,
 $$n = \frac{\phi(A_y) \cdot x}{ A_y \cdot a}$$
-And:
-$$m = \frac{\phi(A_y) \cdot x}{A_y \cdot s(a)}$$
-We get the following monster:
-$$\mathbb{P}[k \text{ parents}] =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}$$
-This expression cleans up quite nicely (see section Probability Simplification), the probability of some $n \in T_a$ having $k$ parents:
-$$\mathbb{P}[k \text{ parents}] = \frac{a^{k}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
-We then simply slap this probability expression into the Pollack and Pomerance result giving the density of even $k$ parent aliquot numbers over all naturals:
+and
+$$m = \frac{\phi(A_y) \cdot x}{A_y \cdot s(a)},$$
+we get the following expression:
+$$\mathbb{P}[k \text{ parents}] =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}.$$
+This expression is simplified in Appendix \ref*{appendix:simple} to the following:
+$$\mathbb{P}[k \text{ parents}] = \frac{a^{k}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}.$$
+We then simply substitute this probability expression into the Pollack and Pomerance result giving the density of even $k$ parent aliquot numbers over all naturals:
 $$\Delta_k = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\subalign{a|A_y \\ 2 | a}} \frac{a^{k-1}}{k! \cdot s(a)^k} \cdot \text{e}^{-a/s(a)}$$
 The authors continue to establish an easier to compute expression for $\Delta$: \begin{align*}
     \Delta & = \lim_{y \to \infty} \frac{\phi(A_y)}{A_y} \sum_{\substack{a | A_y \\ 2 | a}} \frac{1}{a} e^{-a/s(a)} &(\text{3.1})\\ \\
@@ -288,7 +281,7 @@ Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of
 
 \begin{proposition} \textit{$s(n)$ is even if and only if}
     $$n = (2m+1)^2 \text{, or}$$
-    $$2 | n \text{ and } (n \neq m^2 \text{ or } n \neq 2m^2)$$.
+    $$2 | n \text{ and } (n \neq m^2 \text{ or } n \neq 2m^2).$$
 \end{proposition}
 
 \begin{conjecture} \textit{If $2 | m$ and $s(n) = m$ then $n \in \{x| \text{ even } x, 2 \leq x \leq 2m \} \cup \{x^2| \text{ odd } x, 1 \leq x \leq m\}$}
@@ -302,7 +295,7 @@ Consider the equation $s(n) = m$, where the integer $m$ is the \textit{image} of
     \end{itemize}
 \end{conjecture}
 
-This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, most values will be disregarded when searching for $s(n) = m$. It is more palatable to compute preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
+This approach is expensive if computing $s^{-1}(m)$ for a single value of $m$, as most values will be disregarded. It is more palatable to compute preimages for a range of $m$, as determining $s^{-1}(m)$ requires $\{s^{-1}(x)|\text{ even } x,\, 1 \leq x \leq m\}$ anyway. This computation is useful to count the occurrence and density of $k$-parent numbers, these counts can be compared to the predictions of the k-parent heuristic model to provide evidence for correctness.
 
 \subsection{Pomerance-Yang Algorithm}
 We can certainly do better than this brute-force approach for enumerating preimages, a technique of \cite{pomYang} is a useful improvement. Algorithm \ref{alg:pomyang} presents the Pomerance-Yang algorithm modified to determine $\#s^{-1}(n)$ for all even integers $n$ less than or equal to the bound $x$.
@@ -341,15 +334,19 @@ The performance improvement can largely be credited to avoiding any disc operati
 
 This variant of the Pomerance-Yang algorithm outputs a buffer with each index corresponding to an even integer $n$ and with the value storing $\#s^{-1}(n)$. Like the input this buffer is managed completely in memory to avoid the overhead of disc operations. One challenge of this approach is fitting the output buffer into the constrained size of memory, the simplest solution is to allocate a byte for each even $n$ up-to the bound $x$. This requires at least $x/2$ bytes of memory, for instance at $x = 2^{40}$ the algorithm requires approximately \texttt{550GB} which is well within the \texttt{3TB} provided by the \texttt{bigmem} partition on uCalgary's Advanced Research Computing (ARC) cluster. However allocating a byte for each $n$ is excessive for most use cases, enumerating non-aliquots requires only a single bit for each $n$. A bit-array does not come naturally to modern low-level languages as the smallest addressable unit of memory is a byte, thus in C the following expression is true,
 $$\texttt{sizeof(uint8\_t) == sizeof(bool)}.$$
-The \texttt{PackedArray} data structure \cite{packedArray} provides an interface to manipulate an array with values stored in a user definable number of bits. Thus a 1-bit PackedArray can be defined which can be used to enumerate non-aliquots with a memory requirement of $x/16$, thus enumerating up-to $2^{44}$ requires \texttt{1.1TB} rather than \texttt{8.8TB} for a byte array.
+The \texttt{PackedArray} data structure \cite{packedArray} provides an interface to manipulate an array with values stored in a user definable number of bits. Thus a 1-bit PackedArray can be used to enumerate non-aliquots with a memory requirement of $x/16$, thus enumerating up-to $2^{44}$ requires \texttt{1.1TB} rather than \texttt{8.8TB} for a byte array.
 
 Like the Pomerance-Yang implementation of \cite{chum_guy_jacobson_mosunov_2018} my implementation takes advantage of the natural parallelism of the algorithm, each iteration of the \texttt{for} loops on lines 3 and 15 of Algorithm \ref{alg:pomyang} are totally independent. A challenge in my \texttt{PackedArray} implementation is managing data races caused multiple threads simultaneously incrementing values in the output buffer. In the byte array implementation this problem can be trivially solved by declaring updates to the output buffer as \texttt{atomic}. An array of mutex's provides a performant mechanism to synchronize shared \texttt{PackedArray} access, each mutex guarding access to a range of indices in the output buffer. This approach yields significant performance improvements compared to using a single mutex to guard all updates to the output \texttt{PackedArray}.
 
 Table \ref{tab:pomyang_all} summarizes the density of $k$-parent numbers computed with my implementation of the Pomerance-Yang algorithm. For $y  = 2^{43}$ and $y = 2^{44}$ the output \texttt{PackedArray} was allocated 2 and 1 bits respectively. These results extend \cite{chum_guy_jacobson_mosunov_2018} and match all reported non-aliquot densities. 
 
 \section{Comparison of k-Parent Heuristic and Computed Densities}
-The purpose of this project is to extend the precise statistical model for non-aliquot density of \cite{pollPom} to estimate the density of $k$-parent numbers. The Pomerance-Yang algorithm is used to compute the real densities of k-parent numbers to validate the $k$-parent model's accuracy.  
+The purpose of this project is to extend the precise statistical model for non-aliquot density of \cite{pollPom} to estimate the density of $k$-parent numbers. The Pomerance-Yang algorithm is used to compute the real densities of k-parent numbers to validate the $k$-parent model's accuracy. Table \ref*{tab:densitycomparision} compares the obsevered density of $k$-parent numbers less than $y = 2^{41}$ to the predictions of my hueristic model for $k$-parent density. The comparison is made by taking the ratio of the observed value over the prediction, this method measures the error in proportion to the observed value. Ratios $x > 1$  indicate that the observed value is less than the estimated value.
 
+The results in Table \ref*{tab:densitycomparision} indicate that the heuristic model is predictive till about $k = 4$, the model's error increases in a multiplicative manner for greater values of $k$
+\footnote{Numbers can seemingly have an unbounded number of preimages under $s(n)$, \cite{chum_guy_jacobson_mosunov_2018} report a number with $k = 139$. Extending this computation I can report that there exists $n$ with $k = 166$, $n \leq 2^{41}$, unfortunately the value of $n$ is unknown as it was only captured in a summarized table.}. Thus it appears that the models accuracy decreases with $d(P_k)$; the model is accurate in cases like $k = 1$ which constitutes about $17\%$ of numbers and becomes increasing inaccurate in cases like $k = 7$ which constitutes only $0.1\%$ of numbers.
+
+This result is indicative of a partial success, the extension of the heuristic model for non-aliquot density to $k$-parent appears to be accurate for small values of $k$. However further work is required to understand the why the estimates diverge from observations as $k$ increases. Perhaps the assumptions like $s(\cdot)$ being a random map hold for the case of $k = 0$ but not for the general case, studying the validity of this assumption could be an avenue for future work.
 
 
 \pagebreak
@@ -441,7 +438,53 @@ The purpose of this project is to extend the precise statistical model for non-a
     \label{tab:pomyang_all}
     \caption{Computed densities of $k$-parent numbers up-to bound $y$, $P_k = \{n \,|\, s^{-1}(n) = k\}$.}
 \end{table}
+
 \pagebreak
+
+\begin{table}[h!]
+    \small
+    \centerline{
+        \begin{tabular}{l | lllllllllll}
+            $\Delta_{k}$            & \multicolumn{1}{l}{$k = 0$} & \multicolumn{1}{l}{$k = 1$} & \multicolumn{1}{l}{$k = 2$} & \multicolumn{1}{l}{$k = 3$} & \multicolumn{1}{l}{$k = 4$} & \multicolumn{1}{l}{$k = 5$} & \multicolumn{1}{l}{$k = 6$} & \multicolumn{1}{l}{$k = 7$} & \multicolumn{1}{l}{$k = 8$} & \multicolumn{1}{l}{$k = 9$} & \multicolumn{1}{l}{$k = 10$} \\
+
+            \hline
+
+            $y = 10^{2}$            & 0.1438                      & 0.1625                      & 0.1039                      & 0.0496                      & 0.0195                      & 0.0066                      & 0.0020                      & 0.0005                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{3}$            & 0.1552                      & 0.1643                      & 0.1000                      & 0.0462                      & 0.0178                      & 0.0059                      & 0.0017                      & 0.0005                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{4}$            & 0.1611                      & 0.1653                      & 0.0982                      & 0.0445                      & 0.0169                      & 0.0056                      & 0.0016                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{5}$            & 0.1646                      & 0.1659                      & 0.0971                      & 0.0435                      & 0.0164                      & 0.0054                      & 0.0016                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{6}$            & 0.1669                      & 0.1663                      & 0.0964                      & 0.0428                      & 0.0160                      & 0.0052                      & 0.0015                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{7}$            & 0.1686                      & 0.1666                      & 0.0959                      & 0.0424                      & 0.0158                      & 0.0051                      & 0.0015                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{8}$            & 0.1699                      & 0.1669                      & 0.0955                      & 0.0420                      & 0.0156                      & 0.0051                      & 0.0015                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{9}$            & 0.1708                      & 0.1670                      & 0.0952                      & 0.0417                      & 0.0154                      & 0.0050                      & 0.0014                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 10^{10}$           & 0.1716                      & 0.1672                      & 0.0950                      & 0.0415                      & 0.0153                      & 0.0050                      & 0.0014                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+            $y = 2(10^{10})$        & 0.1718                      & 0.1672                      & 0.0949                      & 0.0415                      & 0.0153                      & 0.0049                      & 0.0014                      & 0.0004                      & 0.0001                      & 0.0000                      & 0.0000                       \\
+                                    & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}         \\
+            $d_y(P_k)$              & \multicolumn{1}{l}{$k = 0$} & \multicolumn{1}{l}{$k = 1$} & \multicolumn{1}{l}{$k = 2$} & \multicolumn{1}{l}{$k = 3$} & \multicolumn{1}{l}{$k = 4$} & \multicolumn{1}{l}{$k = 5$} & \multicolumn{1}{l}{$k = 6$} & \multicolumn{1}{l}{$k = 7$} & \multicolumn{1}{l}{$k = 8$} & \multicolumn{1}{l}{$k = 9$} & \multicolumn{1}{l}{$k = 10$} \\
+
+            \hline
+
+            $y = 2^{41}$            & 0.1715                      & 0.1696                      & 0.0937                      & 0.0398                      & 0.0151                      & 0.0057                      & 0.0023                      & 0.0010                      & 0.0005                      & 0.0003                      & 0.0002                       \\
+                                    & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}        & \multicolumn{1}{l}{}         \\
+            $d_y(P_k) / \Delta_{k}$ & \multicolumn{1}{l}{$k = 0$} & \multicolumn{1}{l}{$k = 1$} & \multicolumn{1}{l}{$k = 2$} & \multicolumn{1}{l}{$k = 3$} & \multicolumn{1}{l}{$k = 4$} & \multicolumn{1}{l}{$k = 5$} & \multicolumn{1}{l}{$k = 6$} & \multicolumn{1}{l}{$k = 7$} & \multicolumn{1}{l}{$k = 8$} & \multicolumn{1}{l}{$k = 9$} & \multicolumn{1}{l}{$k = 10$} \\
+
+            \hline
+
+            $y = 10^{2}$            & 1.193                       & 1.043                       & 0.902                       & 0.802                       & 0.774                       & 0.861                       & 1.170                       & 2.003                       & 4.306                       & 11.323                      & 35.296                       \\
+            $y = 10^{3}$            & 1.105                       & 1.032                       & 0.937                       & 0.862                       & 0.850                       & 0.959                       & 1.313                       & 2.260                       & 4.877                       & 12.863                      & 40.210                       \\
+            $y = 10^{4}$            & 1.065                       & 1.026                       & 0.954                       & 0.894                       & 0.894                       & 1.018                       & 1.404                       & 2.428                       & 5.257                       & 13.902                      & 43.536                       \\
+            $y = 10^{5}$            & 1.042                       & 1.022                       & 0.965                       & 0.915                       & 0.922                       & 1.057                       & 1.465                       & 2.542                       & 5.521                       & 14.632                      & 45.910                       \\
+            $y = 10^{6}$            & 1.027                       & 1.019                       & 0.972                       & 0.929                       & 0.942                       & 1.085                       & 1.508                       & 2.624                       & 5.710                       & 15.160                      & 47.629                       \\
+            $y = 10^{7}$            & 1.017                       & 1.018                       & 0.977                       & 0.939                       & 0.957                       & 1.106                       & 1.541                       & 2.686                       & 5.854                       & 15.560                      & 48.934                       \\
+            $y = 10^{8}$            & 1.010                       & 1.016                       & 0.981                       & 0.947                       & 0.968                       & 1.122                       & 1.567                       & 2.735                       & 5.967                       & 15.875                      & 49.962                       \\
+            $y = 10^{9}$            & 1.004                       & 1.015                       & 0.984                       & 0.953                       & 0.977                       & 1.135                       & 1.587                       & 2.774                       & 6.057                       & 16.128                      & 50.792                       \\
+            $y = 10^{10}$           & 0.999                       & 1.014                       & 0.987                       & 0.958                       & 0.985                       & 1.145                       & 1.604                       & 2.806                       & 6.132                       & 16.337                      & 51.476                       \\
+            $y = 2(10^{10})$        & 0.998                       & 1.014                       & 0.987                       & 0.960                       & 0.987                       & 1.148                       & 1.608                       & 2.814                       & 6.152                       & 16.392                      & 51.658
+        \end{tabular}
+    }
+    \label{tab:densitycomparision}
+    \caption{Ratio comparing the observed density of $k$-parent numbers to the estimates of the heuristic model. $P_k = \{n \,|\, s^{-1}(n) = k\}$ is the set of numbers with $k$-parents and $d_y(P_k) = (P_k \cap [1,\,y]) / y$ is the density of $k$-parent numbers.}
+\end{table}
 
 \section{k-Parent Density Model Simplification}
 \subsection*{Prove that:}
@@ -451,6 +494,7 @@ The purpose of this project is to extend the precise statistical model for non-a
 \end{align*}
 
 \subsection*{Proof:}
+\label{appendix:simple}
 \begin{align*}
     \mathbb{P}[k \text{ parents}] & =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)^k} \left(1- \frac{1}{\left(\frac{\phi(A_y) \cdot x}{ A_y \cdot a}\right)}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k} \\
                                   & =  \lim_{x \to \infty}{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)} \choose k } \left(\frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^k \cdot \lim_{x \to \infty}\left(1- \frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k}           \\
@@ -467,12 +511,12 @@ The purpose of this project is to extend the precise statistical model for non-a
                                   & = \frac{1}{k!}\lim_{x \to \infty} \prod_{i = 0}^{k-1} \left[\frac{\phi(A_y) \cdot A_y  \cdot x \cdot a}{ \phi(A_y) \cdot A_y \cdot   x \cdot s(a)} - \frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x}  \right]                                                        \\
                                   & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[\lim_{x \to \infty} \left(   \frac{a}{ s(a)} - \frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x} \right) \right]                                                            & \text{(Distribution over product limit law)}    \\
                                   & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[  \lim_{x \to \infty} \left(   \frac{a}{ s(a)}\right) -  \lim_{x \to \infty}\left(\frac{i \cdot A_y \cdot a }{\phi(A_y) \cdot x} \right) \right]                         & \text{(Distribution over difference limit law)} \\
-                                  & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[     \frac{a}{ s(a)} \right]\\
+                                  & = \frac{1}{k!} \prod_{i = 0}^{k-1} \left[     \frac{a}{ s(a)} \right]                                                                                                                                                                                               \\
                                   & =\frac{a^k}{k! \cdot s(a)^k}                                                                                                                                                                                      & \left( \prod_{i = 0}^{k-1}c = c^k \right)
 \end{align*}
 
 \subsection*{Part $\mathbb{B}$:}
-Note: simplification checked using Wolfram-Alpha.
+Open work to establish proof, expression equivalence checked with Wolfram-Alpha. 
 \begin{align*}
     \lim_{x \to \infty} \mathbb{B} & = \lim_{x \to \infty}\left(1- \frac{A_y \cdot a}{\phi(A_y) \cdot x}\right)^{\frac{\phi(A_y) \cdot x}{A_y \cdot s(a)  } -k} \\
                                    & = e^{-a/s(a)}

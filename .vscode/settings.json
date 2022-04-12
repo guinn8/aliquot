@@ -64,8 +64,12 @@
         "Erdos",
         "kparent",
         "Mosunov",
+        "ntheory",
         "Pomerance",
-        "preimages"
+        "popen",
+        "preimage",
+        "preimages",
+        "sympy"
     ],
     "latex-workshop.latex.autoBuild.run": "onSave"
 }

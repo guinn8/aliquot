@@ -9,14 +9,14 @@ import numpy as np
 
 def s(n):
     """ @brief Compute the sum-of-proper-divisors of n """
-    prime_factorization = factorint(n)
-    total_product = 1
-    for p in prime_factorization:
+    factors = factorint(n)
+    product = 1
+    for p in factors:
         prime_exp_sum = 0
-        for e in range(0, prime_factorization[p]+1): # need inclusive upper lim
+        for e in range(0, factors[p]+1): # need inclusive upper lim
             prime_exp_sum += p ** e
-        total_product *= prime_exp_sum
-    return total_product - n
+        product *= prime_exp_sum
+    return product - n
   
 def print_aliquot_seq(n, lim):
     """ @brief Prints aliquot seq starting at n, halts if s(n) > lim"""
@@ -54,11 +54,13 @@ def recurse_preimages(ennum, image, preimages, ind):
         plt.plot([ind-1, ind], [j, image])
         new_pre = get_preimages(ennum, j)
         if len(new_pre) and ind > max_depth:
-            print("preimages {0} = {1}".format(j, new_pre))
+            # print("preimages {0} = {1}".format(j, new_pre))
             recurse_preimages(ennum, j, new_pre, ind -1)
 
 def plot_aliquot_family(start, sn_ennum):
     """ @brief Recursively plot explore preimage chains or aliquot families"""
+    plt.rcParams["figure.figsize"] = (40,40)
+
     seq = print_aliquot_seq(start, len(sn_ennum))
     print(seq)
 
@@ -74,6 +76,7 @@ def plot_aliquot_family(start, sn_ennum):
         plt.plot([i-1, i], [seq[i-1], seq[i]])
         if seq[i] > 1:
             recurse_preimages(sn_ennum, seq[i], pre, i)
+
     plt.show()
 
 if __name__ == "__main__":

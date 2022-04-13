@@ -59,7 +59,6 @@ def recurse_preimages(ennum, image, preimages, ind):
 
 def plot_aliquot_family(start, sn_ennum):
     """ @brief Recursively plot explore preimage chains or aliquot families"""
-    plt.rcParams["figure.figsize"] = (40,40)
 
     seq = print_aliquot_seq(start, len(sn_ennum))
     print(seq)

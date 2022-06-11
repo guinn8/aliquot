@@ -18,26 +18,19 @@ int main(int argc, char const *argv[]) {
     (void)argc;
     (void)argv;
 
-    size_t start = 100;
-    size_t end = 1000000000;
+    size_t start = 16384;
+    size_t end = 1099511627776;
 
-    while (start <= end) {
-        for (size_t i = 1; i <= 9; i++) {
-            pollpom_config_t cfg = {
-                .bound = i * start,
-                .chunk_len = start / 10,
-                .filename = FILENAME,
-            };
-            pollpom_kparent(&cfg);
-        }
-        start *= 10;
+    size_t current = start;
+    while (current <= end) {
+        pollpom_config_t cfg = {
+            .bound = current,
+            .chunk_len = start / 2,
+            .filename = FILENAME,
+        };
+        pollpom_kparent(&cfg);
+        current *= 2;
     }
-
-    pollpom_config_t cfg = {
-        .bound = end,
-        .chunk_len = 100000,
-    };
-    pollpom_kparent(&cfg);
 
 
     return 0;

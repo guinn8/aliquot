@@ -51,6 +51,7 @@ typedef struct {
     size_t num_threads;
     bool est_heap;
     bool quiet;
+    char filename[32];
 } pomyang_config_t;
 
 /**

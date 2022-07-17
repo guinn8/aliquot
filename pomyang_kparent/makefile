@@ -25,6 +25,9 @@ geomean_sn: src/geomean_sn.c obj/moewsmoews_sieve.o obj/factor.o obj/pomyang_kpa
 	mkdir -p bin
 	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
 
+readfile: src/pomyang_readfile.c
+	$(CC) $(CFLAGS) $(INCS) -o bin/$@ $^ $(LINKS)
+
 
 obj/pomyang_kparent.o: src/pomyang_kparent.c
 	mkdir -p obj

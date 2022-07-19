@@ -1,5 +1,5 @@
 INCS= -I../inc
-LINKS= -lpthread -lm -lgmp
+LINKS= -lpthread -lm
 CFLAGS= -g -fopenmp -Wall -Wextra -Wshadow -std=c99 -Wpedantic -O3 -Wstrict-overflow -fno-strict-aliasing
 CC= gcc
 

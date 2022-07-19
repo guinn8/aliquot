@@ -32,22 +32,30 @@ int main(int argc, char **argv)
     uint64_t count[UINT8_MAX + 1] = {0};  // accumulates count of n-parent numbers
     char datafile_name[128];  // change fscanf parameters if this length changes
     while (EOF != fscanf(conf, " %128[^\n]", datafile_name)) {
-        FILE *datafile = fopen(datafile_name, "rb");  // ! careful strtok modifies datafile_name
+        // unzip and open file
+        char zip_file_cmd[512];
+        snprintf(zip_file_cmd, sizeof(zip_file_cmd), "gzip -d %s", datafile_name);
+        assert(-1 != system(zip_file_cmd));
+        FILE *datafile = fopen(datafile_name, "rb");
         assert(datafile);
 
         // parse out start and end of data file
         char *tok;
-        assert(NULL != (tok = strtok(datafile_name, "/")));
+        char datafile_name_parse[512];
+        strncpy(datafile_name_parse, datafile_name, sizeof(datafile_name_parse));
+        assert(NULL != (tok = strtok(datafile_name_parse, "/")));
         assert(NULL != (tok = strtok(NULL, "_")));
         size_t start = strtoul(tok, NULL, 10);
         assert(NULL != (tok = strtok(NULL, "_")));
         size_t end = strtoul(tok, NULL, 10);
 
-        // read the file back into memory
+        // read the file back into memory and re-zip file
         size_t array_count = (end - start + 2) / 2;  // count of even numbers between inclusive bounds
         uint8_t *array = calloc(array_count, sizeof(uint8_t));
         assert(array_count == fread(array, sizeof(uint8_t), array_count, datafile));
         fclose(datafile);
+        snprintf(zip_file_cmd, sizeof(zip_file_cmd), "gzip %s", datafile_name);
+        assert(-1 != system(zip_file_cmd));
 
         // accumulates count of n-parent numbers
         for (size_t i = 0; i < array_count; i++) {

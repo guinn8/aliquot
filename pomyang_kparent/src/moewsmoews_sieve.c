@@ -192,15 +192,11 @@ static void _moews_sieve_odd(sieve_worker_t *worker, uint64_t seg_start, const b
     total_sieving_time += total;
     #pragma omp atomic
     num_segments++;
-
-    // printf("\rtotal_time = %lds, num_segments = %ld, average_sieve_time %.02fs.\r", time(NULL) - start_time, num_segments,
-    // ((float)total_sieving_time/CLOCKS_PER_SEC)/(float)num_segments);
 }
 
 /* See header for documentation */
 sieve_config_t *moews_init_sieve(size_t bound, size_t seg_len) {
     start_time = time(NULL);
-    printf("RUNNING STATS\n");
     sieve_config_t *cfg = malloc(sizeof(sieve_config_t));
 
     const uint64_t max_prime = (uint64_t)sqrt(2 * bound);

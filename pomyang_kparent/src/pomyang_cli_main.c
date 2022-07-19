@@ -121,6 +121,11 @@ static void write_pomyang(PackedArray *arr, pomyang_config_t *cfg)
         assert(cfg->seg_len / 2 == fwrite(array_downcast, sizeof(uint8_t), cfg->seg_len / 2, data_file));
         free(array_downcast);
         fclose(data_file);
+
+        // zip up files
+        char zip_file_cmd[512];
+        snprintf(zip_file_cmd, sizeof(zip_file_cmd), "gzip %s", data_file_path);
+        assert(-1 != system(zip_file_cmd));
     }
     fclose(conf);
 }

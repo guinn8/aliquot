@@ -2,7 +2,15 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-$SCRIPT_DIR/../cli 10000 1000 > $SCRIPT_DIR/test.txt
+rm $SCRIPT_DIR/../cli
+make -C $SCRIPT_DIR/..
+if [ $? != 0 ]
+then
+    printf "\nBuild failed! Exiting...\n\n"
+    exit 1
+fi
+
+$SCRIPT_DIR/../cli 10000 20 > $SCRIPT_DIR/test.txt
 cmp $SCRIPT_DIR/test.txt $SCRIPT_DIR/sn_10000.txt
 
 if [ $? -eq 0 ]

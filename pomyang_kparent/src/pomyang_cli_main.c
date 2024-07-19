@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     printf("\t%.2f GB\n", total * BYTES_TO_GB);
 
     clock_t start_time = clock();
-    if (NULL == cfg.filename) {  // tabulate k-parent stats at specific bound
+    if (NULL == cfg.filename[0]) {  // tabulate k-parent stats at specific bound
         uint64_t *count = pomyang_count_kparent(&cfg);
         print_to_file(&cfg, OUTPUT_FILE, count, (clock() - start_time) / CLOCKS_PER_SEC);
         free(count);

@@ -5,11 +5,19 @@ This project purpose it to implement the Pomerance-Yang algorithm efficiently, a
 
 Building and Running
 --------------------
+```bash
+sudo apt-get update                                                                                                                   
+sudo apt-get install libgmp-dev
+```
 
 The cli can be build and ran with:
 
 ```bash
 make cli && time ./cli --bound=$((10**8)) --seg_len=$((5 * $((10**5)))) --num_locks=$((10**7)) --preimage_count_bits=1 --num_thread=12
+```
+
+```bash
+./bin/cli --bound=$((10**9)) --seg_len=$((10**6)) --num_locks=$((10**7)) --num_threads=12  --preimage_count_bits=8 --to_file="test"
 ```
 
 The tests will take maybe a couple a minutes to complete, successful if the program doesn't assert out. The tests can be ran with:
